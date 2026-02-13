@@ -1,0 +1,796 @@
+// Backend Prisma Schema - LinguaAccess Platform
+// Database: PostgreSQL 16
+// Focus: Authentication & User Profiles (Phase 1)
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// =======================
+// USER & AUTHENTICATION
+// =======================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  avatar    String?
+  role      UserRole @default(LEARNER)
+  pattern   String? // For pattern-based authentication (learners)
+
+  // Account Status
+  isEmailVerified Boolean   @default(false)
+  emailVerifiedAt DateTime?
+  isActive        Boolean   @default(true)
+  lastLogin       DateTime?
+
+  // Accessibility & Preferences
+  accessibilityPrefs Json   @default("{}")
+  language           String @default("en")
+  theme              String @default("light")
+
+  // Relations
+  learnerProfile  LearnerProfile?
+  parentProfile   ParentProfile?
+  educatorProfile EducatorProfile?
+
+  // Cross-relations for complex scenarios
+  familyMembersAsChild FamilyMember[]       @relation("child")
+  educatorStudents     EducatorStudent[]    @relation("student")
+  lessonProgress       LessonProgress[]
+  assessmentResponses  AssessmentResponse[]
+  messagesAsSender     Message[]            @relation("sender")
+
+  // Audit
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([email])
+  @@index([role])
+}
+
+enum UserRole {
+  LEARNER
+  PARENT
+  EDUCATOR
+  SPEECH_THERAPIST
+  ADMIN
+  PARENT_EDUCATOR
+}
+
+// =======================
+// LEARNER PROFILE
+// =======================
+
+model LearnerProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Specialized Identity
+  studentId String? @unique // Format: LX-XXXXX
+
+  // Demographics
+  dateOfBirth DateTime?
+  grade       String?
+  school      String?
+
+  // Disability Information
+  disabilityTypes String[] @default([])
+  iepGoals        String?
+  accommodations  Json?
+
+  // Learning Profile
+  nativeLanguage    String           @default("en")
+  learningLanguages String[]         @default(["en"])
+  proficiencyLevel  ProficiencyLevel @default(BEGINNER)
+
+  // Assessment Data
+  placementScore     Int?      @default(0)
+  lastAssessmentDate DateTime?
+
+  // Accessibility Preferences
+  fontFamily    String  @default("system")
+  fontSize      Int     @default(16)
+  lineSpacing   Float   @default(1.5)
+  letterSpacing Float   @default(0)
+  colorScheme   String  @default("light")
+  reducedMotion Boolean @default(false)
+  highlightText Boolean @default(false)
+  bionicReading Boolean @default(false)
+  focusMode     Boolean @default(false)
+
+  // Speech Recognition
+  enableSpeechRec     Boolean @default(true)
+  speechRecLang       String  @default("en-US")
+  speechShowSubtitles Boolean @default(true)
+
+  // Learning Status & Flexibility
+  learningStatus    String    @default("ACTIVE")
+  pauseReason       String?
+  pauseUntil        DateTime?
+  modeUntil         DateTime?
+  weeklyTargetHours Int       @default(10)
+
+  // Content Relations
+  portfolioItems   PortfolioItem[]
+  progressRecords  ProgressRecord[]
+  achievements     Achievement[]
+  lessonLogs       LessonLog[]
+  workSamples      WorkSample[]
+  niosCompetencies NIOSCompetency[]
+  attendance       Attendance[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+enum ProficiencyLevel {
+  BEGINNER
+  ELEMENTARY
+  INTERMEDIATE
+  UPPER_INTERMEDIATE
+  ADVANCED
+  MASTERY
+}
+
+// =======================
+// PARENT PROFILE
+// =======================
+
+model ParentProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Role Info
+  role String @default("PARENT")
+
+  // Child Management
+  children      FamilyMember[]
+  teachingNotes TeachingNote[]
+
+  // Preferences
+  notificationFrequency     String   @default("weekly")
+  notificationPreferences   String[] @default([])
+  notificationMethod        String   @default("email")
+  preferredNotificationTime String?
+  receiveEmails             Boolean  @default(true)
+  receiveNotifications      Boolean  @default(true)
+
+  // Learning Hub
+  courseProgress          ParentCourseProgress[]
+  officeHourRegistrations OfficeHourRegistration[]
+  forumPosts              ForumPost[]
+
+  // Communication
+  messageThreads String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model FamilyMember {
+  id       String        @id @default(cuid())
+  parentId String
+  parent   ParentProfile @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  childId  String
+  child    User          @relation("child", fields: [childId], references: [id], onDelete: Cascade)
+
+  relationship String
+  permissions  Json   @default("{}")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parentId, childId])
+  @@index([parentId])
+  @@index([childId])
+}
+
+// =======================
+// EDUCATOR PROFILE
+// =======================
+
+model EducatorProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Professional Info
+  certification  String?
+  licenseNumber  String?
+  institution    String?
+  specialization String[] @default([])
+
+  // Students & Content
+  students             EducatorStudent[]
+  createdLessonIds     String[]          @default([])
+  createdAssessmentIds String[]          @default([])
+  classrooms           Classroom[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model EducatorStudent {
+  id         String          @id @default(cuid())
+  educatorId String
+  educator   EducatorProfile @relation(fields: [educatorId], references: [id], onDelete: Cascade)
+  studentId  String
+  student    User            @relation("student", fields: [studentId], references: [id], onDelete: Cascade)
+
+  assignedAt  DateTime @default(now())
+  permissions Json     @default("{}")
+
+  @@unique([educatorId, studentId])
+  @@index([educatorId])
+  @@index([studentId])
+}
+
+// =======================
+// LESSONS & ASSESSMENTS
+// =======================
+
+model Lesson {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  contentId   String?
+
+  // Metadata
+  language          String  @default("en")
+  gradeLevel        String?
+  duration          Int?
+  estimatedDuration Int?
+  subject           String?
+
+  // Curriculum
+  competencies       String[] @default([])
+  learningObjectives String[] @default([])
+
+  // Creator & Status
+  creatorId   String
+  isPublished Boolean @default(false)
+
+  // Accessibility
+  multiModalContent Boolean @default(true)
+  hasTranscripts    Boolean @default(true)
+  hasCaptions       Boolean @default(true)
+  hasAltText        Boolean @default(true)
+
+  // Content
+  steps         LessonStep[]
+  progressIds   String[]     @default([])
+  assessmentIds String[]     @default([])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+
+  @@index([creatorId])
+  @@index([language])
+}
+
+model LessonStep {
+  id       String @id @default(cuid())
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  stepNumber Int
+  title      String
+  content    Json?
+  stepType   String @default("content")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lessonId])
+}
+
+model Assessment {
+  id       String @id @default(cuid())
+  lessonId String
+
+  title          String
+  description    String?
+  creatorId      String
+  assessmentType String  @default("formative")
+
+  // Questions as JSON
+  questions    Json?
+  passingScore Int   @default(70)
+
+  // References to responses
+  responseIds String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([creatorId])
+  @@index([lessonId])
+}
+
+// =======================
+// PROGRESS TRACKING
+// =======================
+
+model LessonProgress {
+  id        String @id @default(cuid())
+  learnerId String
+  learner   User   @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+  lessonId  String
+
+  // Progress State
+  status         ProgressStatus @default(NOT_STARTED)
+  startedAt      DateTime?
+  completedAt    DateTime?
+  lastAccessedAt DateTime       @updatedAt
+
+  // Performance
+  attemptCount Int  @default(0)
+  score        Int? @default(0)
+  duration     Int?
+
+  // Learning Data
+  interactionMetrics Json?
+  errorPatterns      String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([learnerId, lessonId])
+  @@index([learnerId])
+  @@index([lessonId])
+  @@index([status])
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  MASTERED
+  STRUGGLING
+}
+
+enum MasteryLevel {
+  NOVICE
+  DEVELOPING
+  PROFICIENT
+  MASTERED
+  ADVANCED
+}
+
+model AssessmentResponse {
+  id           String @id @default(cuid())
+  assessmentId String
+  learnerId    String
+  learner      User   @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  // Response Data
+  responses Json?
+  audioFile String?
+
+  // Scoring
+  score    Int?
+  feedback String?
+  gradedBy String?
+
+  // Timestamps
+  submittedAt DateTime  @default(now())
+  gradedAt    DateTime?
+
+  @@index([assessmentId])
+  @@index([learnerId])
+}
+
+model ProgressRecord {
+  id        String         @id @default(cuid())
+  learnerId String
+  learner   LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  // Competency Tracking
+  competencyId   String
+  competencyName String
+  masteryLevel   MasteryLevel
+
+  // Evidence
+  evidenceItems String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([learnerId])
+  @@index([competencyId])
+}
+
+// =======================
+// PORTFOLIO & ACHIEVEMENTS
+// =======================
+
+model PortfolioItem {
+  id        String         @id @default(cuid())
+  learnerId String
+  learner   LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  itemType    String
+
+  // Content
+  contentUrl         String?
+  contentDescription String?
+
+  // Metadata
+  relatedLessonId     String?
+  relatedCompetencies String[] @default([])
+
+  // Sharing
+  isShared   Boolean  @default(false)
+  sharedWith String[] @default([])
+
+  // Reflection & Feedback
+  learnerReflection String?
+  educatorFeedback  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([learnerId])
+}
+
+model Achievement {
+  id        String         @id @default(cuid())
+  learnerId String
+  learner   LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  badgeId     String
+  badgeName   String
+  description String?
+
+  earnedAt DateTime @default(now())
+
+  @@index([learnerId])
+}
+
+// =======================
+// COMMUNICATION
+// =======================
+
+model Message {
+  id       String        @id @default(cuid())
+  threadId String
+  thread   MessageThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  content     String
+  attachments String[] @default([])
+
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([threadId])
+  @@index([senderId])
+}
+
+model MessageThread {
+  id String @id @default(cuid())
+
+  // Participants as JSON array or CSV
+  participantIds String[]
+
+  subject       String?
+  lastMessageAt DateTime @updatedAt
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// =======================
+// CLASSROOM & ORGANIZATION
+// =======================
+
+model Classroom {
+  id         String          @id @default(cuid())
+  educatorId String
+  educator   EducatorProfile @relation(fields: [educatorId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String?
+  code        String  @unique
+
+  // Settings
+  maxStudents Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([educatorId])
+}
+
+model CoOp {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  code        String  @unique
+
+  // Access Control
+  isPrivate Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ScheduledLesson {
+  id        String @id @default(cuid())
+  learnerId String
+  lessonId  String
+
+  scheduledDate DateTime
+  completedAt   DateTime?
+
+  status String @default("scheduled")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([learnerId])
+  @@index([lessonId])
+}
+
+// =======================
+// PORTFOLIO EXTENSIONS
+// =======================
+
+model LessonLog {
+  id        String         @id @default(cuid())
+  learnerId String
+  learner   LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  date     DateTime
+  subject  String
+  topic    String
+  duration Int
+
+  competenciesCovered String[] @default([])
+  parentReflection    String?
+
+  workSamples WorkSample[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([learnerId])
+  @@index([date])
+}
+
+model WorkSample {
+  id        String         @id @default(cuid())
+  learnerId String
+  learner   LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  lessonLogId String?
+  lessonLog   LessonLog? @relation(fields: [lessonLogId], references: [id], onDelete: SetNull)
+
+  title        String
+  type         String
+  subject      String
+  competencies String[] @default([])
+  fileUrl      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([learnerId])
+  @@index([lessonLogId])
+}
+
+model NIOSCompetency {
+  id        String         @id @default(cuid())
+  learnerId String
+  learner   LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  subject     String
+  code        String
+  description String
+  category    String
+  status      String @default("not-started")
+
+  evidences String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([learnerId])
+  @@index([subject])
+}
+
+model Attendance {
+  id        String         @id @default(cuid())
+  learnerId String
+  learner   LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+
+  date    DateTime
+  present Boolean  @default(true)
+  notes   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([learnerId, date])
+  @@index([learnerId])
+  @@index([date])
+}
+
+// =======================
+// TEACHING INTERFACE
+// =======================
+
+model TeachingNote {
+  id       String        @id @default(cuid())
+  parentId String
+  parent   ParentProfile @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  learnerId String
+  lessonId  String
+
+  notes          String
+  timeSpent      Int
+  completedSteps String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([parentId])
+  @@index([learnerId])
+  @@index([lessonId])
+}
+
+// =======================
+// PARENT LEARNING HUB
+// =======================
+
+model ParentCourse {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  category    String
+  duration    String
+
+  modules Json?
+
+  isPublished Boolean @default(true)
+
+  progress ParentCourseProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+model ParentCourseProgress {
+  id       String        @id @default(cuid())
+  parentId String
+  parent   ParentProfile @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  courseId String
+  course   ParentCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  progress Int    @default(0)
+  status   String @default("not-started")
+
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parentId, courseId])
+  @@index([parentId])
+  @@index([courseId])
+}
+
+model OfficeHour {
+  id              String   @id @default(cuid())
+  topic           String
+  host            String
+  date            DateTime
+  duration        Int
+  maxParticipants Int
+
+  description String?
+  meetingLink String?
+
+  registrations OfficeHourRegistration[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date])
+}
+
+model OfficeHourRegistration {
+  id       String        @id @default(cuid())
+  parentId String
+  parent   ParentProfile @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  officeHourId String
+  officeHour   OfficeHour @relation(fields: [officeHourId], references: [id], onDelete: Cascade)
+
+  attended Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parentId, officeHourId])
+  @@index([parentId])
+  @@index([officeHourId])
+}
+
+model ForumPost {
+  id       String        @id @default(cuid())
+  authorId String
+  author   ParentProfile @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  title    String
+  content  String
+  category String
+
+  replies ForumReply[]
+  likes   ForumLike[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId])
+  @@index([category])
+  @@index([createdAt])
+}
+
+model ForumReply {
+  id     String    @id @default(cuid())
+  postId String
+  post   ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  authorId String
+  content  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+  @@index([authorId])
+}
+
+model ForumLike {
+  id     String    @id @default(cuid())
+  postId String
+  post   ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  userId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}

@@ -1,0 +1,10 @@
+# ML Service requirements (lighter set for local dev – no GPU deps)
+fastapi==0.104.1
+uvicorn==0.24.0
+python-multipart==0.0.6
+numpy==1.24.3
+scipy==1.11.4
+pydantic==2.5.0
+python-dotenv==1.0.0
+soundfile==0.12.1
+requests==2.31.0

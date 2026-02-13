@@ -1,0 +1,2 @@
+﻿components/ui/__tests__/button.test.tsx(1,38): error TS2307: Cannot find module 'vitest' or its corresponding type declarations.
+scripts/seed-database.ts(255,9): error TS2353: Object literal may only specify known properties, and 'coordinatorId' does not exist in type '(Without<CoOpCreateInput, CoOpUncheckedCreateInput> & CoOpUncheckedCreateInput) | (Without<...> & CoOpCreateInput)'.

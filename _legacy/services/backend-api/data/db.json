@@ -1,0 +1,293 @@
+{
+  "users": [
+    {
+      "currentStreak": 0,
+      "totalLessons": 16,
+      "completedLessons": 0,
+      "currentGoal": "Complete your first lesson",
+      "goalProgress": 0,
+      "wordsLearned": 0,
+      "totalPracticeMinutes": 0,
+      "longestStreak": 0,
+      "recentLessons": [],
+      "achievements": [
+        {
+          "id": "english-ach-1",
+          "title": "First Steps",
+          "description": "Complete your first English lesson",
+          "earned": false
+        },
+        {
+          "id": "english-ach-2",
+          "title": "Streak Starter",
+          "description": "3-day English learning streak",
+          "earned": false
+        },
+        {
+          "id": "english-ach-3",
+          "title": "Word Collector",
+          "description": "Learn 50 English words",
+          "earned": false
+        },
+        {
+          "id": "english-ach-4",
+          "title": "Consistent",
+          "description": "7-day English learning streak",
+          "earned": false
+        },
+        {
+          "id": "tamil-ach-1",
+          "title": "First Steps",
+          "description": "Complete your first Tamil lesson",
+          "earned": false
+        },
+        {
+          "id": "tamil-ach-2",
+          "title": "Streak Starter",
+          "description": "3-day Tamil learning streak",
+          "earned": false
+        },
+        {
+          "id": "tamil-ach-3",
+          "title": "Word Collector",
+          "description": "Learn 50 Tamil words",
+          "earned": false
+        },
+        {
+          "id": "tamil-ach-4",
+          "title": "Consistent",
+          "description": "7-day Tamil learning streak",
+          "earned": false
+        }
+      ],
+      "onboardingComplete": true,
+      "nativeLanguage": "tamil",
+      "learningLanguages": [
+        "English",
+        "Tamil"
+      ],
+      "gradeLevel": "college",
+      "disabilities": [
+        "dyslexia",
+        "adhd"
+      ],
+      "accessibility": {
+        "fontFamily": "opendyslexic",
+        "textSize": 16,
+        "lineSpacing": 1,
+        "colorScheme": "light",
+        "captionsEnabled": true,
+        "speechRecognitionEnabled": false,
+        "reducedMotion": true,
+        "fontSize": 16,
+        "letterSpacing": 0.05,
+        "speechRecognition": true
+      },
+      "linkedChildren": [],
+      "studentId": "LXF-KQ7DJ",
+      "id": "user_mlf3qzqr_8d0z3h",
+      "email": "thanurika@gmail.com",
+      "password": "",
+      "pattern": "[0,1,2,5,8]",
+      "firstName": "Thanu",
+      "lastName": "Rika",
+      "role": "LEARNER",
+      "isEmailVerified": false,
+      "createdAt": "2026-02-09T11:42:10.035Z",
+      "languageStats": {
+        "English": {
+          "currentStreak": 0,
+          "longestStreak": 0,
+          "totalLessons": 8,
+          "completedLessons": 0,
+          "wordsLearned": 0,
+          "totalPracticeMinutes": 0,
+          "currentGoal": "Complete your first English lesson",
+          "goalProgress": 0,
+          "recentLessons": [],
+          "achievements": [
+            {
+              "id": "english-ach-1",
+              "title": "First Steps",
+              "description": "Complete your first English lesson",
+              "earned": false
+            },
+            {
+              "id": "english-ach-2",
+              "title": "Streak Starter",
+              "description": "3-day English learning streak",
+              "earned": false
+            },
+            {
+              "id": "english-ach-3",
+              "title": "Word Collector",
+              "description": "Learn 50 English words",
+              "earned": false
+            },
+            {
+              "id": "english-ach-4",
+              "title": "Consistent",
+              "description": "7-day English learning streak",
+              "earned": false
+            }
+          ]
+        },
+        "Tamil": {
+          "currentStreak": 0,
+          "longestStreak": 0,
+          "totalLessons": 8,
+          "completedLessons": 0,
+          "wordsLearned": 0,
+          "totalPracticeMinutes": 0,
+          "currentGoal": "Complete your first Tamil lesson",
+          "goalProgress": 0,
+          "recentLessons": [],
+          "achievements": [
+            {
+              "id": "tamil-ach-1",
+              "title": "First Steps",
+              "description": "Complete your first Tamil lesson",
+              "earned": false
+            },
+            {
+              "id": "tamil-ach-2",
+              "title": "Streak Starter",
+              "description": "3-day Tamil learning streak",
+              "earned": false
+            },
+            {
+              "id": "tamil-ach-3",
+              "title": "Word Collector",
+              "description": "Learn 50 Tamil words",
+              "earned": false
+            },
+            {
+              "id": "tamil-ach-4",
+              "title": "Consistent",
+              "description": "7-day Tamil learning streak",
+              "earned": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "currentStreak": 0,
+      "totalLessons": 8,
+      "completedLessons": 0,
+      "currentGoal": "Complete your first lesson",
+      "goalProgress": 0,
+      "wordsLearned": 0,
+      "totalPracticeMinutes": 0,
+      "longestStreak": 0,
+      "recentLessons": [],
+      "achievements": [
+        {
+          "id": "english-ach-1",
+          "title": "First Steps",
+          "description": "Complete your first English lesson",
+          "earned": false
+        },
+        {
+          "id": "english-ach-2",
+          "title": "Streak Starter",
+          "description": "3-day English learning streak",
+          "earned": false
+        },
+        {
+          "id": "english-ach-3",
+          "title": "Word Collector",
+          "description": "Learn 50 English words",
+          "earned": false
+        },
+        {
+          "id": "english-ach-4",
+          "title": "Consistent",
+          "description": "7-day English learning streak",
+          "earned": false
+        }
+      ],
+      "languageStats": {
+        "English": {
+          "currentStreak": 0,
+          "longestStreak": 0,
+          "totalLessons": 8,
+          "completedLessons": 0,
+          "wordsLearned": 0,
+          "totalPracticeMinutes": 0,
+          "currentGoal": "Complete your first English lesson",
+          "goalProgress": 0,
+          "recentLessons": [],
+          "achievements": [
+            {
+              "id": "english-ach-1",
+              "title": "First Steps",
+              "description": "Complete your first English lesson",
+              "earned": false
+            },
+            {
+              "id": "english-ach-2",
+              "title": "Streak Starter",
+              "description": "3-day English learning streak",
+              "earned": false
+            },
+            {
+              "id": "english-ach-3",
+              "title": "Word Collector",
+              "description": "Learn 50 English words",
+              "earned": false
+            },
+            {
+              "id": "english-ach-4",
+              "title": "Consistent",
+              "description": "7-day English learning streak",
+              "earned": false
+            }
+          ]
+        }
+      },
+      "onboardingComplete": true,
+      "nativeLanguage": "tamil",
+      "learningLanguages": [
+        "English"
+      ],
+      "languageGoals": {
+        "English": {
+          "confidenceLevel": "basic",
+          "learningGoal": "fun",
+          "preferredStyle": "mixed",
+          "weeklyHours": "1-2"
+        }
+      },
+      "gradeLevel": "college",
+      "disabilities": [
+        "dyslexia",
+        "adhd",
+        "dysgraphia"
+      ],
+      "accessibility": {
+        "fontFamily": "opendyslexic",
+        "textSize": 14,
+        "lineSpacing": 1.5,
+        "colorScheme": "dark",
+        "captionsEnabled": true,
+        "speechRecognitionEnabled": true,
+        "reducedMotion": true,
+        "fontSize": 18,
+        "letterSpacing": 0.01,
+        "speechRecognition": true
+      },
+      "linkedChildren": [],
+      "studentId": "LXF-N7JJ4",
+      "id": "user_mlfdmrog_9zln08",
+      "email": "praveen3012@gmail.com",
+      "password": "",
+      "pattern": "[0,1,2,5,8]",
+      "firstName": "Praveen",
+      "lastName": "Kanish",
+      "role": "LEARNER",
+      "isEmailVerified": false,
+      "createdAt": "2026-02-09T16:18:49.120Z"
+    }
+  ]
+}

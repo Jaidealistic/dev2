@@ -1,0 +1,264 @@
+version: "3.8"
+
+services:
+  # ============================================
+  # MAIN APPLICATION (Next.js)
+  # ============================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: linguaaccess-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/linguaaccess
+      - MONGODB_URL=mongodb://mongo:27017/linguaaccess
+      - REDIS_URL=redis://redis:6379
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=http://localhost:3000
+      - ML_SERVICE_URL=http://ml-service:8000
+      - COLLABORATION_SERVICE_URL=http://collaboration:3002
+    depends_on:
+      - postgres
+      - mongo
+      - redis
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - linguaaccess-network
+    restart: unless-stopped
+
+  # ============================================
+  # COLLABORATION SERVICE (Socket.IO)
+  # Developer 2 Service
+  # ============================================
+  collaboration:
+    build:
+      context: ./services/collaboration-service
+      dockerfile: Dockerfile
+    container_name: linguaaccess-collaboration
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - REDIS_URL=redis://redis:6379
+      - FRONTEND_URL=http://localhost:3000
+      - LOG_LEVEL=info
+    depends_on:
+      - redis
+    volumes:
+      - ./services/collaboration-service:/app
+      - /app/node_modules
+    networks:
+      - linguaaccess-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:3002/health', (r) => { process.exit(r.statusCode === 200 ? 0 : 1); })",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # ============================================
+  # NOTIFICATION SERVICE (Optional)
+  # Developer 2 Service
+  # ============================================
+  notification:
+    build:
+      context: ./services/notification-service
+      dockerfile: Dockerfile
+    container_name: linguaaccess-notification
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+      - REDIS_URL=redis://redis:6379
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
+      - FCM_SERVER_KEY=${FCM_SERVER_KEY}
+    depends_on:
+      - redis
+    volumes:
+      - ./services/notification-service:/app
+      - /app/node_modules
+    networks:
+      - linguaaccess-network
+    restart: unless-stopped
+
+  # ============================================
+  # ML SERVICE (Python FastAPI)
+  # Developer 1 Service
+  # ============================================
+  ml-service:
+    build:
+      context: ./services/ml-service
+      dockerfile: Dockerfile
+    container_name: linguaaccess-ml
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-credentials.json
+    volumes:
+      - ./services/ml-service:/app
+      - ./gcp-credentials.json:/app/gcp-credentials.json:ro
+    networks:
+      - linguaaccess-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+  # ============================================
+  # DATABASES
+  # ============================================
+
+  # PostgreSQL (Primary database)
+  postgres:
+    image: postgres:16-alpine
+    container_name: linguaaccess-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=linguaaccess
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - linguaaccess-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB (Content storage)
+  mongo:
+    image: mongo:7
+    container_name: linguaaccess-mongo
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=linguaaccess
+    volumes:
+      - mongo_data:/data/db
+      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/init.js
+    networks:
+      - linguaaccess-network
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/linguaaccess --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (Caching & Sessions)
+  redis:
+    image: redis:7-alpine
+    container_name: linguaaccess-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - linguaaccess-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ============================================
+  # MONITORING & ADMIN TOOLS (Optional)
+  # ============================================
+
+  # Redis Commander (Redis GUI)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: linguaaccess-redis-commander
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    depends_on:
+      - redis
+    networks:
+      - linguaaccess-network
+    profiles:
+      - dev-tools
+
+  # pgAdmin (PostgreSQL GUI)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: linguaaccess-pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@linguaaccess.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - linguaaccess-network
+    profiles:
+      - dev-tools
+
+  # Mongo Express (MongoDB GUI)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: linguaaccess-mongo-express
+    ports:
+      - "8082:8081"
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongo:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    depends_on:
+      - mongo
+    networks:
+      - linguaaccess-network
+    profiles:
+      - dev-tools
+
+# ============================================
+# VOLUMES
+# ============================================
+volumes:
+  postgres_data:
+    driver: local
+  mongo_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+# ============================================
+# NETWORKS
+# ============================================
+networks:
+  linguaaccess-network:
+    driver: bridge
