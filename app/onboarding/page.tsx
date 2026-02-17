@@ -567,13 +567,18 @@ export default function EnhancedOnboardingPage() {
                               <button
                                 key={opt.value}
                                 onClick={() => updateLanguageGoal(lang, 'confidenceLevel', opt.value)}
-                                className={`p-3 rounded-xl border-2 text-left text-sm transition-all ${goals.confidenceLevel === opt.value
-                                  ? (isDark ? 'border-[#7da47f] bg-gray-700' : 'border-[#7da47f] bg-white shadow-sm')
-                                  : (isDark ? 'border-gray-600 hover:border-gray-500' : 'border-gray-200 bg-white/60 hover:border-gray-300')
+                                className={`relative p-3 rounded-xl border-2 text-left text-sm transition-all ${goals.confidenceLevel === opt.value
+                                  ? (isDark ? 'border-[#7da47f] bg-[#7da47f]/20 ring-2 ring-[#7da47f]/40' : 'border-[#7da47f] bg-[#e8f5e9] shadow-md ring-2 ring-[#7da47f]/30')
+                                  : (isDark ? 'border-gray-600 hover:border-gray-500 bg-gray-800/40' : 'border-gray-200 bg-white/60 hover:border-[#7da47f]/50 hover:shadow-sm')
                                   }`}
                               >
+                                {goals.confidenceLevel === opt.value && (
+                                  <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
+                                    <Check className="w-3 h-3 text-white" />
+                                  </div>
+                                )}
                                 <span className="block mb-1">{opt.emoji}</span>
-                                <span className={isDark ? 'text-gray-200' : 'text-gray-800'}>{opt.label}</span>
+                                <span className={goals.confidenceLevel === opt.value ? (isDark ? 'text-white font-semibold' : 'text-gray-900 font-semibold') : (isDark ? 'text-gray-200' : 'text-gray-700')}>{opt.label}</span>
                               </button>
                             ))}
                           </div>
@@ -614,13 +619,18 @@ export default function EnhancedOnboardingPage() {
                               <button
                                 key={opt.value}
                                 onClick={() => updateLanguageGoal(lang, 'preferredStyle', opt.value)}
-                                className={`p-3 rounded-xl border-2 text-left text-sm transition-all ${goals.preferredStyle === opt.value
-                                  ? (isDark ? 'border-[#7da47f] bg-gray-700' : 'border-[#7da47f] bg-white shadow-sm')
-                                  : (isDark ? 'border-gray-600 hover:border-gray-500' : 'border-gray-200 bg-white/60 hover:border-gray-300')
+                                className={`relative p-3 rounded-xl border-2 text-left text-sm transition-all ${goals.preferredStyle === opt.value
+                                  ? (isDark ? 'border-[#7da47f] bg-[#7da47f]/20 ring-2 ring-[#7da47f]/40' : 'border-[#7da47f] bg-[#e8f5e9] shadow-md ring-2 ring-[#7da47f]/30')
+                                  : (isDark ? 'border-gray-600 hover:border-gray-500 bg-gray-800/40' : 'border-gray-200 bg-white/60 hover:border-[#7da47f]/50 hover:shadow-sm')
                                   }`}
                               >
+                                {goals.preferredStyle === opt.value && (
+                                  <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
+                                    <Check className="w-3 h-3 text-white" />
+                                  </div>
+                                )}
                                 <span className="block mb-1">{opt.emoji}</span>
-                                <span className={isDark ? 'text-gray-200' : 'text-gray-800'}>{opt.label}</span>
+                                <span className={goals.preferredStyle === opt.value ? (isDark ? 'text-white font-semibold' : 'text-gray-900 font-semibold') : (isDark ? 'text-gray-200' : 'text-gray-700')}>{opt.label}</span>
                               </button>
                             ))}
                           </div>
@@ -642,10 +652,11 @@ export default function EnhancedOnboardingPage() {
                                 key={opt.value}
                                 onClick={() => updateLanguageGoal(lang, 'weeklyHours', opt.value)}
                                 className={`flex-1 py-2.5 rounded-xl border-2 text-sm font-medium transition-all ${goals.weeklyHours === opt.value
-                                  ? (isDark ? 'border-[#7da47f] bg-gray-700 text-white' : 'border-[#7da47f] bg-white text-[#5a8c5c] shadow-sm')
-                                  : (isDark ? 'border-gray-600 text-gray-400 hover:border-gray-500' : 'border-gray-200 text-gray-600 bg-white/60 hover:border-gray-300')
+                                  ? (isDark ? 'border-[#7da47f] bg-[#7da47f]/20 text-white ring-2 ring-[#7da47f]/40' : 'border-[#7da47f] bg-[#e8f5e9] text-[#2d5a2f] shadow-md ring-2 ring-[#7da47f]/30')
+                                  : (isDark ? 'border-gray-600 text-gray-400 hover:border-gray-500 bg-gray-800/40' : 'border-gray-200 text-gray-600 bg-white/60 hover:border-[#7da47f]/50')
                                   }`}
                               >
+                                {goals.weeklyHours === opt.value && <Check className="w-3.5 h-3.5 inline mr-1" />}
                                 {opt.label}
                               </button>
                             ))}
@@ -755,12 +766,17 @@ export default function EnhancedOnboardingPage() {
                       <button
                         key={font.value}
                         onClick={() => updateFormData('fontFamily', font.value)}
-                        className={`p-3 border-2 rounded-xl text-left transition-all duration-200 ${formData.fontFamily === font.value
-                          ? (isDark ? 'border-[#7da47f] bg-gray-800 ring-1 ring-[#7da47f]/30' : 'border-[#7da47f] bg-green-50/50 shadow-sm')
-                          : (isDark ? 'border-gray-700 bg-gray-800/30 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300')
+                        className={`relative p-3 border-2 rounded-xl text-left transition-all duration-200 ${formData.fontFamily === font.value
+                          ? (isDark ? 'border-[#7da47f] bg-[#7da47f]/20 ring-2 ring-[#7da47f]/40' : 'border-[#7da47f] bg-[#e8f5e9] shadow-md ring-2 ring-[#7da47f]/30')
+                          : (isDark ? 'border-gray-700 bg-gray-800/30 hover:border-gray-600' : 'border-gray-200 hover:border-[#7da47f]/50 hover:shadow-sm')
                           }`}
                       >
-                        <div className={`${font.style} font-semibold text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>{font.label}</div>
+                        {formData.fontFamily === font.value && (
+                          <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
+                            <Check className="w-3 h-3 text-white" />
+                          </div>
+                        )}
+                        <div className={`${font.style} font-semibold text-sm ${formData.fontFamily === font.value ? (isDark ? 'text-white' : 'text-gray-900') : (isDark ? 'text-gray-300' : 'text-gray-700')}`}>{font.label}</div>
                         <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{font.desc}</div>
                       </button>
                     ))}
@@ -818,6 +834,32 @@ export default function EnhancedOnboardingPage() {
                   </div>
                 </div>
 
+                {/* ===== LIVE PREVIEW ===== */}
+                <div className={`rounded-xl p-5 border-2 ${isDark ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
+                  <div className={`text-xs font-medium mb-3 flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <span>👁️</span>
+                    <span>Live Preview</span>
+                  </div>
+                  <div
+                    className={`rounded-lg p-4 transition-all duration-300 ${isDark ? 'bg-gray-800' : 'bg-white'}`}
+                    style={{
+                      fontFamily: fontFamilyMap[formData.fontFamily] || 'system-ui',
+                      fontSize: `${formData.textSize}px`,
+                      lineHeight: formData.lineSpacing
+                    }}
+                  >
+                    <p className={isDark ? 'text-gray-200' : 'text-gray-800'}>
+                      The quick brown fox jumps over the lazy dog.
+                    </p>
+                    <p className={`mt-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                      வானதை நடுத்தகடில் வாழும் விலங்குகள் வேகமாக ஓடுகின்றன.
+                    </p>
+                    <p className={`text-sm mt-3 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                      Your text will look like this in lessons!
+                    </p>
+                  </div>
+                </div>
+
                 {/* Color scheme */}
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -832,13 +874,18 @@ export default function EnhancedOnboardingPage() {
                       <button
                         key={scheme.value}
                         onClick={() => updateFormData('colorScheme', scheme.value)}
-                        className={`p-3 border-2 rounded-xl transition-all duration-200 text-center ${formData.colorScheme === scheme.value
-                          ? 'border-[#7da47f] ring-2 ring-[#7da47f]/20 shadow-sm'
-                          : (isDark ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300')
+                        className={`relative p-3 border-2 rounded-xl transition-all duration-200 text-center ${formData.colorScheme === scheme.value
+                          ? 'border-[#7da47f] bg-[#e8f5e9] ring-2 ring-[#7da47f]/40 shadow-md'
+                          : (isDark ? 'border-gray-700 hover:border-gray-600 bg-gray-800/30' : 'border-gray-200 hover:border-[#7da47f]/50 hover:shadow-sm')
                           }`}
                       >
+                        {formData.colorScheme === scheme.value && (
+                          <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5 text-white" />
+                          </div>
+                        )}
                         <span className="text-xl block mb-1">{scheme.icon}</span>
-                        <div className={`text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{scheme.label}</div>
+                        <div className={`text-xs font-medium ${formData.colorScheme === scheme.value ? 'text-gray-900' : (isDark ? 'text-gray-300' : 'text-gray-700')}`}>{scheme.label}</div>
                       </button>
                     ))}
                   </div>

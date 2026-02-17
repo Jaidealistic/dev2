@@ -81,93 +81,172 @@ export default function PronunciationPracticePage() {
   const currentWord = filteredWords[currentWordIndex] || filteredWords[0];
 
   async function startRecording() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
+    // Use Web Speech API directly instead of audio recording
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
+    if (!SpeechRecognition) {
+      setFeedback('Speech recognition not supported in this browser. Please use Chrome or Edge.');
+      setFeedbackType('tryagain');
+      return;
+    }
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-        await evaluatePronunciation(audioBlob, currentWord.word);
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
 
-        // Stop all tracks to release the microphone
-        stream.getTracks().forEach(track => track.stop());
-      };
-
-      mediaRecorder.start();
+    recognition.onstart = () => {
       setIsRecording(true);
       setTranscript('');
       setScore(null);
       setFeedback('Listening... Speak the word clearly!');
-    } catch (error) {
-      console.error('Error accessing microphone:', error);
-      setFeedback('Please allow microphone access to use pronunciation practice.');
+      setFeedbackType(null);
+    };
+
+    recognition.onresult = (event: any) => {
+      const spokenText = event.results[0][0].transcript.toLowerCase().trim();
+      const confidence = event.results[0][0].confidence;
+
+      setTranscript(spokenText);
+      setIsRecording(false);
+
+      // ULTRA-STRICT EXACT MATCHING
+      const targetLower = currentWord.word.toLowerCase().trim();
+
+      let calculatedScore = 0;
+      let feedbackMessage = '';
+      let feedbackCategory: 'success' | 'close' | 'tryagain' = 'tryagain';
+
+      // 1. EXACT MATCH = 100%
+      if (spokenText === targetLower) {
+        calculatedScore = 100;
+        feedbackMessage = `🎉 PERFECT! Exact match for "${currentWord.word}"!`;
+        feedbackCategory = 'success';
+      }
+      // 2. Strip articles and check
+      else {
+        const normalize = (w: string) => w.replace(/^(a|an|the)\s+/i, '').replace(/s$/i, '');
+        if (normalize(spokenText) === normalize(targetLower)) {
+          calculatedScore = 75;
+          feedbackMessage = `⚠️ Close! You said "${spokenText}" but expected exactly "${currentWord.word}".`;
+          feedbackCategory = 'close';
+        }
+        //3. Calculate Levenshtein distance
+        else {
+          const distance = levenshteinDistance(spokenText, targetLower);
+          const maxLen = Math.max(spokenText.length, targetLower.length);
+          const minLen = Math.min(spokenText.length, targetLower.length);
+          const similarity = (maxLen - distance) / maxLen;
+
+          // If words are vastly different lengths, they're probably unrelated
+          if (maxLen > minLen * 2) {
+            calculatedScore = 0;
+            feedbackMessage = `❌ Completely different! You said "${spokenText}" but expected "${currentWord.word}".`;
+            feedbackCategory = 'tryagain';
+          }
+          // Ultra-strict thresholds
+          else if (similarity >= 0.90) {
+            calculatedScore = Math.round(similarity * confidence * 75); // Cap at 75%
+            feedbackMessage = `⚠️ Very close! You said "${spokenText}" but we need "${currentWord.word}".`;
+            feedbackCategory = 'close';
+          } else if (similarity >= 0.75) {
+            calculatedScore = Math.round(similarity * confidence * 50);
+            feedbackMessage = `❌ Not quite. You said "${spokenText}" but expected "${currentWord.word}".`;
+            feedbackCategory = 'tryagain';
+          } else if (similarity >= 0.60) {
+            calculatedScore = Math.round(similarity * confidence * 30);
+            feedbackMessage = `❌ Different word. You said "${spokenText}" but we need "${currentWord.word}".`;
+            feedbackCategory = 'tryagain';
+          } else {
+            // Similarity < 0.60 = completely different words
+            calculatedScore = 0;
+            feedbackMessage = `❌ Wrong word! You said "${spokenText}" but expected "${currentWord.word}". Try again!`;
+            feedbackCategory = 'tryagain';
+          }
+
+          // Check for common confusions - apply HEAVY penalty
+          const confusionGroups = [
+            ['hi', 'hello', 'hey'],
+            ['good morning', 'morning', 'good'],
+            ['bye', 'goodbye'],
+            ['thanks', 'thank you']
+          ];
+
+          const isConfusion = confusionGroups.some(group =>
+            group.includes(targetLower) && group.includes(spokenText) && targetLower !== spokenText
+          );
+
+          if (isConfusion) {
+            calculatedScore = Math.min(calculatedScore, 15); // Max 15% for confused words
+            feedbackMessage = `❌ WRONG! "${spokenText}" and "${currentWord.word}" are different words! Only exact match gets 100%.`;
+            feedbackCategory = 'tryagain';
+          }
+        }
+      }
+
+      setScore(calculatedScore);
+      setFeedback(feedbackMessage);
+      setFeedbackType(feedbackCategory);
+      setTotalAttempts(prev => prev + 1);
+
+      if (calculatedScore >= 70) {
+        setCorrectAttempts(prev => prev + 1);
+        setPracticeHistory(prev => [...prev, { word: currentWord.word, score: calculatedScore, correct: true }]);
+      } else {
+        setPracticeHistory(prev => [...prev, { word: currentWord.word, score: calculatedScore, correct: false }]);
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error('Recognition error:', event.error);
+      setIsRecording(false);
+      setFeedback('Could not hear you clearly. Please try again.');
       setFeedbackType('tryagain');
-    }
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognition.start();
   }
 
   function stopRecording() {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
-      setFeedback('Analyzing your pronunciation...');
-    }
+    // Web Speech API stops automatically, but we can force it
+    setIsRecording(false);
   }
 
-  async function evaluatePronunciation(audioBlob: Blob, target: string) {
-    try {
-      const formData = new FormData();
-      formData.append('audio', audioBlob, 'recording.wav');
-      formData.append('expectedText', target);
-      formData.append('language', 'en-US'); // Practice words are currently English
+  // Levenshtein distance helper
+  function levenshteinDistance(str1: string, str2: string): number {
+    const matrix: number[][] = [];
 
-      const response = await fetch('/api/ml/pronunciation/evaluate', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: formData,
-      });
+    for (let i = 0; i <= str2.length; i++) {
+      matrix[i] = [i];
+    }
 
-      const data = await response.json();
+    for (let j = 0; j <= str1.length; j++) {
+      matrix[0][j] = j;
+    }
 
-      if (data.success && data.data) {
-        const result = data.data;
-        const score = Math.round(result.overall_score);
-
-        setScore(score);
-        setTranscript(result.spoken_text);
-        setTotalAttempts(prev => prev + 1);
-        setFeedback(result.feedback);
-
-        if (score >= 90) {
-          setFeedbackType('success');
-          setCorrectAttempts(prev => prev + 1);
-          setPracticeHistory(prev => [...prev, { word: target, score: score, correct: true }]);
-        } else if (score >= 70) {
-          setFeedbackType('close');
-          setPracticeHistory(prev => [...prev, { word: target, score: score, correct: true }]);
-          setCorrectAttempts(prev => prev + 1);
+    for (let i = 1; i <= str2.length; i++) {
+      for (let j = 1; j <= str1.length; j++) {
+        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
         } else {
-          setFeedbackType('tryagain');
-          setPracticeHistory(prev => [...prev, { word: target, score: score, correct: false }]);
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
+          );
         }
-      } else {
-        throw new Error(data.message || 'Evaluation failed');
       }
-    } catch (error) {
-      console.error('Error evaluating pronunciation:', error);
-      setFeedback('Sorry, the AI scoring service is unavailable. Please try again later.');
-      setFeedbackType('tryagain');
     }
+
+    return matrix[str2.length][str1.length];
   }
+
+  // Remove the old evaluatePronunciation function - no longer needed!
 
   function nextWord() {
     setCurrentWordIndex(prev => (prev + 1) % filteredWords.length);

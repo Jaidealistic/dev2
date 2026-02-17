@@ -100,11 +100,10 @@ export default function StudentSignUpPage() {
           <div className="flex items-center justify-center gap-2 mb-6">
             {['details', 'pattern', 'confirm'].map((s, i) => (
               <div key={s} className="flex items-center gap-2">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
-                  step === s ? 'bg-[#7da47f] text-white shadow-lg shadow-[#9db4a0]/30' :
-                  ['details', 'pattern', 'confirm'].indexOf(step) > i ? 'bg-green-500 text-white' :
-                  'bg-slate-200 text-slate-400'
-                }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${step === s ? 'bg-[#7da47f] text-white shadow-lg shadow-[#9db4a0]/30' :
+                    ['details', 'pattern', 'confirm'].indexOf(step) > i ? 'bg-green-500 text-white' :
+                      'bg-slate-200 text-slate-400'
+                  }`}>
                   {['details', 'pattern', 'confirm'].indexOf(step) > i ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
                 </div>
                 {i < 2 && <div className={`w-8 h-0.5 ${['details', 'pattern', 'confirm'].indexOf(step) > i ? 'bg-green-400' : 'bg-slate-200'}`} />}
@@ -141,14 +140,27 @@ export default function StudentSignUpPage() {
                 <div className="space-y-3 pt-2">
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input {...register('agreeToTerms')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" />
-                    <span className="text-sm text-slate-600">I agree to the <span className="text-[#5a8c5c] font-medium">Terms of Service</span></span>
+                    <span className="text-sm text-slate-600">
+                      I agree to the{' '}
+                      <Link href="/terms" target="_blank" className="text-[#5a8c5c] font-medium hover:underline">
+                        Terms of Service
+                      </Link>
+                    </span>
                   </label>
                   {errors.agreeToTerms && <p className="text-red-500 text-xs">{errors.agreeToTerms.message}</p>}
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input {...register('agreeToPrivacy')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" />
-                    <span className="text-sm text-slate-600">I agree to the <span className="text-[#5a8c5c] font-medium">Privacy Policy</span></span>
+                    <span className="text-sm text-slate-600">
+                      I agree to the{' '}
+                      <Link href="/privacy" target="_blank" className="text-[#5a8c5c] font-medium hover:underline">
+                        Privacy Policy
+                      </Link>
+                    </span>
                   </label>
                   {errors.agreeToPrivacy && <p className="text-red-500 text-xs">{errors.agreeToPrivacy.message}</p>}
+                  <div className="mt-4 p-3 bg-[#fff9e6] border border-[#f0e4b8] rounded-lg text-xs text-[#856404]">
+                    <strong>For users under 13:</strong> Please have a parent or guardian review and approve these agreements on your behalf.
+                  </div>
                 </div>
                 <button type="submit" className="w-full py-3 bg-[#7da47f] hover:bg-[#6b946d] text-white font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
                   Next: Create Pattern <ArrowRight className="w-4 h-4" />
