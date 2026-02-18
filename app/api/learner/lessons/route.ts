@@ -33,6 +33,19 @@ export async function GET(req: Request) {
 
     const learnerId = user.learnerProfile.id;
 
+    // Get language from query parameter (defaults to 'en')
+    const url = new URL(req.url);
+    const lang = url.searchParams.get('lang') || 'en';
+
+    // Helper function to extract language-specific text
+    const getText = (field: any, fallback: string = ''): string => {
+      if (!field) return fallback;
+      if (typeof field === 'string') return field;
+      if (typeof field === 'object' && field[lang]) return field[lang];
+      if (typeof field === 'object' && field.en) return field.en;
+      return fallback;
+    };
+
     // Connect to MongoDB for lessons
     await dbConnect();
 
@@ -51,11 +64,11 @@ export async function GET(req: Request) {
       const progress = progressMap.get(lesson.lessonId || lesson._id.toString());
       return {
         id: lesson.lessonId || lesson._id.toString(),
-        title: lesson.title,
-        description: lesson.description || '',
+        title: getText(lesson.title, 'Untitled Lesson'),
+        description: getText(lesson.description, ''),
         language: lesson.language || 'English',
         gradeLevel: lesson.gradeLevel || 'All',
-        duration: lesson.duration || 15,
+        duration: lesson.estimatedDuration || lesson.duration || 15,
         competencies: lesson.competencies || [],
         learningObjectives: lesson.learningObjectives || [],
         hasTranscripts: lesson.hasTranscripts !== false,
@@ -69,114 +82,86 @@ export async function GET(req: Request) {
       };
     });
 
-    // Add mock lessons as fallback if MongoDB is empty
+    // Professional lessons as fallback if MongoDB is empty (with multilingual support)
     const mockLessons = [
       {
-        id: 'l-1',
-        title: 'Greetings & Introductions',
-        description: 'Learn common greetings and introductions in English',
-        language: 'English',
-        gradeLevel: 'Beginner',
-        duration: 15,
-        competencies: ['Speaking', 'Listening'],
-        learningObjectives: ['Say hello', 'Introduce yourself'],
-        hasTranscripts: true,
-        hasCaptions: true,
-        progress: {
-          status: progressMap.get('l-1')?.status || 'NOT_STARTED',
-          score: progressMap.get('l-1')?.score || 0,
-          attemptCount: 0,
-          lastAccessedAt: progressMap.get('l-1')?.updatedAt?.toISOString() || null
-        }
-      },
-      {
-        id: 'l-9',
-        title: 'Tamil Alphabets – Uyir (உயிர்)',
-        description: 'Learn the foundational vowel letters of Tamil script',
-        language: 'Tamil',
-        gradeLevel: 'Beginner',
-        duration: 20,
-        competencies: ['Reading', 'Pronunciation'],
-        learningObjectives: ['Identify vowel letters', 'Pronounce vowels correctly'],
-        hasTranscripts: false,
-        hasCaptions: true,
-        progress: {
-          status: progressMap.get('l-9')?.status || 'NOT_STARTED',
-          score: progressMap.get('l-9')?.score || 0,
-          attemptCount: 0,
-          lastAccessedAt: progressMap.get('l-9')?.updatedAt?.toISOString() || null
-        }
-      },
-      {
-        id: 'l-2',
-        title: 'English Basics: Numbers & Counting',
-        description: 'Master numbers 1-100 and basic counting in English',
+        id: 'demo-lesson-1',
+        title: lang === 'ta' ? 'வணக்கங்களும் அறிமுகங்களும்' : 'Greetings & Introductions',
+        description: lang === 'ta'
+          ? 'அத்தியாவசிய ஆங்கில வாழ்த்துக்களை முழுமையாகக் கற்றுக் கொள்ளுங்கள்!'
+          : 'Master essential English greetings and learn how to introduce yourself confidently',
         language: 'English',
         gradeLevel: 'Beginner',
         duration: 12,
-        competencies: ['Vocabulary', 'Pronunciation'],
-        learningObjectives: ['Count to 100', 'Recognize written numbers'],
+        competencies: ['Speaking', 'Listening', 'Vocabulary'],
+        learningObjectives: ['Say hello', 'Introduce yourself', 'Ask how someone is'],
         hasTranscripts: true,
         hasCaptions: true,
         progress: {
-          status: progressMap.get('l-2')?.status || 'NOT_STARTED',
-          score: progressMap.get('l-2')?.score || 0,
+          status: progressMap.get('demo-lesson-1')?.status || 'NOT_STARTED',
+          score: progressMap.get('demo-lesson-1')?.score || 0,
           attemptCount: 0,
-          lastAccessedAt: progressMap.get('l-2')?.updatedAt?.toISOString() || null
+          lastAccessedAt: progressMap.get('demo-lesson-1')?.updatedAt?.toISOString() || null
         }
       },
       {
-        id: 'l-10',
-        title: 'Tamil Numbers (எண்கள்)',
-        description: 'Learn Tamil numbers and counting from 1 to 100',
-        language: 'Tamil',
+        id: 'demo-lesson-2',
+        title: lang === 'ta' ? 'குடும்பம் & உறவுகள்' : 'Family & Relationships',
+        description: lang === 'ta'
+          ? 'உங்கள் குடும்பத்தைப் பற்றி ஆங்கிலத்தில் பேசக் கற்றுக் கொள்ளுங்கள்!'
+          : 'Learn how to talk about your family members in English',
+        language: 'English',
         gradeLevel: 'Beginner',
-        duration: 18,
-        competencies: ['Vocabulary', 'Reading'],
-        learningObjectives: ['Count in Tamil', 'Read Tamil numerals'],
-        hasTranscripts: false,
+        duration: 15,
+        competencies: ['Vocabulary', 'Speaking'],
+        learningObjectives: ['Name family members', 'Describe relationships'],
+        hasTranscripts: true,
         hasCaptions: true,
         progress: {
-          status: progressMap.get('l-10')?.status || 'NOT_STARTED',
-          score: progressMap.get('l-10')?.score || 0,
+          status: progressMap.get('demo-lesson-2')?.status || 'NOT_STARTED',
+          score: progressMap.get('demo-lesson-2')?.score || 0,
           attemptCount: 0,
-          lastAccessedAt: progressMap.get('l-10')?.updatedAt?.toISOString() || null
+          lastAccessedAt: progressMap.get('demo-lesson-2')?.updatedAt?.toISOString() || null
         }
       },
       {
-        id: 'l-3',
-        title: 'Daily Conversations in English',
-        description: 'Practice common phrases for everyday situations',
+        id: 'demo-lesson-3',
+        title: lang === 'ta' ? 'உணவு & உணவருந்துதல்' : 'Food & Dining',
+        description: lang === 'ta'
+          ? 'உணவு நம் அனைவரையும் இணைக்கிறது! அத்தியாவசிய சொற்களைக் கற்றுக் கொள்ளுங்கள்.'
+          : 'Essential vocabulary for food, meals, and eating out',
+        language: 'English',
+        gradeLevel: 'Beginner',
+        duration: 18,
+        competencies: ['Vocabulary', 'Pronunciation'],
+        learningObjectives: ['Name meals', 'Order food', 'Discuss dietary preferences'],
+        hasTranscripts: true,
+        hasCaptions: true,
+        progress: {
+          status: progressMap.get('demo-lesson-3')?.status || 'NOT_STARTED',
+          score: progressMap.get('demo-lesson-3')?.score || 0,
+          attemptCount: 0,
+          lastAccessedAt: progressMap.get('demo-lesson-3')?.updatedAt?.toISOString() || null
+        }
+      },
+      {
+        id: 'demo-lesson-4',
+        title: lang === 'ta' ? 'ஷாப்பிங் & பணம்' : 'Shopping & Money',
+        description: lang === 'ta'
+          ? 'ஆங்கிலத்தில் ஷாப்பிங் செய்யும் கலையை மாஸ்டர் செய்யுங்கள்!'
+          : 'Learn how to shop and handle money conversations in English',
         language: 'English',
         gradeLevel: 'Intermediate',
         duration: 20,
         competencies: ['Speaking', 'Listening', 'Comprehension'],
-        learningObjectives: ['Order food', 'Ask for directions', 'Make small talk'],
+        learningObjectives: ['Ask prices', 'Make purchases', 'Negotiate'],
         hasTranscripts: true,
         hasCaptions: true,
         progress: {
-          status: progressMap.get('l-3')?.status || 'NOT_STARTED',
-          score: progressMap.get('l-3')?.score || 0,
+          status: progressMap.get('demo-lesson-4')?.status || 'NOT_STARTED',
+          score: progressMap.get('demo-lesson-4')?.score || 0,
           attemptCount: 0,
-          lastAccessedAt: progressMap.get('l-3')?.updatedAt?.toISOString() || null
-        }
-      },
-      {
-        id: 'l-11',
-        title: 'Tamil Greetings (வாழ்த்துகள்)',
-        description: 'Learn how to greet people in Tamil for different times and occasions',
-        language: 'Tamil',
-        gradeLevel: 'Beginner',
-        duration: 15,
-        competencies: ['Speaking', 'Culture'],
-        learningObjectives: ['Use appropriate greetings', 'Understand cultural context'],
-        hasTranscripts: false,
-        hasCaptions: true,
-        progress: {
-          status: progressMap.get('l-11')?.status || 'NOT_STARTED',
-          score: progressMap.get('l-11')?.score || 0,
-          attemptCount: 0,
-          lastAccessedAt: progressMap.get('l-11')?.updatedAt?.toISOString() || null
+          lastAccessedAt: progressMap.get('demo-lesson-4')?.updatedAt?.toISOString() || null
         }
       }
     ];

@@ -17,6 +17,7 @@ import {
   getLearnerDashboard,
   addLearnerLanguage,
 } from '@/lib/api';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 import {
   BookOpen,
   ChevronRight,
@@ -36,6 +37,7 @@ import {
 export default function LearnerDashboard() {
   const mainRef = useRef<HTMLElement>(null);
   const router = useRouter();
+  const { language, setLanguage, t } = useLanguage();
 
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -107,7 +109,7 @@ export default function LearnerDashboard() {
         <div className="text-center space-y-4">
           <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" />
           <p className="text-[#6b6b6b] text-base" style={{ lineHeight: '1.8' }}>
-            Loading your learning space...
+            {t('status.dataLoading')}
           </p>
         </div>
       </div>
@@ -126,7 +128,7 @@ export default function LearnerDashboard() {
             onClick={fetchDashboardData}
             className="px-6 py-3 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f]"
           >
-            Try again
+            {t('common.tryAgain')}
           </button>
         </div>
       </div>
@@ -156,11 +158,25 @@ export default function LearnerDashboard() {
   const nextLesson = recentLessons.find((l: any) => l.status === 'in-progress')
     || recentLessons.find((l: any) => l.status !== 'completed');
 
+  // Multilingual recommended lessons
   const recommendedByLang: Record<string, any> = {
-    English: { id: 'l-1', title: 'Greetings & Introductions', language: 'English', duration: '15 min', description: 'Learn common greetings and introductions' },
-    Tamil: { id: 'l-9', title: 'Tamil Alphabets – Uyir', language: 'Tamil', duration: '20 min', description: 'Learn the foundational vowel letters of Tamil script' },
+    English: {
+      id: 'demo-lesson-1',
+      title: language === 'ta' ? 'வணக்கங்களும் அறிமுகங்களும்' : 'Greetings & Introductions',
+      language: 'English',
+      duration: '15 min',
+      description: language === 'ta' ? 'அத்தியாவசிய ஆங்கில வாழ்த்துக்களை கற்றுக் கொள்ளுங்கள்' : 'Learn common greetings and introductions'
+    },
+    Tamil: {
+      id: 'l-9',
+      title: language === 'ta' ? 'தமிழ் எழுத்துக்கள் – உயிர்' : 'Tamil Alphabets – Uyir',
+      language: 'Tamil',
+      duration: '20 min',
+      description: language === 'ta' ? 'தமிழ் எழுத்துக்களின் அடிப்படை உயிர் எழுத்துக்களை கற்றுக் கொள்ளுங்கள்' : 'Learn the foundational vowel letters of Tamil script'
+    },
   };
   const recommendedLesson = recommendedByLang[activeLanguage] || recommendedByLang['English'];
+
 
   /* ══════════════════════════════════════════
      FOCUS MODE — single action, minimal UI
@@ -179,9 +195,9 @@ export default function LearnerDashboard() {
                 aria-label="Exit focus mode"
               >
                 <EyeOff className="w-4 h-4" />
-                <span>Exit Focus Mode</span>
+                <span>{t('dashboard.focusMode')}</span>
               </button>
-              <Link href="/logout" className="text-sm text-[#8a8a8a] hover:text-[#6b6b6b]">Sign out</Link>
+              <Link href="/logout" className="text-sm text-[#8a8a8a] hover:text-[#6b6b6b]">{t('nav.signOut')}</Link>
             </div>
           </div>
         </header>
@@ -189,17 +205,17 @@ export default function LearnerDashboard() {
         <main className="max-w-2xl mx-auto px-6 py-12" ref={mainRef} tabIndex={-1}>
           <div className="mb-12">
             <h1 className="text-2xl font-semibold text-[#2d2d2d] mb-2" style={{ lineHeight: '1.4' }}>
-              Welcome back, {learnerName}
+              {t('dashboard.welcomeBack')}, {learnerName}
             </h1>
             <p className="text-[#6b6b6b]" style={{ lineHeight: '1.8' }}>
-              Take your time. There is no rush.
+              {t('dashboard.yourLearningJourney')}
             </p>
           </div>
 
           {/* Language selector in focus mode */}
           {learningLanguages.length > 1 && (
             <div className="flex items-center gap-2 mb-8">
-              <span className="text-xs text-[#8a8a8a] mr-1">Language:</span>
+              <span className="text-xs text-[#8a8a8a] mr-1">{t('common.language')}:</span>
               {learningLanguages.map((lang: string) => (
                 <button
                   key={lang}
@@ -218,8 +234,8 @@ export default function LearnerDashboard() {
           {/* Progress for active language */}
           <div className="mb-12">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm text-[#6b6b6b]">{activeLanguage} progress</span>
-              <span className="text-sm text-[#6b6b6b]">{completedLessons} of {totalLessons} lessons</span>
+              <span className="text-sm text-[#6b6b6b]">{activeLanguage} {t('progress.title')}</span>
+              <span className="text-sm text-[#6b6b6b]">{completedLessons} {t('lessonDetail.of')} {totalLessons} {t('dashboard.lessons')}</span>
             </div>
             <div className="w-full h-2 bg-[#e8e5e0] rounded-full overflow-hidden">
               <div
@@ -238,7 +254,7 @@ export default function LearnerDashboard() {
           {focusLesson && (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e5e0] mb-8" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
               <p className="text-sm text-[#8a8a8a] mb-2">
-                {nextLesson?.status === 'in-progress' ? 'Continue where you left off' : 'Suggested next step'}
+                {nextLesson?.status === 'in-progress' ? t('dashboard.continueLesson') : t('dashboard.suggestedForYou')}
               </p>
               <h2 className="text-xl font-semibold text-[#2d2d2d] mb-3" style={{ lineHeight: '1.5' }}>
                 {focusLesson.title}
@@ -254,7 +270,7 @@ export default function LearnerDashboard() {
                 href={`/learner/lessons/${focusLesson.lessonId || focusLesson.id}`}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f]"
               >
-                {nextLesson?.status === 'in-progress' ? 'Continue learning' : 'Begin lesson'}
+                {nextLesson?.status === 'in-progress' ? t('dashboard.continueLesson') : t('dashboard.startLesson')}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -262,15 +278,15 @@ export default function LearnerDashboard() {
 
           {currentStreak > 0 && (
             <p className="text-sm text-[#8a8a8a] text-center" style={{ lineHeight: '1.8' }}>
-              You have been learning {activeLanguage} for {currentStreak} {currentStreak === 1 ? 'day' : 'days'} in a row. Well done.
+              {currentStreak} {t('dashboard.daysInRow')}
             </p>
           )}
 
           <div className="mt-16 pt-8 border-t border-[#e8e5e0] flex flex-wrap gap-4 justify-center text-sm">
-            <Link href="/learner/lessons" className="text-[#7a9b7e] hover:text-[#5d7e61]">All lessons</Link>
-            <Link href="/learner/progress" className="text-[#7a9b7e] hover:text-[#5d7e61]">Progress</Link>
-            <Link href="/learner/profile" className="text-[#7a9b7e] hover:text-[#5d7e61]">Profile</Link>
-            <Link href="/learner/settings" className="text-[#7a9b7e] hover:text-[#5d7e61]">Settings</Link>
+            <Link href="/learner/lessons" className="text-[#7a9b7e] hover:text-[#5d7e61]">{t('nav.lessons')}</Link>
+            <Link href="/learner/progress" className="text-[#7a9b7e] hover:text-[#5d7e61]">{t('nav.progress')}</Link>
+            <Link href="/learner/profile" className="text-[#7a9b7e] hover:text-[#5d7e61]">{t('nav.profile')}</Link>
+            <Link href="/learner/settings" className="text-[#7a9b7e] hover:text-[#5d7e61]">{t('nav.settings')}</Link>
           </div>
         </main>
       </div>
@@ -288,11 +304,11 @@ export default function LearnerDashboard() {
           <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">Lexfix</Link>
           <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1">
             {[
-              { href: '/learner/dashboard', label: 'Dashboard', active: true },
-              { href: '/learner/lessons', label: 'Lessons', active: false },
-              { href: '/learner/progress', label: 'Progress', active: false },
-              { href: '/learner/profile', label: 'Profile', active: false },
-              { href: '/learner/settings', label: 'Settings', active: false },
+              { href: '/learner/dashboard', key: 'dashboard', active: true },
+              { href: '/learner/lessons', key: 'lessons', active: false },
+              { href: '/learner/progress', key: 'progress', active: false },
+              { href: '/learner/profile', key: 'profile', active: false },
+              { href: '/learner/settings', key: 'settings', active: false },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -303,12 +319,38 @@ export default function LearnerDashboard() {
                   }`}
                 {...(item.active ? { 'aria-current': 'page' as const } : {})}
               >
-                {item.label}
+                {t(`nav.${item.key}`)}
               </Link>
             ))}
             <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+
+            {/* UI Language Selector */}
+            <div className="flex items-center gap-1.5 px-2">
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${language === 'en'
+                  ? 'bg-[#7a9b7e] text-white'
+                  : 'text-[#8a8a8a] hover:bg-[#f0ede8]'
+                  }`}
+                title="English"
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLanguage('ta')}
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${language === 'ta'
+                  ? 'bg-[#7a9b7e] text-white'
+                  : 'text-[#8a8a8a] hover:bg-[#f0ede8]'
+                  }`}
+                title="தமிழ்"
+              >
+                த
+              </button>
+            </div>
+
+            <div className="w-px h-5 bg-[#e8e5e0]" />
             <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50">
-              Sign out
+              {t('nav.signOut')}
             </Link>
           </nav>
         </div>
@@ -318,7 +360,7 @@ export default function LearnerDashboard() {
       <div className="bg-[#faf9f7] border-b border-[#f0ede8]">
         <div className="max-w-5xl mx-auto px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[#8a8a8a] mr-1">Language:</span>
+            <span className="text-xs text-[#8a8a8a] mr-1">{t('common.language')}:</span>
             {learningLanguages.map((lang: string) => (
               <button
                 key={lang}
@@ -347,7 +389,7 @@ export default function LearnerDashboard() {
                 {showAddLang && (
                   <div className="absolute top-full left-0 mt-2 bg-white rounded-xl border border-[#e8e5e0] shadow-lg p-3 z-20 min-w-[180px]">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-xs font-medium text-[#2d2d2d]">Add a language</p>
+                      <p className="text-xs font-medium text-[#2d2d2d]">{t('common.addLanguage')}</p>
                       <button onClick={() => setShowAddLang(false)} className="text-[#8a8a8a] hover:text-[#6b6b6b]">
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -373,7 +415,7 @@ export default function LearnerDashboard() {
             aria-label="Enter focus mode"
           >
             <Eye className="w-3.5 h-3.5" />
-            Focus Mode
+            {t('dashboard.focusMode')}
           </button>
         </div>
       </div>
@@ -389,10 +431,10 @@ export default function LearnerDashboard() {
         {/* Welcome */}
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-[#2d2d2d] mb-1" style={{ lineHeight: '1.4' }}>
-            Welcome back, {learnerName}
+            {t('dashboard.welcomeBack')}, {learnerName}
           </h1>
           <p className="text-[#6b6b6b]" style={{ lineHeight: '1.8' }}>
-            Your {activeLanguage} learning overview. Take it at your own pace.
+            {t('dashboard.yourLearningJourney')}
           </p>
         </div>
 
@@ -402,46 +444,46 @@ export default function LearnerDashboard() {
           <div className="bg-white rounded-xl p-4 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="flex items-center gap-2 mb-3">
               <Flame className="w-4 h-4 text-[#c4956a]" aria-hidden="true" />
-              <span className="text-xs font-medium text-[#6b6b6b]">Streak</span>
+              <span className="text-xs font-medium text-[#6b6b6b]">{t('dashboard.streak')}</span>
             </div>
             <p className="text-2xl font-semibold text-[#2d2d2d]">{currentStreak}</p>
-            <p className="text-xs text-[#8a8a8a] mt-1">{currentStreak === 1 ? 'day' : 'days'} in a row</p>
+            <p className="text-xs text-[#8a8a8a] mt-1">{t('dashboard.daysInRow')}</p>
           </div>
 
           {/* Lessons */}
           <div className="bg-white rounded-xl p-4 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="flex items-center gap-2 mb-3">
               <BookOpen className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
-              <span className="text-xs font-medium text-[#6b6b6b]">Lessons</span>
+              <span className="text-xs font-medium text-[#6b6b6b]">{t('dashboard.lessons')}</span>
             </div>
             <p className="text-2xl font-semibold text-[#2d2d2d]">{completedLessons}<span className="text-base text-[#8a8a8a]">/{totalLessons}</span></p>
-            <p className="text-xs text-[#8a8a8a] mt-1">completed</p>
+            <p className="text-xs text-[#8a8a8a] mt-1">{t('dashboard.completed')}</p>
           </div>
 
           {/* Words */}
           <div className="bg-white rounded-xl p-4 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="flex items-center gap-2 mb-3">
               <Globe className="w-4 h-4 text-[#7a97b0]" aria-hidden="true" />
-              <span className="text-xs font-medium text-[#6b6b6b]">Words</span>
+              <span className="text-xs font-medium text-[#6b6b6b]">{t('dashboard.words')}</span>
             </div>
             <p className="text-2xl font-semibold text-[#2d2d2d]">{wordsLearned}</p>
-            <p className="text-xs text-[#8a8a8a] mt-1">words learned</p>
+            <p className="text-xs text-[#8a8a8a] mt-1">{t('dashboard.wordsLearned')}</p>
           </div>
 
           {/* Practice time */}
           <div className="bg-white rounded-xl p-4 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="flex items-center gap-2 mb-3">
               <Clock className="w-4 h-4 text-[#9b8ab0]" aria-hidden="true" />
-              <span className="text-xs font-medium text-[#6b6b6b]">Practice</span>
+              <span className="text-xs font-medium text-[#6b6b6b]">{t('dashboard.practice')}</span>
             </div>
             <p className="text-2xl font-semibold text-[#2d2d2d]">{practiceMinutes}</p>
-            <p className="text-xs text-[#8a8a8a] mt-1">minutes total</p>
+            <p className="text-xs text-[#8a8a8a] mt-1">{t('dashboard.minutesTotal')}</p>
           </div>
         </div>
 
         {/* ═══ Suggested lesson — full width, prominent CTA ═══ */}
         <section className="bg-white rounded-xl p-5 border border-[#f0ede8] mb-6" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-          <h2 className="text-sm font-semibold text-[#2d2d2d] mb-3">Suggested for you</h2>
+          <h2 className="text-sm font-semibold text-[#2d2d2d] mb-3">{t('dashboard.suggestedForYou')}</h2>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1 min-w-0">
               <h3 className="text-base font-medium text-[#2d2d2d] mb-1" style={{ lineHeight: '1.5' }}>
@@ -459,7 +501,7 @@ export default function LearnerDashboard() {
               href={`/learner/lessons/${recommendedLesson.id}`}
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f] flex-shrink-0"
             >
-              Start lesson
+              {t('dashboard.startLesson')}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -474,7 +516,7 @@ export default function LearnerDashboard() {
             <section className="bg-white rounded-xl p-5 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
               <div className="flex items-center gap-2.5 mb-4">
                 <Target className="w-[18px] h-[18px] text-[#7a97b0]" aria-hidden="true" />
-                <span className="text-sm font-semibold text-[#2d2d2d]">Current Goal</span>
+                <span className="text-sm font-semibold text-[#2d2d2d]">{t('dashboard.currentGoal')}</span>
               </div>
               <p className="text-sm text-[#6b6b6b] mb-3" style={{ lineHeight: '1.7' }}>{currentGoal}</p>
               <div className="mb-2">
@@ -490,7 +532,7 @@ export default function LearnerDashboard() {
                   />
                 </div>
               </div>
-              <p className="text-xs text-[#8a8a8a]">{goalProgress}% complete</p>
+              <p className="text-xs text-[#8a8a8a]">{goalProgress}% {t('dashboard.completed')}</p>
             </section>
 
             {/* Milestones — compact 2x2 grid */}
@@ -519,15 +561,15 @@ export default function LearnerDashboard() {
 
             {/* Speaking practice */}
             <section className="bg-white rounded-xl p-5 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-              <h2 className="text-sm font-semibold text-[#2d2d2d] mb-2">Speaking practice</h2>
+              <h2 className="text-sm font-semibold text-[#2d2d2d] mb-2">{t('dashboard.practice')}</h2>
               <p className="text-sm text-[#6b6b6b] mb-4" style={{ lineHeight: '1.7' }}>
-                Practice {activeLanguage} pronunciation at your own pace with speech recognition.
+                {t('dashboard.practice')} {activeLanguage}
               </p>
               <Link
                 href="/learner/practice/pronunciation"
                 className="inline-flex items-center gap-1.5 text-sm text-[#7a9b7e] hover:text-[#5d7e61] font-medium"
               >
-                Open practice
+                {t('common.start')}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </section>
@@ -545,7 +587,7 @@ export default function LearnerDashboard() {
                   href={`/learner/lessons?lang=${activeLanguage}`}
                   className="text-xs text-[#7a9b7e] hover:text-[#5d7e61] font-medium flex items-center gap-1"
                 >
-                  View all
+                  {t('dashboard.viewAll')}
                   <ChevronRight className="w-3 h-3" aria-hidden="true" />
                 </Link>
               </div>
@@ -554,13 +596,13 @@ export default function LearnerDashboard() {
                 <div className="bg-white rounded-xl p-6 border border-[#f0ede8] text-center" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                   <BookOpen className="w-8 h-8 text-[#d4dcd5] mx-auto mb-3" />
                   <p className="text-[#8a8a8a] text-sm mb-4" style={{ lineHeight: '1.8' }}>
-                    No {activeLanguage} lessons started yet. Begin whenever you are ready.
+                    {t('common.start')} {activeLanguage} {t('dashboard.lessons')}
                   </p>
                   <Link
                     href={`/learner/lessons?lang=${activeLanguage}`}
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f]"
                   >
-                    Browse {activeLanguage} lessons
+                    {activeLanguage} {t('dashboard.lessons')}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -600,7 +642,7 @@ export default function LearnerDashboard() {
                           href={`/learner/lessons/${lesson.lessonId || lesson.id}`}
                           className="inline-flex items-center gap-1 mt-2 text-xs text-[#7a9b7e] hover:text-[#5d7e61] font-medium"
                         >
-                          {lesson.status === 'in-progress' ? 'Continue' : 'Begin'}
+                          {lesson.status === 'in-progress' ? t('common.continue') : t('common.start')}
                           <ArrowRight className="w-3 h-3" />
                         </Link>
                       )}
@@ -612,7 +654,7 @@ export default function LearnerDashboard() {
 
             {/* Quick links */}
             <section className="bg-white rounded-xl p-5 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-              <h2 className="text-sm font-semibold text-[#2d2d2d] mb-4">Quick links</h2>
+              <h2 className="text-sm font-semibold text-[#2d2d2d] mb-4">{t('nav.dashboard')}</h2>
               <div className="space-y-2">
                 <Link
                   href="/learner/lessons"
@@ -620,7 +662,7 @@ export default function LearnerDashboard() {
                 >
                   <div className="flex items-center gap-3">
                     <BookOpen className="w-4 h-4 text-[#7a9b7e]" />
-                    <span className="text-sm text-[#2d2d2d]">All {activeLanguage} lessons</span>
+                    <span className="text-sm text-[#2d2d2d]">{activeLanguage} {t('dashboard.lessons')}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
                 </Link>
@@ -630,7 +672,7 @@ export default function LearnerDashboard() {
                 >
                   <div className="flex items-center gap-3">
                     <Target className="w-4 h-4 text-[#7a97b0]" />
-                    <span className="text-sm text-[#2d2d2d]">View detailed progress</span>
+                    <span className="text-sm text-[#2d2d2d]">{t('nav.progress')}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
                 </Link>
@@ -640,7 +682,7 @@ export default function LearnerDashboard() {
                 >
                   <div className="flex items-center gap-3">
                     <Globe className="w-4 h-4 text-[#9b8ab0]" />
-                    <span className="text-sm text-[#2d2d2d]">Learning settings</span>
+                    <span className="text-sm text-[#2d2d2d]">{t('nav.settings')}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
                 </Link>

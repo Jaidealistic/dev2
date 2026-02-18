@@ -13,6 +13,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 import {
   BookOpen,
   Search,
@@ -59,6 +60,7 @@ const STATUS_STYLES: Record<string, string> = {
 export default function LessonsListPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { language, t } = useLanguage();
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +71,7 @@ export default function LessonsListPage() {
 
   useEffect(() => {
     fetchLessons();
-  }, []);
+  }, [language]); // Refetch when UI language changes
 
   async function fetchLessons() {
     try {
@@ -77,7 +79,7 @@ export default function LessonsListPage() {
       if (!token) { router.push('/login'); return; }
 
       const [lessonsRes, meRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api'}/learner/lessons`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api'}/learner/lessons?lang=${language}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         }),
         fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api'}/auth/me`, {
@@ -106,7 +108,8 @@ export default function LessonsListPage() {
       lesson.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       lesson.description?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || lesson.progress.status === statusFilter;
-    const matchesLanguage = languageFilter === 'all' || lesson.language === languageFilter;
+    const matchesLanguage = languageFilter === 'all' ||
+      lesson.language.toLowerCase() === languageFilter.toLowerCase();
     return matchesSearch && matchesStatus && matchesLanguage;
   });
 
@@ -122,7 +125,7 @@ export default function LessonsListPage() {
         <div className="text-center space-y-4">
           <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" />
           <p className="text-[#6b6b6b] text-base" style={{ lineHeight: '1.8' }}>
-            Loading your lessons...
+            {t('status.dataLoading')}
           </p>
         </div>
       </div>
@@ -148,11 +151,10 @@ export default function LessonsListPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  item.active
-                    ? 'bg-[#f0f4f0] text-[#5d7e61]'
-                    : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
-                }`}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${item.active
+                  ? 'bg-[#f0f4f0] text-[#5d7e61]'
+                  : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
+                  }`}
                 {...(item.active ? { 'aria-current': 'page' as const } : {})}
               >
                 {item.label}
@@ -173,11 +175,10 @@ export default function LessonsListPage() {
             <span className="text-xs text-[#8a8a8a] mr-1">Language:</span>
             <button
               onClick={() => setLanguageFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                languageFilter === 'all'
-                  ? 'bg-[#2d2d2d] text-white'
-                  : 'bg-[#f0ede8] text-[#6b6b6b] hover:bg-[#e8e5e0]'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${languageFilter === 'all'
+                ? 'bg-[#2d2d2d] text-white'
+                : 'bg-[#f0ede8] text-[#6b6b6b] hover:bg-[#e8e5e0]'
+                }`}
             >
               All
             </button>
@@ -185,11 +186,10 @@ export default function LessonsListPage() {
               <button
                 key={lang}
                 onClick={() => setLanguageFilter(lang)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  languageFilter === lang
-                    ? 'bg-[#7a9b7e] text-white'
-                    : 'bg-[#f0ede8] text-[#6b6b6b] hover:bg-[#e8e5e0]'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${languageFilter === lang
+                  ? 'bg-[#7a9b7e] text-white'
+                  : 'bg-[#f0ede8] text-[#6b6b6b] hover:bg-[#e8e5e0]'
+                  }`}
               >
                 {lang}
               </button>
@@ -293,9 +293,8 @@ export default function LessonsListPage() {
                         {lesson.description || 'No description available'}
                       </p>
                     </div>
-                    <span className={`flex-shrink-0 px-2.5 py-1 rounded-lg text-xs font-medium ${
-                      STATUS_STYLES[lesson.progress.status] || STATUS_STYLES.NOT_STARTED
-                    }`}>
+                    <span className={`flex-shrink-0 px-2.5 py-1 rounded-lg text-xs font-medium ${STATUS_STYLES[lesson.progress.status] || STATUS_STYLES.NOT_STARTED
+                      }`}>
                       {STATUS_LABELS[lesson.progress.status] || 'Not started'}
                     </span>
                   </div>
@@ -332,11 +331,10 @@ export default function LessonsListPage() {
                       </div>
                       <div className="w-full h-1.5 bg-[#f0ede8] rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full ${
-                            lesson.progress.status === 'COMPLETED' || lesson.progress.status === 'MASTERED'
-                              ? 'bg-[#7a9b7e]'
-                              : 'bg-[#a3b8a5]'
-                          }`}
+                          className={`h-full rounded-full ${lesson.progress.status === 'COMPLETED' || lesson.progress.status === 'MASTERED'
+                            ? 'bg-[#7a9b7e]'
+                            : 'bg-[#a3b8a5]'
+                            }`}
                           style={{ width: `${lesson.progress.score}%` }}
                           role="progressbar"
                           aria-valuenow={lesson.progress.score}
@@ -363,7 +361,7 @@ export default function LessonsListPage() {
                       className="inline-flex items-center gap-1.5 text-sm text-[#7a9b7e] hover:text-[#5d7e61] font-medium"
                     >
                       {lesson.progress.status === 'NOT_STARTED' ? 'Begin' :
-                       lesson.progress.status === 'IN_PROGRESS' ? 'Continue' : 'Review'}
+                        lesson.progress.status === 'IN_PROGRESS' ? 'Continue' : 'Review'}
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
