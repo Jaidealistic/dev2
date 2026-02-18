@@ -10,7 +10,9 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { VerifyEmailForm } from '@/components/forms/VerifyEmailForm';
 
-export default function VerifyEmailPage() {
+import { Suspense } from 'react';
+
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const [initialEmail, setInitialEmail] = useState<string | null>(null);
 
@@ -33,7 +35,7 @@ export default function VerifyEmailPage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center">
-        <div className="texttext-5xl">✉️</div>
+        <div className="text-5xl">✉️</div>
         <h1 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
           Verify Your Email
         </h1>
@@ -167,5 +169,13 @@ export default function VerifyEmailPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
