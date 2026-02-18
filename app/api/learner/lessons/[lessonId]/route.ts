@@ -1,13 +1,491 @@
 /**
  * PROFESSIONAL LESSON SYSTEM
- * 
- * Comprehensive English lessons with Tamil translations
+ *
+ * Comprehensive English lessons with Tamil translations.
+ * Disability-specific lessons tagged with `disabilityTypes` array.
+ *
+ * Disability design principles:
+ *  ADHD        – Short chunks, timers, single-task focus, immediate reward
+ *  DYSLEXIA    – Phonetic guides, large text, colour-coded words, no time pressure
+ *  APD         – Visual-first, written transcripts, no audio-only steps
+ *  AUTISM      – Predictable structure, explicit social scripts, no ambiguity
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 
 // Professional lesson library
 const PROFESSIONAL_LESSONS: Record<string, any> = {
+
+  /* ══════════════════════════════════════════════════════════════
+     ADHD-OPTIMISED LESSONS
+     Design: ≤3 min per step, progress dots, immediate feedback,
+             single action per screen, no multi-step instructions
+     ══════════════════════════════════════════════════════════════ */
+
+  'adhd-lesson-1': {
+    _id: 'adhd-lesson-1',
+    title: 'One Word at a Time: Greetings',
+    description: 'Short, focused greeting practice — one word per screen, immediate reward',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 8,
+    disabilityTypes: ['ADHD'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: '👋 Ready? Just 8 minutes!',
+        content: 'We will learn ONE greeting at a time.\n\nEach step is short — under 2 minutes.\n\nYou can do this! Press Next when you are ready.',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: '⭐ Word 1: Hello',
+        content: 'Just one word today:',
+        words: [{ word: 'Hello', translation: 'வணக்கம் (Vanakkam)', phonetic: 'hə-ˈlō', example: 'Hello! I am happy to meet you.' }]
+      },
+      {
+        id: 'step-3', type: 'practice', title: '✅ Quick Check',
+        question: 'Which word means "வணக்கம்"?',
+        options: [
+          { id: 'a', text: 'Goodbye', correct: false },
+          { id: 'b', text: 'Hello', correct: true },
+          { id: 'c', text: 'Thank you', correct: false },
+          { id: 'd', text: 'Sorry', correct: false }
+        ],
+        correctFeedback: '🎉 YES! You got it! Take a breath — great work.',
+        incorrectFeedback: 'Try again — the answer is Hello. You can do it!'
+      },
+      {
+        id: 'step-4', type: 'vocabulary', title: '⭐ Word 2: Good morning',
+        content: 'One more word:',
+        words: [{ word: 'Good morning', translation: 'காலை வணக்கம்', phonetic: 'gʊd ˈmɔːr-nɪŋ', example: 'Good morning! How are you?' }]
+      },
+      {
+        id: 'step-5', type: 'practice', title: '✅ Quick Check',
+        question: 'What do you say in the morning?',
+        options: [
+          { id: 'a', text: 'Good night', correct: false },
+          { id: 'b', text: 'Good morning', correct: true },
+          { id: 'c', text: 'Good evening', correct: false },
+          { id: 'd', text: 'Goodbye', correct: false }
+        ],
+        correctFeedback: '🌟 Brilliant! Morning greeting = Good morning!',
+        incorrectFeedback: 'Morning greeting = Good morning. Try once more!'
+      },
+      {
+        id: 'step-6', type: 'summary', title: '🏆 Done! Amazing focus!',
+        content: '## You finished!\n\n✅ **Hello** — any time greeting\n✅ **Good morning** — morning greeting\n\n### You stayed focused the whole time. That is a superpower! 💪\n\nNext: **Colours & Numbers** (also 8 minutes)',
+        audioUrl: null
+      }
+    ]
+  },
+
+  'adhd-lesson-2': {
+    _id: 'adhd-lesson-2',
+    title: 'Colours — One at a Time',
+    description: 'Learn 3 colours in 10 minutes with instant rewards and short steps',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 10,
+    disabilityTypes: ['ADHD'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: '🎨 3 Colours. 10 Minutes. Let\'s go!',
+        content: 'We learn RED, BLUE, GREEN today.\n\nOne colour per screen.\n\nPress Next to start!',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: '🔴 Colour 1: Red',
+        content: 'Focus on this one colour:',
+        words: [{ word: 'Red', translation: 'சிவப்பு (Sivappu)', phonetic: 'rɛd', example: 'The apple is red.' }]
+      },
+      {
+        id: 'step-3', type: 'practice', title: '✅ Red Check',
+        question: 'What colour is "சிவப்பு"?',
+        options: [
+          { id: 'a', text: 'Blue', correct: false },
+          { id: 'b', text: 'Green', correct: false },
+          { id: 'c', text: 'Red', correct: true },
+          { id: 'd', text: 'Yellow', correct: false }
+        ],
+        correctFeedback: '🔴 Yes! Red = சிவப்பு. You are doing great!',
+        incorrectFeedback: 'Red = சிவப்பு. Try again — you can do it!'
+      },
+      {
+        id: 'step-4', type: 'vocabulary', title: '🔵 Colour 2: Blue',
+        content: 'Next colour:',
+        words: [{ word: 'Blue', translation: 'நீலம் (Neelam)', phonetic: 'bluː', example: 'The sky is blue.' }]
+      },
+      {
+        id: 'step-5', type: 'vocabulary', title: '🟢 Colour 3: Green',
+        content: 'Last colour:',
+        words: [{ word: 'Green', translation: 'பச்சை (Pachai)', phonetic: 'ɡriːn', example: 'The tree is green.' }]
+      },
+      {
+        id: 'step-6', type: 'practice', title: '✅ Final Check',
+        question: 'Which colour is the sky?',
+        options: [
+          { id: 'a', text: 'Red', correct: false },
+          { id: 'b', text: 'Green', correct: false },
+          { id: 'c', text: 'Blue', correct: true },
+          { id: 'd', text: 'Yellow', correct: false }
+        ],
+        correctFeedback: '🌟 Perfect! Sky = Blue. Lesson complete!',
+        incorrectFeedback: 'The sky is Blue. You\'ve got this!'
+      },
+      {
+        id: 'step-7', type: 'summary', title: '🏆 3 Colours Mastered!',
+        content: '## Fantastic work!\n\n✅ **Red** — சிவப்பு\n✅ **Blue** — நீலம்\n✅ **Green** — பச்சை\n\n### You completed the whole lesson! 🎉',
+        audioUrl: null
+      }
+    ]
+  },
+
+  /* ══════════════════════════════════════════════════════════════
+     DYSLEXIA-FRIENDLY LESSONS
+     Design: Large phonetic guides, colour-coded syllables, no
+             timed pressure, repeated exposure, visual word shapes
+     ══════════════════════════════════════════════════════════════ */
+
+  'dyslexia-lesson-1': {
+    _id: 'dyslexia-lesson-1',
+    title: 'Greetings — See It, Say It, Know It',
+    description: 'Phonetic-guided greeting lesson with colour-coded syllables and no time pressure',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 20,
+    disabilityTypes: ['DYSLEXIA'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: 'Welcome! Take your time. 😊',
+        content: 'This lesson has NO timer.\n\nEach word is shown in big text with sounds broken into parts.\n\nRead at your own pace. Press Next when you are ready.',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: 'Word 1: Hello',
+        content: 'Read the word. Say it out loud. Look at the sound guide.',
+        words: [
+          {
+            word: 'Hello',
+            translation: 'வணக்கம் (Vanakkam)',
+            phonetic: 'hel · loh  [HEL-oh]',
+            example: 'Hello! My name is Priya.'
+          }
+        ]
+      },
+      {
+        id: 'step-3', type: 'vocabulary', title: 'Word 2: Good morning',
+        content: 'Two words together. Read each part:',
+        words: [
+          {
+            word: 'Good morning',
+            translation: 'காலை வணக்கம்',
+            phonetic: 'good · mor · ning  [GOOD-MOR-ning]',
+            example: 'Good morning! I am happy today.'
+          }
+        ]
+      },
+      {
+        id: 'step-4', type: 'practice', title: 'Which word do you see?',
+        question: 'Find the word that says "வணக்கம்" (Hello):',
+        options: [
+          { id: 'a', text: 'Goodbye', correct: false },
+          { id: 'b', text: 'Hello', correct: true },
+          { id: 'c', text: 'Morning', correct: false },
+          { id: 'd', text: 'Thank you', correct: false }
+        ],
+        correctFeedback: '✅ Well done! Hello = வணக்கம். You read it correctly!',
+        incorrectFeedback: 'Look for the word "Hello". Take your time — no rush!'
+      },
+      {
+        id: 'step-5', type: 'vocabulary', title: 'Word 3: My name is',
+        content: 'Three words. Read them slowly:',
+        words: [
+          {
+            word: 'My name is',
+            translation: 'என் பெயர் (En peyar)',
+            phonetic: 'my · naym · iz  [MY-NAYM-iz]',
+            example: 'My name is Arjun. Nice to meet you!'
+          }
+        ]
+      },
+      {
+        id: 'step-6', type: 'summary', title: '🌟 Great reading!',
+        content: '## You did it!\n\n✅ **Hello** — hel·loh\n✅ **Good morning** — good·mor·ning\n✅ **My name is** — my·naym·iz\n\n### Reading takes practice. You are getting better every day! 📖',
+        audioUrl: null
+      }
+    ]
+  },
+
+  'dyslexia-lesson-2': {
+    _id: 'dyslexia-lesson-2',
+    title: 'Numbers 1–5 — Shape & Sound',
+    description: 'Learn numbers with phonetic guides, word shapes, and visual patterns',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 18,
+    disabilityTypes: ['DYSLEXIA'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: 'Numbers — See the shape, hear the sound',
+        content: 'Each number word has a special shape.\n\nWe will look at the shape AND the sound.\n\nNo rush. Press Next to start.',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: 'Numbers 1 and 2',
+        content: 'Look at each word carefully:',
+        words: [
+          { word: 'One', translation: 'ஒன்று (Ondru)', phonetic: 'wun  [WUN]', example: 'I have one book.' },
+          { word: 'Two', translation: 'இரண்டு (Irandu)', phonetic: 'too  [TOO]', example: 'I have two eyes.' }
+        ]
+      },
+      {
+        id: 'step-3', type: 'vocabulary', title: 'Numbers 3, 4 and 5',
+        content: 'Three more words:',
+        words: [
+          { word: 'Three', translation: 'மூன்று (Moondru)', phonetic: 'three  [THRE-ee]', example: 'I have three friends.' },
+          { word: 'Four', translation: 'நான்கு (Naangu)', phonetic: 'for  [FOR]', example: 'A table has four legs.' },
+          { word: 'Five', translation: 'ஐந்து (Ainthu)', phonetic: 'fyv  [FYV]', example: 'I have five fingers.' }
+        ]
+      },
+      {
+        id: 'step-4', type: 'practice', title: 'Find the number',
+        question: 'Which word means "இரண்டு" (2)?',
+        options: [
+          { id: 'a', text: 'One', correct: false },
+          { id: 'b', text: 'Two', correct: true },
+          { id: 'c', text: 'Three', correct: false },
+          { id: 'd', text: 'Four', correct: false }
+        ],
+        correctFeedback: '✅ Yes! Two = இரண்டு. Excellent reading!',
+        incorrectFeedback: 'Look for "Two" — it sounds like "too". Try again!'
+      },
+      {
+        id: 'step-5', type: 'summary', title: '🌟 Numbers 1–5 done!',
+        content: '## Brilliant work!\n\n✅ One · Two · Three · Four · Five\n\n### You read every word. That is real progress! 🎉',
+        audioUrl: null
+      }
+    ]
+  },
+
+  /* ══════════════════════════════════════════════════════════════
+     APD (AUDITORY PROCESSING DISORDER) LESSONS
+     Design: Visual-first, full written transcripts for everything,
+             no audio-only steps, written dialogue scripts,
+             lip-reading cues, context clues highlighted
+     ══════════════════════════════════════════════════════════════ */
+
+  'apd-lesson-1': {
+    _id: 'apd-lesson-1',
+    title: 'Greetings — Read It, See It',
+    description: 'Visual-first greeting lesson with full written transcripts and no audio dependency',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 15,
+    disabilityTypes: ['APD'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: '👁️ This lesson is 100% visual',
+        content: 'Everything is written out for you.\n\nNo audio is required.\n\nAll dialogues are shown as text scripts.\n\nPress Next to begin.',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: 'Greeting 1: Hello',
+        content: 'Read this dialogue carefully:\n\n**Person A says:** Hello!\n**Person B says:** Hello! How are you?\n**Person A says:** I am fine, thank you.',
+        words: [
+          { word: 'Hello', translation: 'வணக்கம் (Vanakkam)', phonetic: 'hel-oh', example: '📝 Written script: "Hello! Nice to meet you."' }
+        ]
+      },
+      {
+        id: 'step-3', type: 'vocabulary', title: 'Greeting 2: Good morning',
+        content: 'Read this morning dialogue:\n\n**At school, 8 AM:**\n**Teacher:** Good morning, class!\n**Students:** Good morning, teacher!\n\n*Context clue: "Good morning" is used before 12 noon.*',
+        words: [
+          { word: 'Good morning', translation: 'காலை வணக்கம்', phonetic: 'good-mor-ning', example: '📝 "Good morning! The weather is nice today."' }
+        ]
+      },
+      {
+        id: 'step-4', type: 'practice', title: '📝 Reading Check',
+        question: 'Read this: "Good _____, class!" — What is the missing word? (It is a morning greeting.)',
+        options: [
+          { id: 'a', text: 'night', correct: false },
+          { id: 'b', text: 'morning', correct: true },
+          { id: 'c', text: 'evening', correct: false },
+          { id: 'd', text: 'afternoon', correct: false }
+        ],
+        correctFeedback: '✅ Correct! "Good morning" — used before noon. You read the context clue perfectly!',
+        incorrectFeedback: 'Look at the context: "It is a morning greeting." The answer is "morning".'
+      },
+      {
+        id: 'step-5', type: 'vocabulary', title: 'Greeting 3: My name is',
+        content: 'Introduction script:\n\n**Person A:** Hi! My name is Kavya.\n**Person B:** Hello Kavya! My name is Ravi.\n**Person A:** Nice to meet you, Ravi!\n\n*Use this script when you meet someone new.*',
+        words: [
+          { word: 'My name is', translation: 'என் பெயர் (En peyar)', phonetic: 'my-naym-iz', example: '📝 "My name is [your name]. Nice to meet you!"' }
+        ]
+      },
+      {
+        id: 'step-6', type: 'summary', title: '📖 Lesson Complete!',
+        content: '## Well done!\n\n✅ **Hello** — any time\n✅ **Good morning** — before noon\n✅ **My name is** — introductions\n\n### All content was visual. You did not need audio at all! 🎉',
+        audioUrl: null
+      }
+    ]
+  },
+
+  'apd-lesson-2': {
+    _id: 'apd-lesson-2',
+    title: 'Family Words — Visual Scripts',
+    description: 'Family vocabulary with written dialogue scripts, context clues, and no audio dependency',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 18,
+    disabilityTypes: ['APD'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: '👁️ Family Vocabulary — All Visual',
+        content: 'Every word comes with a written example.\n\nDialogues are shown as text scripts.\n\nRead at your own pace.',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: 'Family Words',
+        content: 'Read each word and its example sentence:',
+        words: [
+          { word: 'Mother', translation: 'அம்மா (Amma)', phonetic: 'muh-ther', example: '📝 "My mother is a doctor. She helps sick people."' },
+          { word: 'Father', translation: 'அப்பா (Appa)', phonetic: 'fah-ther', example: '📝 "My father cooks dinner every evening."' },
+          { word: 'Sister', translation: 'சகோதரி (Sagothari)', phonetic: 'sis-ter', example: '📝 "My sister reads books every night."' },
+          { word: 'Brother', translation: 'சகோதரன் (Sagodharan)', phonetic: 'bruh-ther', example: '📝 "My brother plays cricket on weekends."' }
+        ]
+      },
+      {
+        id: 'step-3', type: 'practice', title: '📝 Family Script Check',
+        question: 'Read: "My _____ is a doctor. She helps sick people." — What family word fits? (Hint: "She" = female)',
+        options: [
+          { id: 'a', text: 'Father', correct: false },
+          { id: 'b', text: 'Brother', correct: false },
+          { id: 'c', text: 'Mother', correct: true },
+          { id: 'd', text: 'Uncle', correct: false }
+        ],
+        correctFeedback: '✅ Correct! "She" tells us it is a female — Mother!',
+        incorrectFeedback: 'Clue: "She" = female family member. The answer is Mother.'
+      },
+      {
+        id: 'step-4', type: 'summary', title: '📖 Family Words Done!',
+        content: '## Great reading!\n\n✅ **Mother** — அம்மா\n✅ **Father** — அப்பா\n✅ **Sister** — சகோதரி\n✅ **Brother** — சகோதரன்\n\n### You used context clues to understand every word! 🌟',
+        audioUrl: null
+      }
+    ]
+  },
+
+  /* ══════════════════════════════════════════════════════════════
+     AUTISM-FRIENDLY LESSONS
+     Design: Predictable structure (always: intro → vocab → quiz →
+             summary), explicit social scripts, literal language,
+             no idioms, no ambiguity, clear expectations
+     ══════════════════════════════════════════════════════════════ */
+
+  'autism-lesson-1': {
+    _id: 'autism-lesson-1',
+    title: 'Greetings — Exact Scripts to Use',
+    description: 'Predictable structure with exact social scripts for greetings — no ambiguity',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 15,
+    disabilityTypes: ['AUTISM'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: 'What will happen in this lesson',
+        content: 'This lesson has 4 steps:\n\n1. You will read a greeting word.\n2. You will read an exact script to use.\n3. You will answer one question.\n4. You will see a summary.\n\nEvery lesson follows this same pattern.\n\nPress Next to start Step 1.',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: 'Step 1 — Greeting: Hello',
+        content: '**Exact script to use:**\n\nWhen you see someone you know:\n→ Say: "Hello, [their name]."\n\nWhen you see someone new:\n→ Say: "Hello. My name is [your name]."\n\nThese are the correct things to say.',
+        words: [
+          { word: 'Hello', translation: 'வணக்கம் (Vanakkam)', phonetic: 'hel-oh', example: 'Correct use: "Hello, Priya. How are you?"' }
+        ]
+      },
+      {
+        id: 'step-3', type: 'vocabulary', title: 'Step 1 — Greeting: Good morning',
+        content: '**When to use "Good morning":**\n\n• Use it from 6:00 AM to 12:00 PM (noon).\n• After 12:00 PM, say "Good afternoon".\n• After 6:00 PM, say "Good evening".\n\n**Exact script:**\n→ "Good morning, [name]."',
+        words: [
+          { word: 'Good morning', translation: 'காலை வணக்கம்', phonetic: 'good-mor-ning', example: 'Correct: "Good morning, teacher." (before 12 PM)' }
+        ]
+      },
+      {
+        id: 'step-4', type: 'practice', title: 'Step 2 — One question',
+        question: 'It is 9:00 AM. You see your teacher. What do you say?',
+        options: [
+          { id: 'a', text: 'Good evening, teacher.', correct: false },
+          { id: 'b', text: 'Good morning, teacher.', correct: true },
+          { id: 'c', text: 'Good night, teacher.', correct: false },
+          { id: 'd', text: 'Good afternoon, teacher.', correct: false }
+        ],
+        correctFeedback: '✅ Correct! 9:00 AM is before noon. Use "Good morning".',
+        incorrectFeedback: 'Rule: 6 AM–12 PM = "Good morning". It is 9 AM, so say "Good morning, teacher."'
+      },
+      {
+        id: 'step-5', type: 'summary', title: 'Step 3 — Summary (lesson is complete)',
+        content: '## This lesson is now finished.\n\n**You learned:**\n\n✅ **Hello** — use when meeting someone\n✅ **Good morning** — use from 6 AM to 12 PM\n\n**Exact scripts:**\n• "Hello, [name]."\n• "Good morning, [name]."\n\n### The next lesson will follow the same 4-step pattern.',
+        audioUrl: null
+      }
+    ]
+  },
+
+  'autism-lesson-2': {
+    _id: 'autism-lesson-2',
+    title: 'Asking for Help — Exact Phrases',
+    description: 'Explicit, literal scripts for asking for help in school and daily situations',
+    targetLanguage: 'English',
+    learningLanguage: 'en',
+    level: 'beginner',
+    estimatedTime: 15,
+    disabilityTypes: ['AUTISM'],
+    steps: [
+      {
+        id: 'step-1', type: 'instruction', title: 'What will happen in this lesson',
+        content: 'This lesson has 4 steps (same as always):\n\n1. Read the phrase.\n2. Read when and how to use it.\n3. Answer one question.\n4. See the summary.\n\nPress Next to start.',
+        audioUrl: null
+      },
+      {
+        id: 'step-2', type: 'vocabulary', title: 'Step 1 — Phrase: Excuse me',
+        content: '**When to use "Excuse me":**\n\n• When you need to get someone\'s attention.\n• When you need to pass by someone.\n• When you did not hear something.\n\n**Exact scripts:**\n→ "Excuse me, can you help me?"\n→ "Excuse me, I did not understand."\n→ "Excuse me, may I pass?"',
+        words: [
+          { word: 'Excuse me', translation: 'மன்னிக்கவும் (Mannikkavum)', phonetic: 'ek-skyooz-mee', example: 'Correct: "Excuse me, where is the library?"' }
+        ]
+      },
+      {
+        id: 'step-3', type: 'vocabulary', title: 'Step 1 — Phrase: I need help',
+        content: '**When to use "I need help":**\n\n• When you do not understand something.\n• When you cannot do a task alone.\n\n**Exact scripts:**\n→ "I need help with this question."\n→ "I need help. I do not understand."\n\n*It is always okay to ask for help.*',
+        words: [
+          { word: 'I need help', translation: 'எனக்கு உதவி வேண்டும் (Enakku udhavi vendum)', phonetic: 'I-need-help', example: 'Correct: "Excuse me. I need help with this problem."' }
+        ]
+      },
+      {
+        id: 'step-4', type: 'practice', title: 'Step 2 — One question',
+        question: 'You do not understand the homework. What is the correct thing to say to your teacher?',
+        options: [
+          { id: 'a', text: 'Good morning, teacher.', correct: false },
+          { id: 'b', text: 'Excuse me. I need help with the homework.', correct: true },
+          { id: 'c', text: 'Hello, teacher.', correct: false },
+          { id: 'd', text: 'Thank you, teacher.', correct: false }
+        ],
+        correctFeedback: '✅ Correct! "Excuse me. I need help with the homework." is the right script.',
+        incorrectFeedback: 'When you need help with homework, say: "Excuse me. I need help with the homework."'
+      },
+      {
+        id: 'step-5', type: 'summary', title: 'Step 3 — Summary (lesson is complete)',
+        content: '## This lesson is now finished.\n\n**You learned:**\n\n✅ **Excuse me** — to get attention or ask to pass\n✅ **I need help** — when you need assistance\n\n**Exact scripts:**\n• "Excuse me, can you help me?"\n• "I need help with [task]."\n\n### The next lesson will follow the same 4-step pattern.',
+        audioUrl: null
+      }
+    ]
+  },
+
+  /* ══════════════════════════════════════════════════════════════
+     GENERAL LESSONS (no specific disability)
+     ══════════════════════════════════════════════════════════════ */
   'demo-lesson-1': {
     _id: 'demo-lesson-1',
     title: "Greetings & Introductions",
@@ -325,6 +803,7 @@ export async function GET(
         description: lesson.description,
         estimatedDuration: lesson.estimatedTime,
         competencies: [],
+        disabilityTypes: lesson.disabilityTypes || [],
         steps: lesson.steps.map((step: any) => ({
           id: step.id,
           stepType: step.type, // Map 'type' to 'stepType'

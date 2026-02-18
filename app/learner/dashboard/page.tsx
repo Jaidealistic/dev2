@@ -18,6 +18,7 @@ import {
   addLearnerLanguage,
 } from '@/lib/api';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { useToast } from '@/components/providers/ToastProvider';
 import {
   BookOpen,
   ChevronRight,
@@ -38,6 +39,7 @@ export default function LearnerDashboard() {
   const mainRef = useRef<HTMLElement>(null);
   const router = useRouter();
   const { language, setLanguage, t } = useLanguage();
+  const { success, error: toastError, info } = useToast();
 
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,6 +81,7 @@ export default function LearnerDashboard() {
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
       setError('We could not load your dashboard right now. Please try again.');
+      toastError(t('status.errorOccurred'), 'Could not load dashboard data.');
     } finally {
       setIsLoading(false);
     }
@@ -89,14 +92,16 @@ export default function LearnerDashboard() {
     try {
       const result = await addLearnerLanguage(language);
       if (!result.success) {
-        alert(result.error || 'Could not add language');
+        toastError('Could not add language', result.error || 'Please try again.');
         return;
       }
       setShowAddLang(false);
       setActiveLanguage(language);
       await fetchDashboardData();
+      success('Language added!', `${language} has been added to your learning plan.`);
     } catch (err) {
       console.error('Error adding language:', err);
+      toastError('Could not add language', 'Please try again.');
     } finally {
       setAddingLang(false);
     }
@@ -158,24 +163,50 @@ export default function LearnerDashboard() {
   const nextLesson = recentLessons.find((l: any) => l.status === 'in-progress')
     || recentLessons.find((l: any) => l.status !== 'completed');
 
-  // Multilingual recommended lessons
-  const recommendedByLang: Record<string, any> = {
+  // ── Rule-based lesson recommendation (OpenProject #12614) ──────
+  // Priority: 1) in-progress lesson  2) first not-started  3) lowest-score completed (retake)
+  const inProgressLesson = recentLessons.find((l: any) => l.status === 'in-progress');
+  const notStartedLesson = recentLessons.find((l: any) => l.status === 'not-started' || !l.status);
+  const retakeLesson = [...recentLessons]
+    .filter((l: any) => l.status === 'completed')
+    .sort((a: any, b: any) => (a.score ?? 100) - (b.score ?? 100))[0];
+
+  // Fallback to language-specific defaults if no real data yet
+  const defaultsByLang: Record<string, any> = {
     English: {
       id: 'demo-lesson-1',
       title: language === 'ta' ? 'வணக்கங்களும் அறிமுகங்களும்' : 'Greetings & Introductions',
       language: 'English',
       duration: '15 min',
-      description: language === 'ta' ? 'அத்தியாவசிய ஆங்கில வாழ்த்துக்களை கற்றுக் கொள்ளுங்கள்' : 'Learn common greetings and introductions'
+      description: language === 'ta' ? 'அத்தியாவசிய ஆங்கில வாழ்த்துக்களை கற்றுக் கொள்ளுங்கள்' : 'Learn common greetings and introductions',
+      reason: language === 'ta' ? 'உங்களுக்கு பரிந்துரைக்கப்பட்டது' : 'Recommended for your level',
     },
     Tamil: {
       id: 'l-9',
       title: language === 'ta' ? 'தமிழ் எழுத்துக்கள் – உயிர்' : 'Tamil Alphabets – Uyir',
       language: 'Tamil',
       duration: '20 min',
-      description: language === 'ta' ? 'தமிழ் எழுத்துக்களின் அடிப்படை உயிர் எழுத்துக்களை கற்றுக் கொள்ளுங்கள்' : 'Learn the foundational vowel letters of Tamil script'
+      description: language === 'ta' ? 'தமிழ் எழுத்துக்களின் அடிப்படை உயிர் எழுத்துக்களை கற்றுக் கொள்ளுங்கள்' : 'Learn the foundational vowel letters of Tamil script',
+      reason: language === 'ta' ? 'உங்களுக்கு பரிந்துரைக்கப்பட்டது' : 'Recommended for your level',
     },
   };
-  const recommendedLesson = recommendedByLang[activeLanguage] || recommendedByLang['English'];
+
+  let recommendedLesson: any;
+  let recommendReason: string;
+
+  if (inProgressLesson) {
+    recommendedLesson = inProgressLesson;
+    recommendReason = language === 'ta' ? 'நீங்கள் நிறுத்திய இடத்திலிருந்து தொடரவும்' : 'Continue where you left off';
+  } else if (notStartedLesson) {
+    recommendedLesson = notStartedLesson;
+    recommendReason = language === 'ta' ? 'அடுத்த பாடம் உங்களுக்காக காத்திருக்கிறது' : 'Your next lesson is ready';
+  } else if (retakeLesson && (retakeLesson.score ?? 100) < 80) {
+    recommendedLesson = retakeLesson;
+    recommendReason = language === 'ta' ? 'மேம்படுத்த மீண்டும் முயற்சிக்கவும்' : `Retake to improve your ${retakeLesson.score}% score`;
+  } else {
+    recommendedLesson = defaultsByLang[activeLanguage] || defaultsByLang['English'];
+    recommendReason = recommendedLesson.reason;
+  }
 
 
   /* ══════════════════════════════════════════
@@ -324,25 +355,33 @@ export default function LearnerDashboard() {
             ))}
             <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
 
-            {/* UI Language Selector */}
-            <div className="flex items-center gap-1.5 px-2">
+            {/* UI Language Selector — pill toggle */}
+            <div
+              className="flex items-center rounded-lg border border-[#e8e5e0] overflow-hidden"
+              title={t('common.uiLanguage')}
+              role="group"
+              aria-label={t('common.uiLanguage')}
+            >
               <button
                 onClick={() => setLanguage('en')}
-                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${language === 'en'
+                className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${language === 'en'
                   ? 'bg-[#7a9b7e] text-white'
-                  : 'text-[#8a8a8a] hover:bg-[#f0ede8]'
+                  : 'text-[#8a8a8a] hover:bg-[#f0ede8] bg-white'
                   }`}
-                title="English"
+                aria-pressed={language === 'en'}
+                title="Switch to English"
               >
                 EN
               </button>
+              <div className="w-px h-4 bg-[#e8e5e0]" />
               <button
                 onClick={() => setLanguage('ta')}
-                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${language === 'ta'
+                className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${language === 'ta'
                   ? 'bg-[#7a9b7e] text-white'
-                  : 'text-[#8a8a8a] hover:bg-[#f0ede8]'
+                  : 'text-[#8a8a8a] hover:bg-[#f0ede8] bg-white'
                   }`}
-                title="தமிழ்"
+                aria-pressed={language === 'ta'}
+                title="தமிழுக்கு மாறவும்"
               >
                 த
               </button>
@@ -481,9 +520,15 @@ export default function LearnerDashboard() {
           </div>
         </div>
 
-        {/* ═══ Suggested lesson — full width, prominent CTA ═══ */}
+        {/* ═══ Suggested lesson — rule-based recommendation ═══ */}
         <section className="bg-white rounded-xl p-5 border border-[#f0ede8] mb-6" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-          <h2 className="text-sm font-semibold text-[#2d2d2d] mb-3">{t('dashboard.suggestedForYou')}</h2>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-[#2d2d2d]">{t('dashboard.suggestedForYou')}</h2>
+            {/* Why this lesson micro-label */}
+            <span className="text-xs text-[#7a9b7e] bg-[#f0f4f0] px-2.5 py-1 rounded-full font-medium">
+              {recommendReason}
+            </span>
+          </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1 min-w-0">
               <h3 className="text-base font-medium text-[#2d2d2d] mb-1" style={{ lineHeight: '1.5' }}>
@@ -493,15 +538,31 @@ export default function LearnerDashboard() {
                 {recommendedLesson.description}
               </p>
               <div className="flex gap-3 text-xs text-[#8a8a8a]">
-                <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5" />{recommendedLesson.language}</span>
-                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{recommendedLesson.duration}</span>
+                {recommendedLesson.language && <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5" />{recommendedLesson.language}</span>}
+                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{recommendedLesson.duration || '15 min'}</span>
+                {recommendedLesson.score != null && (
+                  <span className="flex items-center gap-1"><Target className="w-3.5 h-3.5" />{recommendedLesson.score}%</span>
+                )}
               </div>
+              {/* Mini progress bar for in-progress lessons */}
+              {recommendedLesson.status === 'in-progress' && recommendedLesson.progress != null && (
+                <div className="mt-3 w-full h-1.5 bg-[#f0ede8] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#7a9b7e] rounded-full"
+                    style={{ width: `${recommendedLesson.progress}%` }}
+                    role="progressbar"
+                    aria-valuenow={recommendedLesson.progress}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                  />
+                </div>
+              )}
             </div>
             <Link
-              href={`/learner/lessons/${recommendedLesson.id}`}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f] flex-shrink-0"
+              href={`/learner/lessons/${recommendedLesson.lessonId || recommendedLesson.id}`}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f] flex-shrink-0 transition-colors"
             >
-              {t('dashboard.startLesson')}
+              {inProgressLesson ? t('common.continue') : t('dashboard.startLesson')}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

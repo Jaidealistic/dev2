@@ -8,11 +8,15 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { MultiModalLesson } from '@/components/MultiModalLesson';
+import { useToast } from '@/components/providers/ToastProvider';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
 export default function LessonPage() {
   const router = useRouter();
   const params = useParams();
   const lessonId = params?.lessonId as string;
+  const { success, error: toastError, info } = useToast();
+  const { t } = useLanguage();
 
   async function handleLessonComplete(score: number, duration: number) {
     try {
@@ -32,26 +36,38 @@ export default function LessonPage() {
 
       if (response.ok) {
         const data = await response.json();
-        
-        // Show achievement modal if new achievements earned
+
+        // Toast for new achievements
         if (data.newAchievements && data.newAchievements.length > 0) {
-          alert(`🎉 New achievements earned: ${data.newAchievements.map((a: any) => a.badgeName).join(', ')}`);
+          data.newAchievements.forEach((a: any) => {
+            success(
+              `🏆 ${t('status.achievementEarned')}`,
+              a.badgeName
+            );
+          });
         }
 
-        // Show completion modal
+        // Toast for lesson completion result
         const passed = score >= 70;
-        const message = passed
-          ? `Great job! You scored ${score}% and completed the lesson in ${Math.floor(duration / 60)} minutes.`
-          : `You scored ${score}%. Try reviewing the material and retaking the lesson.`;
-        
-        alert(message);
+        const durationMin = Math.floor(duration / 60);
+        if (passed) {
+          success(
+            t('status.lessonCompleted'),
+            `${score}% — ${durationMin} min`
+          );
+        } else {
+          info(
+            `Score: ${score}%`,
+            'Try reviewing the material and retaking the lesson.'
+          );
+        }
 
-        // Navigate back to dashboard
-        router.push('/learner/dashboard');
+        // Navigate back to dashboard after a short delay so the toast is visible
+        setTimeout(() => router.push('/learner/dashboard'), 1500);
       }
     } catch (error) {
       console.error('Error completing lesson:', error);
-      alert('Failed to save your progress. Please try again.');
+      toastError(t('status.errorOccurred'), 'Failed to save your progress. Please try again.');
     }
   }
 

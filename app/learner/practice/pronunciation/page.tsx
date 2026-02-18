@@ -70,6 +70,7 @@ export default function PronunciationPracticePage() {
   const [practiceHistory, setPracticeHistory] = useState<Array<{ word: string; score: number; correct: boolean }>>([]);
 
   const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<any>(null); // Added ref to store recognition instance
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
@@ -90,6 +91,15 @@ export default function PronunciationPracticePage() {
       return;
     }
 
+    // Stop any existing recognition before starting a new one
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.error('Error stopping previous recognition:', e);
+      }
+    }
+
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.continuous = false;
@@ -105,81 +115,65 @@ export default function PronunciationPracticePage() {
     };
 
     recognition.onresult = (event: any) => {
-      const spokenText = event.results[0][0].transcript.toLowerCase().trim();
-      const confidence = event.results[0][0].confidence;
+      const result = event.results[0][0];
+      const spokenText = result.transcript.toLowerCase().trim();
+      const confidence = result.confidence || 1.0;
 
       setTranscript(spokenText);
       setIsRecording(false);
 
-      // ULTRA-STRICT EXACT MATCHING
-      const targetLower = currentWord.word.toLowerCase().trim();
+      // STRICT & ACCURATE ENGINE
+
+      // 1. Normalize: Lowercase, remove punctuation
+      const clean = (str: string) => str.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+
+      const spokenClean = clean(spokenText);
+      const targetClean = clean(currentWord.word);
 
       let calculatedScore = 0;
       let feedbackMessage = '';
       let feedbackCategory: 'success' | 'close' | 'tryagain' = 'tryagain';
 
-      // 1. EXACT MATCH = 100%
-      if (spokenText === targetLower) {
-        calculatedScore = 100;
-        feedbackMessage = `🎉 PERFECT! Exact match for "${currentWord.word}"!`;
-        feedbackCategory = 'success';
-      }
-      // 2. Strip articles and check
-      else {
-        const normalize = (w: string) => w.replace(/^(a|an|the)\s+/i, '').replace(/s$/i, '');
-        if (normalize(spokenText) === normalize(targetLower)) {
-          calculatedScore = 75;
-          feedbackMessage = `⚠️ Close! You said "${spokenText}" but expected exactly "${currentWord.word}".`;
-          feedbackCategory = 'close';
+      // 1. EXACT MATCH (100% Accuracy Requirement)
+      if (spokenClean === targetClean) {
+        // Apply CONFIDENCE penalty for "Strict" mode
+        if (confidence > 0.85) {
+          calculatedScore = 100;
+          feedbackMessage = `� PERFECT! Precise pronunciation.`;
+          feedbackCategory = 'success';
+        } else {
+          calculatedScore = Math.round(confidence * 100);
+          feedbackMessage = `✅ Correct word, but speak with more confidence.`;
+          feedbackCategory = 'success';
         }
-        //3. Calculate Levenshtein distance
+      }
+      // 2. MINOR GRAMMATICAL VARIANTS (Strict but fair)
+      else {
+        // Only allow very minor differences
+        const stripExtras = (w: string) => w.replace(/^(a|an|the)\s+/i, '').replace(/s$/i, '');
+
+        if (stripExtras(spokenClean) === stripExtras(targetClean)) {
+          calculatedScore = 90;
+          feedbackMessage = `⚖️ Accurate! (Accepted "${spokenText}")`;
+          feedbackCategory = 'success';
+        }
+        // 3. STRICT REJECTION
         else {
-          const distance = levenshteinDistance(spokenText, targetLower);
-          const maxLen = Math.max(spokenText.length, targetLower.length);
-          const minLen = Math.min(spokenText.length, targetLower.length);
+          const distance = levenshteinDistance(spokenClean, targetClean);
+          const maxLen = Math.max(spokenClean.length, targetClean.length);
+
+          // STRICTER threshold: Needs > 85% similarity
           const similarity = (maxLen - distance) / maxLen;
 
-          // If words are vastly different lengths, they're probably unrelated
-          if (maxLen > minLen * 2) {
-            calculatedScore = 0;
-            feedbackMessage = `❌ Completely different! You said "${spokenText}" but expected "${currentWord.word}".`;
-            feedbackCategory = 'tryagain';
-          }
-          // Ultra-strict thresholds
-          else if (similarity >= 0.90) {
-            calculatedScore = Math.round(similarity * confidence * 75); // Cap at 75%
-            feedbackMessage = `⚠️ Very close! You said "${spokenText}" but we need "${currentWord.word}".`;
+          if (similarity >= 0.85) {
+            calculatedScore = Math.round(similarity * confidence * 90);
+            feedbackMessage = `🤏 Very close! Check your enunciation.`;
             feedbackCategory = 'close';
-          } else if (similarity >= 0.75) {
-            calculatedScore = Math.round(similarity * confidence * 50);
-            feedbackMessage = `❌ Not quite. You said "${spokenText}" but expected "${currentWord.word}".`;
-            feedbackCategory = 'tryagain';
-          } else if (similarity >= 0.60) {
-            calculatedScore = Math.round(similarity * confidence * 30);
-            feedbackMessage = `❌ Different word. You said "${spokenText}" but we need "${currentWord.word}".`;
-            feedbackCategory = 'tryagain';
           } else {
-            // Similarity < 0.60 = completely different words
-            calculatedScore = 0;
-            feedbackMessage = `❌ Wrong word! You said "${spokenText}" but expected "${currentWord.word}". Try again!`;
-            feedbackCategory = 'tryagain';
-          }
-
-          // Check for common confusions - apply HEAVY penalty
-          const confusionGroups = [
-            ['hi', 'hello', 'hey'],
-            ['good morning', 'morning', 'good'],
-            ['bye', 'goodbye'],
-            ['thanks', 'thank you']
-          ];
-
-          const isConfusion = confusionGroups.some(group =>
-            group.includes(targetLower) && group.includes(spokenText) && targetLower !== spokenText
-          );
-
-          if (isConfusion) {
-            calculatedScore = Math.min(calculatedScore, 15); // Max 15% for confused words
-            feedbackMessage = `❌ WRONG! "${spokenText}" and "${currentWord.word}" are different words! Only exact match gets 100%.`;
+            // HARD FAIL for anything else
+            const similarityPercent = Math.round(similarity * 100);
+            calculatedScore = Math.max(0, similarityPercent - 50); // Heavy penalty
+            feedbackMessage = `❌ Incorrect. You said "${spokenText}". Expected "${currentWord.word}".`;
             feedbackCategory = 'tryagain';
           }
         }
@@ -190,7 +184,7 @@ export default function PronunciationPracticePage() {
       setFeedbackType(feedbackCategory);
       setTotalAttempts(prev => prev + 1);
 
-      if (calculatedScore >= 70) {
+      if (calculatedScore >= 80) { // RAISED PASS THRESHOLD
         setCorrectAttempts(prev => prev + 1);
         setPracticeHistory(prev => [...prev, { word: currentWord.word, score: calculatedScore, correct: true }]);
       } else {
@@ -199,21 +193,42 @@ export default function PronunciationPracticePage() {
     };
 
     recognition.onerror = (event: any) => {
-      console.error('Recognition error:', event.error);
+      console.warn('Recognition error:', event.error);
       setIsRecording(false);
-      setFeedback('Could not hear you clearly. Please try again.');
-      setFeedbackType('tryagain');
+
+      // ROBUST ERROR HANDLING - Don't show scary errors for timeouts
+      if (event.error === 'no-speech') {
+        setFeedback('⏳ Timed out. Please tap the mic and speak clearly.');
+        setFeedbackType('tryagain');
+      } else if (event.error === 'audio-capture') {
+        setFeedback('🚫 No microphone found. Check your permissions.');
+        setFeedbackType('tryagain');
+      } else if (event.error === 'not-allowed') {
+        setFeedback('🔒 Microphone access denied. Please allow measurement.');
+        setFeedbackType('tryagain');
+      } else {
+        setFeedback('❌ Error. Please try again.');
+        setFeedbackType('tryagain');
+      }
     };
 
     recognition.onend = () => {
       setIsRecording(false);
     };
 
+    recognitionRef.current = recognition; // Store the instance
     recognition.start();
   }
 
   function stopRecording() {
-    // Web Speech API stops automatically, but we can force it
+    // Properly stop the recognition instance
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.error('Error stopping recognition:', e);
+      }
+    }
     setIsRecording(false);
   }
 
@@ -491,19 +506,19 @@ export default function PronunciationPracticePage() {
               <ul className="space-y-3 text-sm text-gray-700">
                 <li className="flex items-start gap-2">
                   <span className="text-[#9db4a0] font-bold">1.</span>
-                  Listen to the word first by clicking the &ldquo;Listen&rdquo; button
+                  Listen to the native pronunciation first
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#9db4a0] font-bold">2.</span>
-                  Speak clearly and at a natural pace
+                  Speak clearly with high confidence
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#9db4a0] font-bold">3.</span>
-                  Focus on individual sounds (phonemes)
+                  We analyze for precise phonetic accuracy
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#9db4a0] font-bold">4.</span>
-                  Don&apos;t worry about perfection — practice makes progress!
+                  Aim for 100% mastery on every word
                 </li>
               </ul>
             </div>

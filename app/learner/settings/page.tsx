@@ -6,6 +6,7 @@
 
 import React, { useState } from 'react';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
+import { useToast } from '@/components/providers/ToastProvider';
 import {
   Eye,
   Volume2,
@@ -19,6 +20,7 @@ import Link from 'next/link';
 
 export default function LearnerSettingsPage() {
   const { preferences, setPreferences } = useAccessibility();
+  const { success, error: toastError } = useToast();
 
   const [formData, setFormData] = useState({
     fontFamily: preferences.fontFamily || 'lexend',
@@ -38,6 +40,11 @@ export default function LearnerSettingsPage() {
     profileVisibility: 'private' as 'public' | 'friends' | 'private',
     shareProgressWithParents: true,
     shareProgressWithEducators: true,
+    // Learning Support Modes
+    adhdMode: preferences.adhdMode || false,
+    dyslexiaMode: preferences.dyslexiaMode || false,
+    autismMode: preferences.autismMode || false,
+    apdMode: preferences.apdMode || false,
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -47,6 +54,7 @@ export default function LearnerSettingsPage() {
     setIsSaving(true);
     setSaveSuccess(false);
     try {
+      // Apply preferences locally first (always works)
       setPreferences({
         fontFamily: formData.fontFamily,
         fontSize: formData.fontSize,
@@ -56,23 +64,34 @@ export default function LearnerSettingsPage() {
         reducedMotion: formData.reducedMotion,
         speechShowSubtitles: formData.captionsEnabled,
         enableSpeechRec: formData.speechRecognition,
+        // Learning Support Modes
+        adhdMode: formData.adhdMode,
+        dyslexiaMode: formData.dyslexiaMode,
+        autismMode: formData.autismMode,
+        apdMode: formData.apdMode,
       });
 
-      const response = await fetch('/api/learner/settings', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) throw new Error('Failed to save settings');
+      // Try to persist to server (non-blocking — fail silently)
+      try {
+        const response = await fetch('/api/learner/settings', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify(formData),
+        });
+        if (!response.ok) console.warn('Settings API unavailable, saved locally only.');
+      } catch {
+        console.warn('Settings API unavailable, saved locally only.');
+      }
 
       setSaveSuccess(true);
+      success('Settings saved', 'Your preferences have been updated.');
       setTimeout(() => setSaveSuccess(false), 3000);
-    } catch (error) {
-      console.error('Error saving settings:', error);
-      alert('Failed to save settings. Please try again.');
+    } catch (err) {
+      console.error('Error saving settings:', err);
+      toastError('Could not save settings', 'Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -117,6 +136,39 @@ export default function LearnerSettingsPage() {
         {/* Page intro */}
         <p className="text-sm text-[#8a8a8a]">Customise your learning experience and privacy preferences.</p>
 
+        {/* ── Learning Support Modes ── */}
+        <Section icon={<Shield className="w-[18px] h-[18px]" />} title="Learning Support Modes">
+          <p className="text-sm text-[#6b6b6b] mb-4">
+            Enable specialized features designed for your learning style.
+          </p>
+          <div className="space-y-3">
+            <Toggle
+              label="ADHD Focus Mode"
+              description="Simplifies interface, breaks lessons into single sentences, and enables focus timers."
+              checked={formData.adhdMode}
+              onChange={(c) => setFormData({ ...formData, adhdMode: c })}
+            />
+            <Toggle
+              label="Dyslexia Support"
+              description="Uses OpenDyslexic font, increases letter spacing, and enables text-to-speech helpers."
+              checked={formData.dyslexiaMode}
+              onChange={(c) => setFormData({ ...formData, dyslexiaMode: c })}
+            />
+            <Toggle
+              label="Autism Structure"
+              description="Enables predictable layouts, clear instructions, and removes ambiguous metaphors."
+              checked={formData.autismMode}
+              onChange={(c) => setFormData({ ...formData, autismMode: c })}
+            />
+            <Toggle
+              label="Auditory Processing (APD)"
+              description="Emphasizes visual cues, subtitles, and reduces background noise."
+              checked={formData.apdMode}
+              onChange={(c) => setFormData({ ...formData, apdMode: c })}
+            />
+          </div>
+        </Section>
+
         {/* ── Accessibility ── */}
         <Section icon={<Eye className="w-[18px] h-[18px]" />} title="Accessibility">
           {/* Font Style */}
@@ -129,11 +181,10 @@ export default function LearnerSettingsPage() {
               <button
                 key={font.value}
                 onClick={() => setFormData({ ...formData, fontFamily: font.value as typeof formData.fontFamily })}
-                className={`relative py-2.5 px-3 rounded-lg border text-sm font-medium transition-all ${
-                  formData.fontFamily === font.value
-                    ? 'border-[#7a9b7e] bg-[#7a9b7e]/8 text-[#2d2d2d]'
-                    : 'border-[#e8e5e0] text-[#6b6b6b] hover:border-[#c5c0b8]'
-                }`}
+                className={`relative py-2.5 px-3 rounded-lg border text-sm font-medium transition-all ${formData.fontFamily === font.value
+                  ? 'border-[#7a9b7e] bg-[#7a9b7e]/8 text-[#2d2d2d]'
+                  : 'border-[#e8e5e0] text-[#6b6b6b] hover:border-[#c5c0b8]'
+                  }`}
                 style={{ fontFamily: font.stack }}
               >
                 {font.label}
@@ -186,11 +237,10 @@ export default function LearnerSettingsPage() {
               <button
                 key={scheme.value}
                 onClick={() => setFormData({ ...formData, colorScheme: scheme.value as any })}
-                className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg border text-sm font-medium transition-all ${
-                  formData.colorScheme === scheme.value
-                    ? 'border-[#7a9b7e] bg-[#7a9b7e]/8 text-[#2d2d2d]'
-                    : 'border-[#e8e5e0] text-[#6b6b6b] hover:border-[#c5c0b8]'
-                }`}
+                className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg border text-sm font-medium transition-all ${formData.colorScheme === scheme.value
+                  ? 'border-[#7a9b7e] bg-[#7a9b7e]/8 text-[#2d2d2d]'
+                  : 'border-[#e8e5e0] text-[#6b6b6b] hover:border-[#c5c0b8]'
+                  }`}
               >
                 <span className={`w-4 h-4 rounded-full border ${scheme.swatch} flex-shrink-0`} />
                 {scheme.label}
@@ -257,11 +307,10 @@ export default function LearnerSettingsPage() {
               <button
                 key={opt.value}
                 onClick={() => setFormData({ ...formData, profileVisibility: opt.value as any })}
-                className={`w-full flex items-center justify-between py-2.5 px-3.5 rounded-lg border text-left transition-all ${
-                  formData.profileVisibility === opt.value
-                    ? 'border-[#7a9b7e] bg-[#7a9b7e]/8'
-                    : 'border-[#e8e5e0] hover:border-[#c5c0b8]'
-                }`}
+                className={`w-full flex items-center justify-between py-2.5 px-3.5 rounded-lg border text-left transition-all ${formData.profileVisibility === opt.value
+                  ? 'border-[#7a9b7e] bg-[#7a9b7e]/8'
+                  : 'border-[#e8e5e0] hover:border-[#c5c0b8]'
+                  }`}
               >
                 <div>
                   <p className="text-sm font-medium text-[#2d2d2d]">{opt.label}</p>
@@ -363,16 +412,14 @@ function ToggleOption({ label, description, checked, onChange }: ToggleOptionPro
       </div>
       <button
         onClick={() => onChange(!checked)}
-        className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors flex-shrink-0 ${
-          checked ? 'bg-[#7a9b7e]' : 'bg-[#d5d2cd]'
-        }`}
+        className={`relative inline-flex h-6 w-10 items-center rounded-full transition-colors flex-shrink-0 ${checked ? 'bg-[#7a9b7e]' : 'bg-[#d5d2cd]'
+          }`}
         role="switch"
         aria-checked={checked}
       >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
-            checked ? 'translate-x-5' : 'translate-x-1'
-          }`}
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${checked ? 'translate-x-5' : 'translate-x-1'
+            }`}
         />
       </button>
     </div>

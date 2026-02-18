@@ -20,6 +20,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
+import { useToast } from '@/components/providers/ToastProvider';
+import { TextToSpeech, InlineTextToSpeech } from '@/components/TextToSpeech';
 import { GuidedPractice, MultipleChoice, FillInBlank } from '@/components/PracticeComponents';
 import {
   Play,
@@ -64,6 +66,7 @@ interface LessonData {
   description: string;
   duration: number; // minutes
   competencies: string[];
+  disabilityTypes?: string[];
   sections: LessonSection[];
 }
 
@@ -74,6 +77,7 @@ interface MultiModalLessonProps {
 
 export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps) {
   const { preferences } = useAccessibility();
+  const { info } = useToast();
   const router = useRouter();
 
   // Lesson state
@@ -101,6 +105,12 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
   // Timer
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // ADHD single-sentence mode (OpenProject #12620)
+  const [activeSentenceIdx, setActiveSentenceIdx] = useState(0);
+
+  // Reset sentence index when section changes
+  useEffect(() => { setActiveSentenceIdx(0); }, [currentSectionIndex]);
 
   // Audio/Video refs
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -142,6 +152,25 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
     }
   }, [currentSectionIndex]);
 
+  // Determine active disability modes based on Lesson Tags OR User Preferences
+  const isAdhdMode = (lesson?.disabilityTypes?.includes('ADHD')) || preferences.adhdMode;
+  const isDyslexiaMode = (lesson?.disabilityTypes?.includes('DYSLEXIA')) || preferences.dyslexiaMode || preferences.fontFamily === 'opendyslexic';
+  const isApdMode = (lesson?.disabilityTypes?.includes('APD')) || preferences.apdMode;
+  const isAutismMode = (lesson?.disabilityTypes?.includes('AUTISM')) || preferences.autismMode;
+
+  // Notify user if a special mode is auto-activated by the lesson
+  useEffect(() => {
+    if (lesson && !isLoading) {
+      if (lesson.disabilityTypes?.includes('ADHD')) {
+        info('ADHD Focus Mode Active', 'We enabled short steps and focus timers for you.');
+      } else if (lesson.disabilityTypes?.includes('DYSLEXIA')) {
+        info('Dyslexia Support Active', 'Text is optimised for reading ease.');
+      } else if (lesson.disabilityTypes?.includes('AUTISM')) {
+        info('structured Learning Active', 'Clear, predictable steps enabled.');
+      }
+    }
+  }, [lesson, isLoading]);
+
   async function loadLesson() {
     try {
       setIsLoading(true);
@@ -169,6 +198,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
         description: backendLesson.description || '',
         duration: backendLesson.estimatedDuration || 15,
         competencies: backendLesson.competencies || [],
+        disabilityTypes: backendLesson.disabilityTypes || [],
         sections: backendLesson.steps.map((step: any) => ({
           id: step.id,
           type: step.stepType,
@@ -176,7 +206,6 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
           content: step.content || {},
         })),
       };
-
       setLesson(mappedLesson);
     } catch (error) {
       console.error('Error loading lesson:', error);
@@ -503,34 +532,125 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
       <main className="container mx-auto px-6 py-12 max-w-4xl">
         {/* Section Title */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            {currentSection.title}
+          <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center justify-between">
+            <span>{currentSection.title}</span>
+            {/* TTS Control for Text Sections */}
+            {currentSection.type === 'text' && (
+              <InlineTextToSpeech text={currentSection.content.text || ''} />
+            )}
           </h2>
-          {preferences.adhdMode && (
-            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-4 inline-block">
-              <p className="text-sm text-yellow-900">
-                Estimated time: {Math.ceil(lesson.duration / lesson.sections.length)} minutes
-              </p>
+          {/* Active Mode Badge */}
+          {isAdhdMode && (
+            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-4 mb-4 flex items-center gap-3">
+              <div className="bg-yellow-100 p-2 rounded-full">
+                <Clock className="w-5 h-5 text-yellow-700" />
+              </div>
+              <div>
+                <p className="font-bold text-yellow-900 text-sm">Focus Mode Active</p>
+                <p className="text-xs text-yellow-800">
+                  Estimated time: {Math.ceil(lesson.duration / lesson.sections.length)} min/step
+                </p>
+              </div>
             </div>
           )}
         </div>
 
         {/* Section Content */}
         <div className="bg-white rounded-3xl p-8 shadow-lg">
+          {/* APD / Dyslexia Helper: Full Audio Player for Text */}
+          {(isApdMode || isDyslexiaMode) && currentSection.type === 'text' && (
+            <div className="mb-6 p-4 bg-[#f0f4f0] rounded-xl border border-[#d4dcd5]">
+              <p className="text-xs font-semibold text-[#5d7e61] mb-2 uppercase tracking-wide">
+                Audio Support Enabled
+              </p>
+              <TextToSpeech
+                text={currentSection.content.text || ''}
+                autoHighlight={true}
+              />
+            </div>
+          )}
+
           {/* TEXT SECTION */}
           {currentSection.type === 'text' && (
             <div
-              className="prose prose-lg max-w-none"
               style={{
                 lineHeight: preferences.lineSpacing,
                 letterSpacing: `${preferences.letterSpacing}em`,
               }}
             >
-              {currentSection.content.text?.split('\n').map((paragraph, idx) => (
-                <p key={idx} className="mb-4 text-gray-800">
-                  {paragraph}
-                </p>
-              ))}
+              {isAdhdMode ? (
+                /* ── ADHD mode: one sentence at a time ── */
+                (() => {
+                  const allText = currentSection.content.text || '';
+                  // Split into sentences (keep punctuation)
+                  const sentences = allText
+                    .split(/(?<=[.!?]\s+)|(?<=[.!?]$)/)
+                    .map(s => s.trim())
+                    .filter(Boolean);
+                  const total = sentences.length;
+                  const active = Math.min(activeSentenceIdx, total - 1);
+
+                  return (
+                    <div>
+                      {/* Sentence progress dots */}
+                      {total > 1 && (
+                        <div className="flex gap-1.5 mb-5 flex-wrap">
+                          {sentences.map((_, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setActiveSentenceIdx(i)}
+                              className={`w-2 h-2 rounded-full transition-colors ${i === active ? 'bg-[#7a9b7e] scale-125' :
+                                i < active ? 'bg-[#c5d9c7]' : 'bg-[#e8e5e0]'
+                                }`}
+                              aria-label={`Go to sentence ${i + 1}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Active sentence — highlighted */}
+                      <div
+                        className="rounded-xl px-5 py-4 mb-4 transition-all"
+                        style={{ background: '#fffbea', borderLeft: '3px solid #c4a44a' }}
+                        aria-live="polite"
+                        aria-atomic="true"
+                      >
+                        <p className="text-[#2d2d2d] text-lg" style={{ lineHeight: '1.9' }}>
+                          {sentences[active]}
+                        </p>
+                      </div>
+
+                      {/* Sentence counter + nav */}
+                      <div className="flex items-center justify-between mt-4">
+                        <button
+                          onClick={() => setActiveSentenceIdx(i => Math.max(0, i - 1))}
+                          disabled={active === 0}
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-[#6b6b6b] bg-[#f5f3ef] hover:bg-[#ede9e3] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <ChevronLeft className="w-4 h-4" /> Prev
+                        </button>
+                        <span className="text-xs text-[#8a8a8a]">{active + 1} / {total}</span>
+                        <button
+                          onClick={() => setActiveSentenceIdx(i => Math.min(total - 1, i + 1))}
+                          disabled={active === total - 1}
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-white bg-[#7a9b7e] hover:bg-[#6b8c6f] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        >
+                          Next <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })()
+              ) : (
+                /* ── Normal mode: all paragraphs ── */
+                <div className="prose prose-lg max-w-none">
+                  {currentSection.content.text?.split('\n').map((paragraph, idx) => (
+                    <p key={idx} className="mb-4 text-[#2d2d2d]">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -691,8 +811,8 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                 <button
                   onClick={isRecording ? stopSpeechRecognition : startSpeechRecognition}
                   className={`p-12 rounded-full ${isRecording
-                      ? 'bg-red-500 animate-pulse'
-                      : 'bg-[#9db4a0] hover:bg-[#8ca394]'
+                    ? 'bg-red-500 animate-pulse'
+                    : 'bg-[#9db4a0] hover:bg-[#8ca394]'
                     } text-white transition-all`}
                   aria-label={isRecording ? 'Stop recording' : 'Start recording'}
                 >

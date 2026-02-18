@@ -95,6 +95,13 @@ const assessmentQuestions = [
   },
 ];
 
+const fontFamilyMap: Record<string, string> = {
+  default: 'var(--font-lexend), sans-serif',
+  atkinson: 'Atkinson Hyperlegible, sans-serif',
+  arial: 'Arial, sans-serif',
+  georgia: 'Georgia, serif',
+};
+
 const stepConfig = [
   { label: 'Welcome', icon: Sparkles },
   { label: 'Profile', icon: User },
@@ -692,9 +699,7 @@ export default function EnhancedOnboardingPage() {
                     { value: 'dyslexia', label: 'Dyslexia', desc: 'Difficulty with reading and spelling', emoji: '📖' },
                     { value: 'adhd', label: 'ADHD', desc: 'Attention and focus challenges', emoji: '⚡' },
                     { value: 'autism', label: 'Autism', desc: 'Different way of learning and communicating', emoji: '🧩' },
-                    { value: 'apd', label: 'Auditory Processing Disorder', desc: 'Difficulty processing sounds', emoji: '🔊' },
-                    { value: 'dysgraphia', label: 'Dysgraphia', desc: 'Difficulty with writing and fine motor skills', emoji: '✏️' },
-                    { value: 'visual', label: 'Visual Impairment', desc: 'Low vision or blindness', emoji: '👁️' },
+
                     { value: 'none', label: 'None of these', desc: 'No specific learning differences', emoji: '✅' },
                   ].map((disability) => {
                     const isSelected = formData.disabilities.includes(disability.value);
