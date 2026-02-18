@@ -179,8 +179,8 @@ export function SpeechRecognition({
                     <button
                         onClick={isListening ? stopListening : startListening}
                         className={`p-3 rounded-xl transition-all ${isListening
-                                ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
-                                : 'bg-[#7a9b7e] hover:bg-[#6b8c6f] text-white'
+                            ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
+                            : 'bg-[#7a9b7e] hover:bg-[#6b8c6f] text-white'
                             }`}
                         aria-label={isListening ? 'Stop recording' : 'Start recording'}
                         title={isListening ? 'Stop recording' : 'Click to speak'}
@@ -228,7 +228,7 @@ export function InlineSpeechRecognition({
     buttonText = 'Voice Input',
     className = ''
 }: {
-    onTranscript: (text: string);
+    onTranscript: (text: string) => void;
     buttonText?: string;
     className?: string;
 }) {
@@ -271,8 +271,8 @@ export function InlineSpeechRecognition({
         <button
             onClick={toggle}
             className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${isListening
-                    ? 'bg-red-500 text-white animate-pulse'
-                    : 'bg-[#f0f4f0] text-[#7a9b7e] hover:bg-[#e8f5e9]'
+                ? 'bg-red-500 text-white animate-pulse'
+                : 'bg-[#f0f4f0] text-[#7a9b7e] hover:bg-[#e8f5e9]'
                 } ${className}`}
         >
             <Mic className="w-3.5 h-3.5" />
