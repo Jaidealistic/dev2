@@ -170,7 +170,7 @@ npm run dev
 
 LinguaAccess is an accessible language learning platform designed for learners with disabilities (Dyslexia, ADHD, Autism, etc.).
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fkanishka1259%2FLexfix&env=DATABASE_URL,NEXTAUTH_SECRET)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FJaidealistic%2Fdev2&env=DATABASE_URL,NEXTAUTH_SECRET)
 
 ### Daily Standup (Async in Slack)
 ```
