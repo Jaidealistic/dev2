@@ -142,25 +142,25 @@ export default function LearnerSettingsPage() {
             Enable specialized features designed for your learning style.
           </p>
           <div className="space-y-3">
-            <Toggle
+            <ToggleOption
               label="ADHD Focus Mode"
               description="Simplifies interface, breaks lessons into single sentences, and enables focus timers."
               checked={formData.adhdMode}
               onChange={(c) => setFormData({ ...formData, adhdMode: c })}
             />
-            <Toggle
+            <ToggleOption
               label="Dyslexia Support"
               description="Uses OpenDyslexic font, increases letter spacing, and enables text-to-speech helpers."
               checked={formData.dyslexiaMode}
               onChange={(c) => setFormData({ ...formData, dyslexiaMode: c })}
             />
-            <Toggle
+            <ToggleOption
               label="Autism Structure"
               description="Enables predictable layouts, clear instructions, and removes ambiguous metaphors."
               checked={formData.autismMode}
               onChange={(c) => setFormData({ ...formData, autismMode: c })}
             />
-            <Toggle
+            <ToggleOption
               label="Auditory Processing (APD)"
               description="Emphasizes visual cues, subtitles, and reduces background noise."
               checked={formData.apdMode}

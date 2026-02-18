@@ -23,13 +23,13 @@ export async function GET(req: Request) {
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          image: true,
-          learnerProfile: true, // simplified
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        avatar: true,
+        learnerProfile: true, // simplified
       }
     });
 
@@ -39,8 +39,8 @@ export async function GET(req: Request) {
 
     return NextResponse.json({
       user: {
-          ...user,
-          onboardingComplete: !!((user.role === 'LEARNER' && user.learnerProfile) || user.role !== 'LEARNER'),
+        ...user,
+        onboardingComplete: !!((user.role === 'LEARNER' && user.learnerProfile) || user.role !== 'LEARNER'),
       }
     });
 

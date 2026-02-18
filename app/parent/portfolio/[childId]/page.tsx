@@ -11,12 +11,12 @@
 
 'use client';
 
-import React, { useState } from 'react';
-import { 
-  Upload, 
-  FileText, 
-  Image, 
-  Video, 
+import React, { useState, use } from 'react';
+import {
+  Upload,
+  FileText,
+  Image,
+  Video,
   File,
   Download,
   Calendar,
@@ -59,8 +59,8 @@ type NIOSCompetency = {
   evidenceCount: number;
 };
 
-export default function PortfolioPage({ params }: { params: { childId: string } }) {
-  const { childId } = params;
+export default function PortfolioPage({ params }: { params: Promise<{ childId: string }> }) {
+  const { childId } = use(params);
   const [activeTab, setActiveTab] = useState<'logs' | 'samples' | 'competencies' | 'reflections'>('logs');
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [reflectionModalOpen, setReflectionModalOpen] = useState(false);
@@ -191,7 +191,7 @@ export default function PortfolioPage({ params }: { params: { childId: string } 
                 Upload Work Sample
               </button>
               <div className="relative">
-                <button 
+                <button
                   onClick={() => handleExport('progress')}
                   className="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-full font-medium hover:border-[#9db4a0] hover:text-[#9db4a0]"
                 >
@@ -237,11 +237,10 @@ export default function PortfolioPage({ params }: { params: { childId: string } 
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-6 py-3 font-medium border-b-2 transition-colors ${
-                  activeTab === tab.id
+                className={`flex items-center gap-2 px-6 py-3 font-medium border-b-2 transition-colors ${activeTab === tab.id
                     ? 'border-[#9db4a0] text-[#9db4a0]'
                     : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 <tab.icon className="w-5 h-5" />
                 {tab.label}
@@ -414,11 +413,10 @@ export default function PortfolioPage({ params }: { params: { childId: string } 
                   <div className="relative">
                     <div className="w-full bg-gray-200 rounded-full h-3">
                       <div
-                        className={`h-3 rounded-full ${
-                          comp.progress >= 80 ? 'bg-green-500' :
-                          comp.progress >= 60 ? 'bg-blue-500' :
-                          'bg-orange-500'
-                        }`}
+                        className={`h-3 rounded-full ${comp.progress >= 80 ? 'bg-green-500' :
+                            comp.progress >= 60 ? 'bg-blue-500' :
+                              'bg-orange-500'
+                          }`}
                         style={{ width: `${comp.progress}%` }}
                       />
                     </div>

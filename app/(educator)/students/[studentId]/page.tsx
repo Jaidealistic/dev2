@@ -12,8 +12,9 @@ const prisma = new PrismaClient();
 export default async function StudentDetailPage({
   params,
 }: {
-  params: { studentId: string };
+  params: Promise<{ studentId: string }>;
 }) {
+  const { studentId } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session || session.user.role !== 'EDUCATOR') {
@@ -23,7 +24,7 @@ export default async function StudentDetailPage({
   const relationship = await prisma.educatorStudent.findFirst({
     where: {
       educator: { userId: session.user.id },
-      studentId: params.studentId,
+      studentId: studentId,
       active: true,
     },
     include: {

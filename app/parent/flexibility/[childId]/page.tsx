@@ -11,10 +11,10 @@
 
 'use client';
 
-import React, { useState } from 'react';
-import { 
-  Pause, 
-  Play, 
+import React, { useState, use } from 'react';
+import {
+  Pause,
+  Play,
   Battery,
   Zap,
   Download,
@@ -25,8 +25,8 @@ import {
 
 type LearningStatus = 'active' | 'paused' | 'light-load' | 'catch-up' | 'sick-day';
 
-export default function FlexibilityTools({ params }: { params: { childId: string } }) {
-  const { childId } = params;
+export default function FlexibilityTools({ params }: { params: Promise<{ childId: string }> }) {
+  const { childId } = use(params);
   const childName = 'Emma';
 
   const [currentStatus, setCurrentStatus] = useState<LearningStatus>('active');

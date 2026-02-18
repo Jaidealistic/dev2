@@ -7,11 +7,12 @@ const prisma = new PrismaClient();
 
 export async function GET(
   req: Request,
-  { params }: { params: { lessonId: string } }
+  { params }: { params: Promise<{ lessonId: string }> }
 ) {
   try {
+    const { lessonId } = await params;
     const lesson = await prisma.lesson.findUnique({
-      where: { id: params.lessonId },
+      where: { id: lessonId },
       include: { steps: true },
     });
 
@@ -35,8 +36,9 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { lessonId: string } }
+  { params }: { params: Promise<{ lessonId: string }> }
 ) {
+  const { lessonId } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session || session.user.role !== 'EDUCATOR') {
@@ -48,7 +50,7 @@ export async function PUT(
 
     const lesson = await prisma.lesson.update({
       where: {
-        id: params.lessonId,
+        id: lessonId,
         creatorId: session.user.id!,
       },
       data: {
@@ -73,8 +75,9 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { lessonId: string } }
+  { params }: { params: Promise<{ lessonId: string }> }
 ) {
+  const { lessonId } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session || session.user.role !== 'EDUCATOR') {
@@ -84,7 +87,7 @@ export async function DELETE(
   try {
     await prisma.lesson.delete({
       where: {
-        id: params.lessonId,
+        id: lessonId,
         creatorId: session.user.id!,
       },
     });

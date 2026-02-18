@@ -1,0 +1,77 @@
+﻿
+> linguaaccess@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+npm : ΓÜá The "middleware" file convention is deprecated. 
+Please use "proxy" instead. Learn more: 
+https://nextjs.org/docs/messages/middleware-to-proxy
+At line:1 char:224
++ ... AJ8Vu1e+yYv0u6Udi/G5tNsr/hnOlE="; npm run build > 
+build_full.log 2>&1
++                                       
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ΓÜá The "middle.. 
+   .leware-to-proxy:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Creating an optimized production build ...
+Turbopack build encountered 2 warnings:
+[next]/internal/font/google/atkinson_hyperlegible_8ecf211d.modu
+le.css
+Error while requesting resource
+There was an issue requesting https://fonts.googleapis.com/css2
+?family=Atkinson+Hyperlegible:wght@400;700&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/atkinson_hyperlegible_8ecf211d.
+module.css
+    
+[next]/internal/font/google/atkinson_hyperlegible_8ecf211d.js
+    ./app/layout.tsx
+
+
+[next]/internal/font/google/lexend_e0d5d8c.module.css
+Error while requesting resource
+There was an issue requesting https://fonts.googleapis.com/css2
+?family=Lexend:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/lexend_e0d5d8c.module.css
+    [next]/internal/font/google/lexend_e0d5d8c.js
+    ./app/layout.tsx
+
+
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+[next]/internal/font/google/atkinson_hyperlegible_8ecf211d.modu
+le.css
+next/font: error:
+Failed to fetch `Atkinson Hyperlegible` from Google Fonts.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/atkinson_hyperlegible_8ecf211d.
+module.css
+    
+[next]/internal/font/google/atkinson_hyperlegible_8ecf211d.js
+    ./app/layout.tsx
+
+
+[next]/internal/font/google/lexend_e0d5d8c.module.css
+next/font: error:
+Failed to fetch `Lexend` from Google Fonts.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/lexend_e0d5d8c.module.css
+    [next]/internal/font/google/lexend_e0d5d8c.js
+    ./app/layout.tsx
+
+
+    at ignore-listed frames

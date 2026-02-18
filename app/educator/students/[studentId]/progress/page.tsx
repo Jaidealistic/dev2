@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function StudentProgressPage({ params }: { params: { studentId: string } }) {
+export default async function StudentProgressPage({ params }: { params: Promise<{ studentId: string }> }) {
+  const { studentId } = await params;
   return (
     <div className="p-8">
       <Card>
@@ -8,7 +9,7 @@ export default function StudentProgressPage({ params }: { params: { studentId: s
           <CardTitle>Student Progress</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>Progress tracking for student {params.studentId} is coming soon.</p>
+          <p>Progress tracking for student {studentId} is coming soon.</p>
         </CardContent>
       </Card>
     </div>

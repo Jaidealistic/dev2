@@ -57,7 +57,7 @@ export async function GET(req: Request) {
         if (!parentProfile && (parentUser.role === 'PARENT' || parentUser.role === 'PARENT_EDUCATOR')) {
             parentProfile = await prisma.parentProfile.create({
                 data: { userId: parentUser.id }
-            });
+            }) as any;
         }
 
         // Calculate real progress metrics

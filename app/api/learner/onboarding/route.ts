@@ -70,8 +70,8 @@ export async function PUT(req: Request) {
             disabilityTypes,
             iepGoals,
             fontFamily,
-            fontSize: textSize,
-            lineSpacing: parseFloat(lineSpacing),
+            fontSize: parseInt(textSize) || 16,
+            lineSpacing: parseFloat(lineSpacing) || 1.5,
             colorScheme,
             enableSpeechRec: speechRecognitionEnabled,
             accommodations: {

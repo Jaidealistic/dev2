@@ -31,7 +31,11 @@
         "name": "next"
       }
     ],
-    "allowJs": true
+    "allowJs": true,
+    "types": [
+      "node",
+      "minimatch"
+    ]
   },
   "include": [
     "next-env.d.ts",

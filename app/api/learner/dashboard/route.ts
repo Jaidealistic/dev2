@@ -49,14 +49,14 @@ export async function GET(req: Request) {
         data: {
           userId: user.id,
           studentId: generateStudentId(),
-          learningLanguage: 'ENGLISH' // Default
+          learningLanguage: 'ENGLISH' as any // Default
         }
       });
     } else if (!learnerProfile.studentId) {
       // Fix missing student ID if profile exists but ID is null
       learnerProfile = await prisma.learnerProfile.update({
         where: { id: learnerProfile.id },
-        data: { studentId: generateStudentId() }
+        data: { studentId: generateStudentId() } as any
       });
     }
 

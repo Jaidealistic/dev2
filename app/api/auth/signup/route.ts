@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
     // Hash password or pattern
     let passwordHash = '';
-    
+
     if (role === 'LEARNER' && pattern) {
       // For learners, we treat the pattern as the password
       // Convert pattern array to string for hashing
@@ -61,8 +61,8 @@ export async function POST(req: Request) {
         learnerProfile: role === 'LEARNER' ? {
           create: {
             studentId: generateStudentId(),
-            learningLanguage: 'ENGLISH', // Default
-            disabilities: [],
+            learningLanguage: 'ENGLISH' as any, // Default
+            disabilities: [] as any,
           }
         } : undefined,
         parentProfile: ['PARENT', 'PARENT_EDUCATOR'].includes(role) ? {
