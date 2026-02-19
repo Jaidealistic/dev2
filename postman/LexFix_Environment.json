@@ -1,0 +1,37 @@
+{
+    "id": "e3b0c442-98fc-1c14-9afz-1234567890ab",
+    "name": "LexFix Local",
+    "values": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000",
+            "enabled": true
+        },
+        {
+            "key": "learnerEmail",
+            "value": "learner.test@example.com",
+            "enabled": true
+        },
+        {
+            "key": "parentEmail",
+            "value": "parent.test@example.com",
+            "enabled": true
+        },
+        {
+            "key": "password",
+            "value": "TestPass123!",
+            "enabled": true
+        },
+        {
+            "key": "pattern",
+            "value": "[1, 2, 3, 4]",
+            "enabled": true
+        },
+        {
+            "key": "token",
+            "value": "",
+            "enabled": true
+        }
+    ],
+    "_postman_variable_scope": "environment"
+}

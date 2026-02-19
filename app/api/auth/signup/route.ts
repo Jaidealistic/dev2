@@ -61,8 +61,9 @@ export async function POST(req: Request) {
         learnerProfile: role === 'LEARNER' ? {
           create: {
             studentId: generateStudentId(),
-            learningLanguage: 'ENGLISH' as any, // Default
-            disabilities: [] as any,
+            learningLanguage: 'ENGLISH',
+            // disabilities: '[]', // Optional string, leave undefined or provide JSON string
+            disabilityTypes: '[]', // Provide default JSON string for array field
           }
         } : undefined,
         parentProfile: ['PARENT', 'PARENT_EDUCATOR'].includes(role) ? {

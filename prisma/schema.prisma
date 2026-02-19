@@ -1,9 +1,10 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/client"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -14,7 +15,7 @@ model User {
   firstName            String?
   lastName             String?
   avatar               String?
-  role                 UserRole          @default(LEARNER)
+  role                 String            @default("LEARNER")
   emailVerified        Boolean           @default(false)
   verificationToken    String?
   resetToken           String?
@@ -24,7 +25,7 @@ model User {
   lastLogin            DateTime?
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
-  accessibilityPrefs   Json              @default("{}")
+  accessibilityPrefs   String            @default("{}")
   language             String            @default("en")
   theme                String            @default("light")
   auditLogs            AuditLog[]
@@ -47,14 +48,14 @@ model LearnerProfile {
   dateOfBirth           DateTime?
   grade                 String?
   school                String?
-  primaryLanguage       Language               @default(ENGLISH)
-  learningLanguage      Language?
+  primaryLanguage       String                 @default("ENGLISH")
+  learningLanguage      String?
   nativeLanguage        String                 @default("en")
-  proficiencyLevel      ProficiencyLevel       @default(BEGINNER)
-  disabilities          Json?
-  disabilityTypes       String[]               @default([])
+  proficiencyLevel      String                 @default("BEGINNER")
+  disabilities          String?
+  disabilityTypes       String                 @default("[]")
   iepGoals              String?
-  accommodations        Json?
+  accommodations        String?
   fontFamily            String                 @default("system")
   fontSize              Int                    @default(16)
   lineSpacing           Float                  @default(1.5)
@@ -103,7 +104,7 @@ model FamilyMember {
   parentId         String
   childId          String
   learnerProfileId String?
-  permissions      Json            @default("{}")
+  permissions      String          @default("{}")
   relationship     String?
   addedAt          DateTime        @default(now())
   child            User            @relation("child", fields: [childId], references: [id], onDelete: Cascade)
@@ -120,13 +121,13 @@ model EducatorProfile {
   userId           String            @unique
   fullName         String?
   qualifications   String?
-  specialization   String[]          @default([])
+  specialization   String            @default("[]")
   licenseNumber    String?
   institution      String?
   yearsExperience  Int?
   bio              String?
   avatarUrl        String?
-  createdLessonIds String[]          @default([])
+  createdLessonIds String            @default("[]")
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   classrooms       Classroom[]
@@ -142,7 +143,7 @@ model EducatorStudent {
   studentId     String
   studentUserId String?
   assignedAt    DateTime        @default(now())
-  permissions   Json            @default("{}")
+  permissions   String          @default("{}")
   active        Boolean         @default(true)
   notes         String?
   educator      EducatorProfile @relation(fields: [educatorId], references: [id], onDelete: Cascade)
@@ -186,7 +187,7 @@ model WeeklySchedule {
   familyId  String
   weekStart DateTime
   weekEnd   DateTime
-  schedule  Json
+  schedule  String
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
   family    HomeschoolFamily @relation(fields: [familyId], references: [id], onDelete: Cascade)
@@ -248,7 +249,7 @@ model LessonStep {
   lessonId   String
   stepNumber Int
   title      String
-  content    Json?
+  content    String?
   stepType   String @default("content")
   lesson     Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
@@ -289,8 +290,8 @@ model PortfolioItem {
   description  String?
   itemType     String
   fileUrl      String?
-  competencies String[]
-  tags         String[]
+  competencies String         @default("[]")
+  tags         String         @default("[]")
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   learner      LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
@@ -315,7 +316,7 @@ model Assessment {
   id          String                 @id @default(cuid())
   title       String
   createdBy   String
-  questions   Json
+  questions   String
   createdAt   DateTime               @default(now())
   submissions AssessmentSubmission[]
 }
@@ -325,7 +326,7 @@ model AssessmentSubmission {
   assessmentId String
   learnerId    String
   score        Int?
-  answers      Json
+  answers      String
   submittedAt  DateTime       @default(now())
   assessment   Assessment     @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
   learner      LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
@@ -346,7 +347,7 @@ model AssessmentResponse {
 
 model MessageThread {
   id             String    @id @default(cuid())
-  participantIds String[]
+  participantIds String    @default("[]")
   lastMessageAt  DateTime  @default(now())
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -480,29 +481,4 @@ model Achievement {
   learner     LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
 
   @@index([learnerId])
-}
-
-enum UserRole {
-  LEARNER
-  PARENT
-  EDUCATOR
-  PARENT_EDUCATOR
-  ADMIN
-  SPEECH_THERAPIST
-}
-
-enum Language {
-  ENGLISH
-  TAMIL
-}
-
-enum ProficiencyLevel {
-  BEGINNER
-  ELEMENTARY
-  INTERMEDIATE
-  UPPER_INTERMEDIATE
-  ADVANCED
-  MASTERY
-  NOVICE
-  PROFICIENT
 }
