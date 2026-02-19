@@ -8,7 +8,9 @@
  * - Token management
  */
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// Use relative path for production (Vercel) or fallback to Next.js default port for local dev if needed
+// BUT for client-side, relative '/api' is best.
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 console.log('🔧 API_URL configured as:', API_URL);
 
 interface ApiError {
