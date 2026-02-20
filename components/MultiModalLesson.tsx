@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import { useToast } from '@/components/providers/ToastProvider';
 import { TextToSpeech, InlineTextToSpeech } from '@/components/TextToSpeech';
+import { VisualSchedule } from '@/components/VisualSchedule';
 import { GuidedPractice, MultipleChoice, FillInBlank } from '@/components/PracticeComponents';
 import {
   Play,
@@ -109,8 +110,14 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
   // ADHD single-sentence mode (OpenProject #12620)
   const [activeSentenceIdx, setActiveSentenceIdx] = useState(0);
 
-  // Reset sentence index when section changes
-  useEffect(() => { setActiveSentenceIdx(0); }, [currentSectionIndex]);
+  // Dyslexia word highlighting state
+  const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
+
+  // Reset indices when section changes
+  useEffect(() => {
+    setActiveSentenceIdx(0);
+    setHighlightIndex(null);
+  }, [currentSectionIndex]);
 
   // Audio/Video refs
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -530,6 +537,14 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
 
       {/* Main Content */}
       <main className="container mx-auto px-6 py-12 max-w-4xl">
+        {/* Autism: Visual Schedule */}
+        {isAutismMode && (
+          <VisualSchedule
+            sections={lesson.sections}
+            currentIndex={currentSectionIndex}
+          />
+        )}
+
         {/* Section Title */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center justify-between">
@@ -566,6 +581,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
               <TextToSpeech
                 text={currentSection.content.text || ''}
                 autoHighlight={true}
+                onHighlight={setHighlightIndex}
               />
             </div>
           )}
@@ -642,13 +658,77 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                   );
                 })()
               ) : (
-                /* ── Normal mode: all paragraphs ── */
-                <div className="prose prose-lg max-w-none">
-                  {currentSection.content.text?.split('\n').map((paragraph, idx) => (
-                    <p key={idx} className="mb-4 text-[#2d2d2d]">
-                      {paragraph}
-                    </p>
-                  ))}
+                /* ── Normal mode: all paragraphs with optional highlighting ── */
+                <div className="prose prose-lg max-w-none text-[#2d2d2d]">
+                  {(() => {
+                    const text = currentSection.content.text || '';
+                    if (highlightIndex === null) {
+                      return text.split('\n').map((paragraph, idx) => (
+                        <p key={idx} className="mb-4">{paragraph}</p>
+                      ));
+                    }
+
+                    // Highlight logic: find word at highlightIndex
+                    // We need to render segments before and after, preserving newlines
+                    const markerIndex = highlightIndex;
+
+                    // Find word boundaries (simple regex approx)
+                    const after = text.slice(markerIndex);
+                    const match = after.match(/^(\S+)/);
+                    const wordLength = match ? match[0].length : 0;
+
+                    const beforeText = text.slice(0, markerIndex);
+                    const highlightedWord = text.slice(markerIndex, markerIndex + wordLength);
+                    const afterText = text.slice(markerIndex + wordLength);
+
+                    // Helper to render text with newlines as <p>
+                    const renderSegment = (segmentText: string, keyPrefix: string) => {
+                      return segmentText.split('\n').map((chunk, i, arr) => {
+                        // If it's the last chunk, it's inline with the next element (highlight)
+                        // But wait, splitting by \n means we get paragraphs.
+                        // This is tricky to mix with inline highlighting span.
+                        // SIMPLIFIED APPROACH: Just render text with <br/> for newlines inside a single wrapper? 
+                        // No, prose expects <p>.
+                        return chunk ? <span key={`${keyPrefix}-${i}`}>{chunk}{i < arr.length - 1 ? <br /> : ''}</span> : <br key={`${keyPrefix}-${i}`} />;
+                      });
+                    };
+
+                    // Actually, keeping <p> structure is hard with cross-boundary highlighting.
+                    // For Dyslexia mode, readability is key. <p> spacing matters.
+                    // Let's assume TTS reads linear text.
+                    // We will iterate paragraphs and find which one contains the index.
+
+                    let currentIndex = 0;
+                    return text.split('\n').map((paragraph, pIdx) => {
+                      const pStart = currentIndex;
+                      const pEnd = currentIndex + paragraph.length;
+                      // +1 for the newline that was split away, unless last
+                      currentIndex += paragraph.length + 1;
+
+                      // Check if highlight is inside this paragraph
+                      if (highlightIndex >= pStart && highlightIndex < pEnd) {
+                        // The highlight is here!
+                        const localIndex = highlightIndex - pStart;
+                        const pBefore = paragraph.slice(0, localIndex);
+                        const pafter = paragraph.slice(localIndex);
+                        const pMatch = pafter.match(/^(\S+)/);
+                        const pWord = pMatch ? pMatch[0] : '';
+                        const pRest = paragraph.slice(localIndex + pWord.length);
+
+                        return (
+                          <p key={pIdx} className="mb-4">
+                            {pBefore}
+                            <mark className="bg-[#ffeb3b] rounded-sm px-0.5 text-black font-medium transition-all duration-300">
+                              {pWord}
+                            </mark>
+                            {pRest}
+                          </p>
+                        );
+                      }
+
+                      return <p key={pIdx} className="mb-4">{paragraph}</p>;
+                    });
+                  })()}
                 </div>
               )}
             </div>

@@ -18,6 +18,7 @@ interface TextToSpeechProps {
     text: string;
     language?: 'en-US' | 'ta-IN';
     autoHighlight?: boolean;
+    onHighlight?: (index: number) => void;
     className?: string;
 }
 
@@ -25,6 +26,7 @@ export function TextToSpeech({
     text,
     language = 'en-US',
     autoHighlight = false,
+    onHighlight,
     className = ''
 }: TextToSpeechProps) {
     const [isPlaying, setIsPlaying] = useState(false);
@@ -83,8 +85,9 @@ export function TextToSpeech({
         // Optional: Word boundary highlighting
         if (autoHighlight) {
             utterance.onboundary = (event) => {
-                // Can be used to highlight current word
-                console.log('Word boundary:', event.charIndex);
+                if (onHighlight) {
+                    onHighlight(event.charIndex);
+                }
             };
         }
 
@@ -176,8 +179,8 @@ export function TextToSpeech({
                 <button
                     onClick={() => setShowSettings(!showSettings)}
                     className={`p-2 rounded-md transition-colors ${showSettings
-                            ? 'bg-[#7a9b7e] text-white'
-                            : 'text-gray-600 hover:bg-gray-200'
+                        ? 'bg-[#7a9b7e] text-white'
+                        : 'text-gray-600 hover:bg-gray-200'
                         }`}
                     aria-label="Settings"
                     title="Speed settings"
@@ -199,8 +202,8 @@ export function TextToSpeech({
                                 key={s}
                                 onClick={() => handleSpeedChange(s)}
                                 className={`px-2 py-1 text-xs rounded-md transition-colors ${speed === s
-                                        ? 'bg-[#7a9b7e] text-white font-semibold'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-[#7a9b7e] text-white font-semibold'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                                 aria-label={`Speed ${s}x`}
                             >
