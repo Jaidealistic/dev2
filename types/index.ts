@@ -145,6 +145,7 @@ export interface AccessibilityPreferences {
   adhdMode: boolean;
   autismMode: boolean;
   apdMode: boolean;
+  zenMode: boolean;
 }
 
 // API Response Types

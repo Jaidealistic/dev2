@@ -23,6 +23,7 @@ const defaultPreferences: AccessibilityPreferences = {
   adhdMode: false,
   autismMode: false,
   apdMode: false,
+  zenMode: false,
 };
 
 interface AccessibilityContextType {
@@ -197,6 +198,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
       reduceFlashing: true,
       colorScheme: 'light',
       focusMode: true,
+      zenMode: true,
     });
   }, [setPreferences]);
 
@@ -340,10 +342,11 @@ function AccessibilityStyleInjector({
       preferences.focusMode ? 'focus-mode' : '',
       preferences.bionicReading ? 'bionic-reading' : '',
       preferences.reducedMotion ? 'reduce-motion' : '',
+      preferences.zenMode ? 'zen-mode' : '',
     ].filter(Boolean);
 
     // Remove old a11y classes and add new ones
-    const a11yClassNames = ['font-sans', 'font-lexend', 'font-opendyslexic', 'dark', 'focus-mode', 'bionic-reading', 'reduce-motion'];
+    const a11yClassNames = ['font-sans', 'font-lexend', 'font-opendyslexic', 'dark', 'focus-mode', 'bionic-reading', 'reduce-motion', 'zen-mode'];
     a11yClassNames.forEach(cls => document.body.classList.remove(cls));
     a11yClasses.forEach(cls => document.body.classList.add(cls));
 

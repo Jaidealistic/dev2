@@ -45,6 +45,7 @@ export default function LearnerSettingsPage() {
     dyslexiaMode: preferences.dyslexiaMode || false,
     autismMode: preferences.autismMode || false,
     apdMode: preferences.apdMode || false,
+    zenMode: preferences.zenMode || false,
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -69,6 +70,7 @@ export default function LearnerSettingsPage() {
         dyslexiaMode: formData.dyslexiaMode,
         autismMode: formData.autismMode,
         apdMode: formData.apdMode,
+        zenMode: formData.zenMode,
       });
 
       // Try to persist to server (non-blocking — fail silently)
@@ -165,6 +167,12 @@ export default function LearnerSettingsPage() {
               description="Emphasizes visual cues, subtitles, and reduces background noise."
               checked={formData.apdMode}
               onChange={(c) => setFormData({ ...formData, apdMode: c })}
+            />
+            <ToggleOption
+              label="Zen Mode"
+              description="Minimal sensory overload. Removes backgrounds, gradients, and decorative elements."
+              checked={formData.zenMode}
+              onChange={(c) => setFormData({ ...formData, zenMode: c })}
             />
           </div>
         </Section>
