@@ -176,8 +176,8 @@ export function TextToSpeech({
                 <button
                     onClick={() => setShowSettings(!showSettings)}
                     className={`p-2 rounded-md transition-colors ${showSettings
-                            ? 'bg-[#7a9b7e] text-white'
-                            : 'text-gray-600 hover:bg-gray-200'
+                        ? 'bg-[#7a9b7e] text-white'
+                        : 'text-gray-600 hover:bg-gray-200'
                         }`}
                     aria-label="Settings"
                     title="Speed settings"
@@ -199,8 +199,8 @@ export function TextToSpeech({
                                 key={s}
                                 onClick={() => handleSpeedChange(s)}
                                 className={`px-2 py-1 text-xs rounded-md transition-colors ${speed === s
-                                        ? 'bg-[#7a9b7e] text-white font-semibold'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-[#7a9b7e] text-white font-semibold'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                                 aria-label={`Speed ${s}x`}
                             >
@@ -227,14 +227,17 @@ export function TextToSpeech({
 }
 
 // Export a simpler inline version for lesson content
-export function InlineTextToSpeech({ text, className = '' }: { text: string; className?: string }) {
+export function InlineTextToSpeech({ text, language = 'en-US', className = '' }: { text: string; language?: 'en-US' | 'ta-IN'; className?: string }) {
     const [isPlaying, setIsPlaying] = useState(false);
 
     const speak = () => {
+        if (typeof window === 'undefined') return;
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = language;
         utterance.onstart = () => setIsPlaying(true);
         utterance.onend = () => setIsPlaying(false);
+        utterance.onerror = () => setIsPlaying(false);
         window.speechSynthesis.speak(utterance);
     };
 

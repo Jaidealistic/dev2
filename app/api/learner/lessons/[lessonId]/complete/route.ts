@@ -22,10 +22,14 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    interface JWTPayload {
+      userId: string;
+    }
+
     const token = authHeader.split(' ')[1];
-    let decoded: any;
+    let decoded: JWTPayload;
     try {
-      decoded = jwt.verify(token, SECRET_KEY);
+      decoded = jwt.verify(token, SECRET_KEY) as JWTPayload;
     } catch (err) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -106,7 +110,7 @@ export async function POST(
 
     // Get unique days with activity
     const uniqueDays = new Set(
-      recentProgress.map(p => p.updatedAt.toISOString().split('T')[0])
+      recentProgress.map((p: { updatedAt: Date }) => p.updatedAt.toISOString().split('T')[0])
     );
     const currentStreak = uniqueDays.size;
 
@@ -189,7 +193,7 @@ export async function POST(
         currentStreak,
         totalMinutesSpent: totalMinutes
       },
-      newAchievements: newAchievements.map(a => ({
+      newAchievements: newAchievements.map((a: { id: string; badgeName: string; description: string | null; earnedAt: Date }) => ({
         id: a.id,
         badgeName: a.badgeName,
         description: a.description,

@@ -1,60 +1,59 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
-import { Pool } from 'pg';
-import { PrismaPg } from '@prisma/adapter-pg';
 import bcrypt from 'bcryptjs';
 
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  throw new Error('DATABASE_URL is not set in environment variables');
-}
-
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Seeding PostgreSQL database...');
 
   // Clear existing data in correct order (respecting foreign key constraints)
   console.log('🗑️ Clearing existing data...');
-  await prisma.coOpSession.deleteMany();
-  console.log('✅ Cleared CoOpSession');
-  await prisma.coOpMembership.deleteMany();
-  console.log('✅ Cleared CoOpMembership');
-  await prisma.coOp.deleteMany();
-  console.log('✅ Cleared CoOp');
-  await prisma.weeklySchedule.deleteMany();
-  console.log('✅ Cleared WeeklySchedule');
-  await prisma.homeschoolFamily.deleteMany();
-  console.log('✅ Cleared HomeschoolFamily');
-  await prisma.educatorStudent.deleteMany();
-  console.log('✅ Cleared EducatorStudent');
-  await prisma.familyMember.deleteMany();
-  console.log('✅ Cleared FamilyMember');
-  await prisma.nIOSCompetency.deleteMany();
-  console.log('✅ Cleared NIOSCompetency');
-  await prisma.portfolioItem.deleteMany();
-  console.log('✅ Cleared PortfolioItem');
-  await prisma.message.deleteMany();
-  console.log('✅ Cleared Message');
-  await prisma.messageThread.deleteMany();
-  console.log('✅ Cleared MessageThread');
-  await prisma.achievement.deleteMany();
-  console.log('✅ Cleared Achievement');
-  await prisma.progressRecord.deleteMany();
-  console.log('✅ Cleared ProgressRecord');
-  await prisma.educatorProfile.deleteMany();
-  console.log('✅ Cleared EducatorProfile');
-  await prisma.parentProfile.deleteMany();
-  console.log('✅ Cleared ParentProfile');
-  await prisma.learnerProfile.deleteMany();
-  console.log('✅ Cleared LearnerProfile');
-  await prisma.user.deleteMany();
-  console.log('✅ Cleared User');
 
-  console.log('✅ Cleared existing data');
+  // 1. Level 3+ (Deepest children)
+  await prisma.attendance.deleteMany();
+  await prisma.assessmentResponse.deleteMany();
+  await prisma.assessmentSubmission.deleteMany();
+  await prisma.lessonProgress.deleteMany();
+  await prisma.workSample.deleteMany();
+  await prisma.lessonLog.deleteMany();
+  await prisma.nIOSCompetency.deleteMany();
+  await prisma.portfolioItem.deleteMany();
+  await prisma.progressRecord.deleteMany();
+  await prisma.achievement.deleteMany();
+  await prisma.forumLike.deleteMany();
+  await prisma.forumReply.deleteMany();
+  await prisma.coOpSession.deleteMany();
+  await prisma.weeklySchedule.deleteMany();
+
+  // 2. Level 2 (Intermediate tables & Link tables)
+  await prisma.educatorStudent.deleteMany();
+  await prisma.familyMember.deleteMany();
+  await prisma.coOpMembership.deleteMany();
+  await prisma.forumPost.deleteMany();
+  await prisma.officeHourRegistration.deleteMany();
+  await prisma.parentCourseProgress.deleteMany();
+  await prisma.teachingNote.deleteMany();
+  await prisma.classroom.deleteMany();
+  await prisma.lessonStep.deleteMany();
+  await prisma.message.deleteMany();
+  await prisma.auditLog.deleteMany();
+  await prisma.contentFlag.deleteMany();
+
+  // 3. Level 1 (Profiles and Parent tables)
+  await prisma.coOp.deleteMany();
+  await prisma.homeschoolFamily.deleteMany();
+  await prisma.messageThread.deleteMany();
+  await prisma.educatorProfile.deleteMany();
+  await prisma.parentProfile.deleteMany();
+  await prisma.learnerProfile.deleteMany();
+  await prisma.lesson.deleteMany();
+  await prisma.assessment.deleteMany();
+
+  // 4. Level 0 (Final parents)
+  await prisma.user.deleteMany();
+
+  console.log('✅ Cleared all existing data');
 
   // Create Educator with profile
   const educatorPassword = await bcrypt.hash('educator123', 12);
@@ -236,7 +235,8 @@ async function main() {
     await prisma.familyMember.create({
       data: {
         parentId: parent.parentProfile.id,
-        childId: learner.learnerProfile.id,
+        childId: learner.id,
+        learnerProfileId: learner.learnerProfile.id,
         permissions: {
           canViewProgress: true,
           canMessage: true,
@@ -252,7 +252,8 @@ async function main() {
     await prisma.familyMember.create({
       data: {
         parentId: homeschoolParent.parentProfile.id,
-        childId: learner.learnerProfile.id,
+        childId: learner.id,
+        learnerProfileId: learner.learnerProfile.id,
         permissions: {
           canViewProgress: true,
           canMessage: true,
@@ -264,7 +265,8 @@ async function main() {
     await prisma.familyMember.create({
       data: {
         parentId: homeschoolParent.parentProfile.id,
-        childId: learner2.learnerProfile.id,
+        childId: learner2.id,
+        learnerProfileId: learner2.learnerProfile.id,
         permissions: {
           canViewProgress: true,
           canMessage: true,

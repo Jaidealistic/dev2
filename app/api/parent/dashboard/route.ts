@@ -11,10 +11,14 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        interface JWTPayload {
+            userId: string;
+        }
+
         const token = authHeader.split(' ')[1];
-        let decoded: any;
+        let decoded: JWTPayload;
         try {
-            decoded = jwt.verify(token, SECRET_KEY);
+            decoded = jwt.verify(token, SECRET_KEY) as JWTPayload;
         } catch (err) {
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
@@ -57,11 +61,43 @@ export async function GET(req: Request) {
         if (!parentProfile && (parentUser.role === 'PARENT' || parentUser.role === 'PARENT_EDUCATOR')) {
             parentProfile = await prisma.parentProfile.create({
                 data: { userId: parentUser.id }
-            }) as any;
+            });
+        }
+
+        interface ProgressRecord {
+            timeSpentSec?: number;
+            createdAt: Date;
+        }
+
+        interface LessonProgress {
+            status: string;
+            completedAt?: Date | null;
+            updatedAt: Date;
+            score?: number | null;
+        }
+
+        interface LearnerProfile {
+            studentId?: string | null;
+            grade?: string | null;
+            gradeLevel?: string | null;
+            learningLanguage?: string | null;
+            updatedAt: Date;
+            lessonProgress: LessonProgress[];
+            progressRecords: ProgressRecord[];
+        }
+
+        interface ChildUser {
+            firstName?: string | null;
+            email?: string | null;
+            learnerProfile?: LearnerProfile | null;
+        }
+
+        interface ChildRelation {
+            child: ChildUser;
         }
 
         // Calculate real progress metrics
-        const childrenData = (parentProfile?.children || []).map((relation: any) => {
+        const childrenData = (parentProfile?.children as unknown as ChildRelation[] || []).map((relation: ChildRelation) => {
             const childUser = relation.child;
             const learner = childUser.learnerProfile;
 
@@ -77,7 +113,7 @@ export async function GET(req: Request) {
             if (learner) {
                 // Real completed lessons count
                 stats.completedLessons = learner.lessonProgress?.filter(
-                    (p: any) => p.status === 'COMPLETED' || p.status === 'MASTERED'
+                    (p: LessonProgress) => p.status === 'COMPLETED' || p.status === 'MASTERED'
                 ).length || 0;
 
                 // Calculate real progress percentage
@@ -89,7 +125,7 @@ export async function GET(req: Request) {
                 // Calculate streak from lesson progress (last 7 days activity)
                 const today = new Date();
                 const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-                const recentProgress = learner.lessonProgress?.filter((p: any) => {
+                const recentProgress = learner.lessonProgress?.filter((p: LessonProgress) => {
                     const completedDate = p.completedAt || p.updatedAt;
                     return completedDate && new Date(completedDate) >= sevenDaysAgo;
                 }) || [];
@@ -98,7 +134,7 @@ export async function GET(req: Request) {
                 // Calculate total time spent from progress records
                 if (learner.progressRecords && learner.progressRecords.length > 0) {
                     stats.totalMinutesSpent = learner.progressRecords.reduce(
-                        (total: number, record: any) => total + (record.timeSpentSec || 0),
+                        (total: number, record: ProgressRecord) => total + (record.timeSpentSec || 0),
                         0
                     ) / 60; // Convert to minutes
                 }
@@ -107,7 +143,7 @@ export async function GET(req: Request) {
             // Get most recent activity
             let recentActivity = 'No recent activity';
             if (learner?.lessonProgress && learner.lessonProgress.length > 0) {
-                const latestProgress = learner.lessonProgress.sort((a: any, b: any) =>
+                const latestProgress = learner.lessonProgress.sort((a: LessonProgress, b: LessonProgress) =>
                     new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
                 )[0];
 
@@ -138,14 +174,14 @@ export async function GET(req: Request) {
 
         // Calculate real weekly report from all children
         const totalMinutesAllChildren = childrenData.reduce(
-            (acc: number, c: any) => acc + (c.minutesSpent || 0),
+            (acc: number, c: { minutesSpent: number }) => acc + (c.minutesSpent || 0),
             0
         );
 
         const weeklyReport = {
             totalMinutes: Math.round(totalMinutesAllChildren),
-            lessonsCompleted: childrenData.reduce((acc: number, c: any) => acc + c.completedLessons, 0),
-            newWordsLearned: childrenData.reduce((acc: number, c: any) => acc + c.wordsLearned, 0)
+            lessonsCompleted: childrenData.reduce((acc: number, c: { completedLessons: number }) => acc + c.completedLessons, 0),
+            newWordsLearned: childrenData.reduce((acc: number, c: { wordsLearned: number }) => acc + c.wordsLearned, 0)
         };
 
         return NextResponse.json({

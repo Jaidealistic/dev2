@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/db';
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -47,7 +45,11 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const createdBy = searchParams.get('createdBy');
 
-    let where: any = {};
+    interface LessonQuery {
+      creatorId?: string;
+      isPublished?: boolean;
+    }
+    let where: LessonQuery = {};
     if (session.user.role === 'EDUCATOR') {
       where.creatorId = session.user.id;
     } else if (createdBy) {
@@ -69,8 +71,17 @@ export async function GET(req: Request) {
       },
     });
 
+    interface PrismaLesson {
+      id: string;
+      title: string;
+      gradeLevel: string;
+      language: string;
+      isPublished: boolean;
+      createdAt: Date;
+    }
+
     // Map Prisma result to match expected frontend structure if needed
-    const mappedLessons = lessons.map(l => ({
+    const mappedLessons = (lessons as unknown as PrismaLesson[]).map((l: PrismaLesson) => ({
       lessonId: l.id,
       title: l.title,
       level: l.gradeLevel,

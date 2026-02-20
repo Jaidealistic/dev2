@@ -12,10 +12,14 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    interface JWTPayload {
+      userId: string;
+    }
+
     const token = authHeader.split(' ')[1];
-    let decoded: any;
+    let decoded: JWTPayload;
     try {
-      decoded = jwt.verify(token, SECRET_KEY);
+      decoded = jwt.verify(token, SECRET_KEY) as JWTPayload;
     } catch (err) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -34,14 +38,17 @@ export async function GET(req: Request) {
     if (user.role === 'LEARNER') {
       let profile = user.learnerProfile;
       let needsUpdate = false;
-      let updateData: any = {};
+      interface ProfileUpdateData {
+        studentId?: string;
+      }
+      let updateData: ProfileUpdateData = {};
 
       if (!profile) {
         profile = await prisma.learnerProfile.create({
           data: {
             userId: user.id,
             studentId: generateStudentId()
-          } as any
+          }
         });
         // No further update needed for new profile (unless we want to return it immediately)
         return NextResponse.json({ ...user, learnerProfile: profile });
@@ -55,7 +62,7 @@ export async function GET(req: Request) {
         if (needsUpdate) {
           profile = await prisma.learnerProfile.update({
             where: { id: profile.id },
-            data: updateData as any
+            data: updateData
           });
         }
 

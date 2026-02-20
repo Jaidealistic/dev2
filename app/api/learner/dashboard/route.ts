@@ -95,19 +95,32 @@ export async function GET(req: Request) {
       })
     ]);
 
+    // Calculate analytics
+    interface ProgressRecord {
+      updatedAt: Date;
+      status: string;
+      id: string;
+      lessonId: string;
+      score: number | null;
+    }
+
+    interface Achievement {
+      badgeName: string;
+    }
+
     // Calculate streak from unique days
     const uniqueDays = new Set(
-      recentProgress.map(p => p.updatedAt.toISOString().split('T')[0])
+      (recentProgress as unknown as { updatedAt: Date }[]).map((p: { updatedAt: Date }) => p.updatedAt.toISOString().split('T')[0])
     );
     const currentStreak = uniqueDays.size;
 
     // Calculate completed lessons
-    const completedLessons = allProgress.filter(
-      p => p.status === 'COMPLETED' || p.status === 'MASTERED'
+    const completedLessons = (allProgress as unknown as ProgressRecord[]).filter(
+      (p: ProgressRecord) => p.status === 'COMPLETED' || p.status === 'MASTERED'
     ).length;
 
     // Get recent lessons for dashboard
-    const recentLessonsData = allProgress.slice(0, 5).map(p => ({
+    const recentLessonsData = (allProgress as unknown as ProgressRecord[]).slice(0, 5).map((p: ProgressRecord) => ({
       id: p.id,
       lessonId: p.lessonId,
       title: `Lesson ${p.lessonId}`, // TODO: Join with actual lesson titles from MongoDB
@@ -119,7 +132,7 @@ export async function GET(req: Request) {
     const dashboardData = {
       learnerName: user.firstName,
       learningLanguages: languages,
-      availableLanguages: ['English', 'Tamil'].filter(lang => !languages.includes(lang)),
+      availableLanguages: ['English', 'Tamil'].filter((lang: string) => !languages.includes(lang)),
       perLanguage: {},
     };
 
@@ -143,12 +156,12 @@ export async function GET(req: Request) {
             {
               id: 'a1',
               title: 'First Lesson',
-              earned: achievements.some(a => a.badgeName === 'First Lesson')
+              earned: (achievements as unknown as Achievement[]).some((a: Achievement) => a.badgeName === 'First Lesson')
             },
             {
               id: 'a2',
               title: '7 Day Streak',
-              earned: achievements.some(a => a.badgeName === '7 Day Streak')
+              earned: (achievements as unknown as Achievement[]).some((a: Achievement) => a.badgeName === '7 Day Streak')
             },
             {
               id: 'a3',
@@ -158,7 +171,7 @@ export async function GET(req: Request) {
             {
               id: 'a4',
               title: 'Perfect Score',
-              earned: allProgress.some(p => (p.score || 0) >= 100)
+              earned: (allProgress as unknown as ProgressRecord[]).some((p: ProgressRecord) => (p.score || 0) >= 100)
             }
           ],
         };

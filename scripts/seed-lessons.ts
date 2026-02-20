@@ -101,7 +101,7 @@ const professionalLessons = [
             en: 'Quick Quiz',
             ta: 'விரைவு வினா',
           },
-          questions: [
+          items: [
             {
               questionId: 'q1',
               text: {
@@ -139,6 +139,11 @@ const professionalLessons = [
           ],
         },
       ],
+    },
+    teachingGuide: {
+      overview: { en: 'Basic greetings and introductions.', ta: 'அடிப்படை வாழ்த்துக்கள் மற்றும் அறிமுகங்கள்.' },
+      learningObjectives: { en: ['Learn common greetings'], ta: ['பொதுவான வாழ்த்துக்களைக் கற்றுக்கொள்ளுங்கள்'] },
+      steps: [],
     },
     createdBy: 'system',
     createdAt: new Date(),
@@ -229,7 +234,7 @@ const professionalLessons = [
             en: 'Family Quiz',
             ta: 'குடும்ப வினா',
           },
-          questions: [
+          items: [
             {
               questionId: 'fq1',
               text: {
@@ -250,6 +255,11 @@ const professionalLessons = [
           ],
         },
       ],
+    },
+    teachingGuide: {
+      overview: { en: 'Family members and relationships.', ta: 'குடும்ப உறுப்பினர்கள் மற்றும் உறவுகள்.' },
+      learningObjectives: { en: ['Identify family roles'], ta: ['குடும்ப பாத்திரங்களை அடையாளம் காணவும்'] },
+      steps: [],
     },
     createdBy: 'system',
     createdAt: new Date(),
@@ -329,7 +339,7 @@ const professionalLessons = [
             en: 'Meal Time Quiz',
             ta: 'உணவு நேர வினா',
           },
-          questions: [
+          items: [
             {
               questionId: 'foodq1',
               text: {
@@ -341,109 +351,119 @@ const professionalLessons = [
                 { optionId: 'b', text: 'Lunch', isCorrect: false },
                 { optionId: 'c', text: 'Breakfast', isCorrect: true },
                 { optionId: 'd', text: 'Snack', isCorrect: false },
+              ],
+              feedback: {
+                correct: '🍳 Perfect! Breakfast is the first meal, eaten in the morning.',
+                incorrect: 'Think about when you wake up - the first meal is breakfast!',
               },
-            feedback: {
-              correct: '🍳 Perfect! Breakfast is the first meal, eaten in the morning.',
-              incorrect: 'Think about when you wake up - the first meal is breakfast!',
             },
-            },
+          ],
+        },
       ],
     },
-      ],
+    teachingGuide: {
+      overview: { en: 'Common meals and dining vocabulary.', ta: 'பொதுவான உணவுகள் மற்றும் உணவருந்துதல் சொற்களஞ்சியம்.' },
+      learningObjectives: { en: ['Learn meal names'], ta: ['உணவுப் பெயர்களைக் கற்றுக் கொள்ளுங்கள்'] },
+      steps: [],
     },
-createdBy: 'system',
-  createdAt: new Date(),
+    createdBy: 'system',
+    createdAt: new Date(),
     updatedAt: new Date(),
   },
 
-// === INTERMEDIATE LESSON ===
-{
-  lessonId: `lesson_inter_shopping`,
+  // === INTERMEDIATE LESSON ===
+  {
+    lessonId: `lesson_inter_shopping`,
     title: {
-    en: 'Shopping & Money',
+      en: 'Shopping & Money',
       ta: 'ஷாப்பிங் & பணம்',
     },
-  level: 'intermediate' as const,
+    level: 'intermediate' as const,
     language: 'en' as const,
-      estimatedDuration: 25,
-        prepTimeMinutes: 6,
-          content: {
-    introduction: {
-      text: {
-        en: "Master the art of shopping in English! Learn phrases for prices, payment, and making purchases.",
+    estimatedDuration: 25,
+    prepTimeMinutes: 6,
+    content: {
+      introduction: {
+        text: {
+          en: "Master the art of shopping in English! Learn phrases for prices, payment, and making purchases.",
           ta: 'ஆங்கிலத்தில் ஷாப்பிங் செய்யும் கலையை மாஸ்டர் செய்யுங்கள்! விலைகள், பணம் செலுத்துதல் மற்றும் கொள்முதல் செய்வதற்கான சொற்றொடர்களைக் கற்றுக் கொள்ளுங்கள்.',
         },
-      audioUrl: {
-        en: '/audio/lessons/shopping/intro_en.mp3',
+        audioUrl: {
+          en: '/audio/lessons/shopping/intro_en.mp3',
           ta: '/audio/lessons/shopping/intro_ta.mp3',
         },
-      imageUrl: '/images/lessons/shopping_banner.jpg',
+        imageUrl: '/images/lessons/shopping_banner.jpg',
       },
-    sections: [
-      {
-        type: 'vocabulary' as const,
-        sectionId: 'shop_vocab_001',
-        title: {
-          en: 'Shopping Phrases',
-          ta: 'ஷாப்பிங் சொற்றொடர்கள்',
+      sections: [
+        {
+          type: 'vocabulary' as const,
+          sectionId: 'shop_vocab_001',
+          title: {
+            en: 'Shopping Phrases',
+            ta: 'ஷாப்பிங் சொற்றொடர்கள்',
+          },
+          items: [
+            {
+              word: 'How much is this?',
+              translation: 'இது எவ்வளவு?',
+              phoneticEn: 'haʊ mʌtʃ ɪz ðɪs',
+              phoneticTa: 'itu evvaḷavu',
+              audioUrl: '/audio/vocab/how_much_en.mp3',
+              exampleSentence: {
+                en: 'Excuse me, how much is this shirt?',
+                ta: 'மன்னிக்கவும், இந்த சட்டை எவ்வளவு?',
+              },
+            },
+            {
+              word: 'I would like to buy',
+              translation: 'நான் வாங்க விரும்புகிறேன்',
+              phoneticEn: 'aɪ wʊd laɪk tuː baɪ',
+              phoneticTa: 'nāṉ vāṅka virumpukiṟēṉ',
+              audioUrl: '/audio/vocab/would_like_en.mp3',
+              exampleSentence: {
+                en: 'I would like to buy two apples, please.',
+                ta: 'தயவுசெய்து இரண்டு ஆப்பிள்களை வாங்க விரும்புகிறேன்.',
+              },
+            },
+          ],
         },
-        items: [
-          {
-            word: 'How much is this?',
-            translation: 'இது எவ்வளவு?',
-            phoneticEn: 'haʊ mʌtʃ ɪz ðɪs',
-            phoneticTa: 'itu evvaḷavu',
-            audioUrl: '/audio/vocab/how_much_en.mp3',
-            exampleSentence: {
-              en: 'Excuse me, how much is this shirt?',
-              ta: 'மன்னிக்கவும், இந்த சட்டை எவ்வளவு?',
-            },
+        {
+          type: 'practice' as const,
+          sectionId: 'shop_quiz_001',
+          title: {
+            en: 'Shopping Scenarios',
+            ta: 'ஷாப்பிங் காட்சிகள்',
           },
-          {
-            word: 'I would like to buy',
-            translation: 'நான் வாங்க விரும்புகிறேன்',
-            phoneticEn: 'aɪ wʊd laɪk tuː baɪ',
-            phoneticTa: 'nāṉ vāṅka virumpukiṟēṉ',
-            audioUrl: '/audio/vocab/would_like_en.mp3',
-            exampleSentence: {
-              en: 'I would like to buy two apples, please.',
-              ta: 'தயவுசெய்து இரண்டு ஆப்பிள்களை வாங்க விரும்புகிறேன்.',
+          items: [
+            {
+              questionId: 'shopq1',
+              text: {
+                en: 'You want to know the price. What do you say?',
+                ta: 'விலையை தெரிந்து கொள்ள விரும்புகிறீர்கள். நீங்கள் என்ன சொல்கிறீர்கள்?',
+              },
+              options: [
+                { optionId: 'a', text: 'How are you?', isCorrect: false },
+                { optionId: 'b', text: 'How much is this?', isCorrect: true },
+                { optionId: 'c', text: 'Where is this?', isCorrect: false },
+                { optionId: 'd', text: 'Who made this?', isCorrect: false },
+              ],
+              feedback: {
+                correct: '💰 Excellent! "How much is this?" asks for the price.',
+                incorrect: 'To ask about price, say "How much is this?"',
+              },
             },
-          },
-        ],
-      },
-      {
-        type: 'practice' as const,
-        sectionId: 'shop_quiz_001',
-        title: {
-          en: 'Shopping Scenarios',
-          ta: 'ஷாப்பிங் காட்சிகள்',
+          ],
         },
-        questions: [
-          {
-            questionId: 'shopq1',
-            text: {
-              en: 'You want to know the price. What do you say?',
-              ta: 'விலையை தெரிந்து கொள்ள விரும்புகிறீர்கள். நீங்கள் என்ன சொல்கிறீர்கள்?',
-            },
-            options: [
-              { optionId: 'a', text: 'How are you?', isCorrect: false },
-              { optionId: 'b', text: 'How much is this?', isCorrect: true },
-              { optionId: 'c', text: 'Where is this?', isCorrect: false },
-              { optionId: 'd', text: 'Who made this?', isCorrect: false },
-            ],
-            feedback: {
-              correct: '💰 Excellent! "How much is this?" asks for the price.',
-              incorrect: 'To ask about price, say "How much is this?"',
-            },
-          },
-        ],
-      },
-    ],
+      ],
     },
-  createdBy: 'system',
+    teachingGuide: {
+      overview: { en: 'Asking for prices and buying items.', ta: 'விலைகளைக் கேட்பது மற்றும் பொருட்களை வாங்குவது.' },
+      learningObjectives: { en: ['Learn shopping phrases'], ta: ['ஷாப்பிங் சொற்றொடர்களைக் கற்றுக் கொள்ளுங்கள்'] },
+      steps: [],
+    },
+    createdBy: 'system',
     createdAt: new Date(),
-      updatedAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
 

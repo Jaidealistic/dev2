@@ -12,7 +12,34 @@ const SECRET_KEY = process.env.NEXTAUTH_SECRET || 'your-secret-key-change-it';
  * A non-empty array means the lesson is ONLY shown to learners
  * who have at least one matching disability type in their profile.
  */
-const ALL_MOCK_LESSONS = (lang: string, progressMap: Map<string, any>) => [
+interface LessonProgress {
+  status: string;
+  score: number;
+  updatedAt: Date;
+}
+
+interface LessonItem {
+  id: string;
+  title: string;
+  description: string;
+  language: string;
+  gradeLevel: string;
+  duration: number;
+  disabilityTypes: string[];
+  badge?: string;
+  competencies: string[];
+  learningObjectives: string[];
+  hasTranscripts: boolean;
+  hasCaptions: boolean;
+  progress: {
+    status: string;
+    score: number;
+    attemptCount: number;
+    lastAccessedAt: string | null;
+  };
+}
+
+const ALL_MOCK_LESSONS = (lang: string, progressMap: Map<string, LessonProgress>): LessonItem[] => [
 
   // ── ADHD-specific lessons ──────────────────────────────────────
   {
@@ -292,10 +319,14 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    interface JWTPayload {
+      userId: string;
+    }
+
     const token = authHeader.split(' ')[1];
-    let decoded: any;
+    let decoded: JWTPayload;
     try {
-      decoded = jwt.verify(token, SECRET_KEY);
+      decoded = jwt.verify(token, SECRET_KEY) as JWTPayload;
     } catch (err) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -319,11 +350,11 @@ export async function GET(req: Request) {
     const lang = url.searchParams.get('lang') || 'en';
 
     // Helper function to extract language-specific text
-    const getText = (field: any, fallback: string = ''): string => {
+    const getText = (field: string | Record<string, string> | undefined, fallback: string = ''): string => {
       if (!field) return fallback;
       if (typeof field === 'string') return field;
-      if (typeof field === 'object' && field[lang]) return field[lang];
-      if (typeof field === 'object' && field.en) return field.en;
+      if (typeof field === 'object' && (field as Record<string, string>)[lang]) return (field as Record<string, string>)[lang];
+      if (typeof field === 'object' && (field as Record<string, string>).en) return (field as Record<string, string>).en;
       return fallback;
     };
 
@@ -334,17 +365,34 @@ export async function GET(req: Request) {
     const mongoLessons = await Lesson.find({ isPublished: true }).lean();
 
     // Fetch user progress from PostgreSQL
-    const progressMap = new Map<string, any>();
+    const progressMap = new Map<string, LessonProgress>();
     const progressRecords = await prisma.lessonProgress.findMany({
       where: { learnerId }
     });
-    progressRecords.forEach(p => progressMap.set(p.lessonId, p));
+    progressRecords.forEach((p: any) => progressMap.set(p.lessonId, p as unknown as LessonProgress));
+
+    interface MongoLesson {
+      _id: { toString(): string };
+      lessonId?: string;
+      title?: string | Record<string, string>;
+      description?: string | Record<string, string>;
+      language?: string;
+      gradeLevel?: string;
+      estimatedDuration?: number;
+      duration?: number;
+      disabilityTypes?: string[];
+      competencies?: string[];
+      learningObjectives?: string[];
+      hasTranscripts?: boolean;
+      hasCaptions?: boolean;
+    }
 
     // Map MongoDB lessons to frontend structure
-    const mappedLessons = mongoLessons.map((lesson: any) => {
-      const progress = progressMap.get(lesson.lessonId || lesson._id.toString());
+    const mappedLessons = (mongoLessons as unknown as MongoLesson[]).map((lesson: MongoLesson): LessonItem => {
+      const lessonIdKey = lesson.lessonId || lesson._id.toString();
+      const progress = progressMap.get(lessonIdKey);
       return {
-        id: lesson.lessonId || lesson._id.toString(),
+        id: lessonIdKey,
         title: getText(lesson.title, 'Untitled Lesson'),
         description: getText(lesson.description, ''),
         language: lesson.language || 'English',
@@ -371,7 +419,7 @@ export async function GET(req: Request) {
 
     // Filter: show a lesson if it has no disabilityTypes (general)
     // OR if the learner has at least one matching disability
-    const filteredLessons = allLessons.filter((lesson: any) => {
+    const filteredLessons = allLessons.filter((lesson: LessonItem) => {
       const tags: string[] = lesson.disabilityTypes || [];
       if (tags.length === 0) return true; // general lesson — always show
       if (learnerDisabilities.length === 0) return false; // learner has no disabilities — hide specific lessons

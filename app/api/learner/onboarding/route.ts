@@ -12,10 +12,14 @@ export async function PUT(req: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        interface JWTPayload {
+            userId: string;
+        }
+
         const token = authHeader.split(' ')[1];
-        let decoded: any;
+        let decoded: JWTPayload;
         try {
-            decoded = jwt.verify(token, SECRET_KEY);
+            decoded = jwt.verify(token, SECRET_KEY) as JWTPayload;
         } catch (err) {
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
@@ -58,7 +62,7 @@ export async function PUT(req: Request) {
             .map((d: string) => d.toUpperCase()); // 'adhd' -> 'ADHD'
 
         // Prepare update data
-        const updateData: any = {
+        const updateData = {
             dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
             grade: gradeLevel,
             school: schoolName,
@@ -70,8 +74,8 @@ export async function PUT(req: Request) {
             disabilityTypes,
             iepGoals,
             fontFamily,
-            fontSize: parseInt(textSize) || 16,
-            lineSpacing: parseFloat(lineSpacing) || 1.5,
+            fontSize: parseInt(textSize as string) || 16,
+            lineSpacing: parseFloat(lineSpacing as string) || 1.5,
             colorScheme,
             enableSpeechRec: speechRecognitionEnabled,
             accommodations: {

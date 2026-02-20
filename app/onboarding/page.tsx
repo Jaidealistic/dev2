@@ -22,6 +22,16 @@ import {
   generateLearningPath as apiGenerateLearningPath,
   updateAccessibilityPrefs,
 } from '@/lib/api';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -315,9 +325,9 @@ export default function EnhancedOnboardingPage() {
           {/* Progress Stepper */}
           <div className="mb-8">
             {/* Progress bar */}
-            <div className={`w-full rounded-full h-1.5 mb-6 ${isDark ? 'bg-gray-800' : 'bg-gray-200/80'}`}>
+            <div className={`w-full rounded-full h-2 mb-8 ${isDark ? 'bg-gray-800' : 'bg-[#e8e5e0]/50'}`}>
               <div
-                className="bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] h-1.5 rounded-full transition-all duration-500 ease-out"
+                className="bg-gradient-to-r from-[#7da47f] via-[#5a8c5c] to-[#7da47f] h-2 rounded-full transition-all duration-700 ease-in-out shadow-[0_0_10px_rgba(125,164,127,0.3)]"
                 style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 role="progressbar"
                 aria-valuenow={currentStep}
@@ -334,18 +344,18 @@ export default function EnhancedOnboardingPage() {
                 const isActive = stepNum === currentStep;
                 const isCompleted = stepNum < currentStep;
                 return (
-                  <div key={stepNum} className="flex flex-col items-center gap-1.5">
+                  <div key={stepNum} className="flex flex-col items-center gap-2 group cursor-pointer" onClick={() => stepNum < currentStep && setCurrentStep(stepNum as Step)}>
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${isCompleted
-                        ? 'bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] text-white shadow-md shadow-green-200/50'
+                      className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-500 transform ${isCompleted
+                        ? 'bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] text-white shadow-lg shadow-green-200/50 hover:scale-110 active:scale-95'
                         : isActive
-                          ? `${isDark ? 'bg-gray-800 text-[#7da47f] ring-2 ring-[#7da47f]' : 'bg-white text-[#5a8c5c] ring-2 ring-[#7da47f] shadow-lg shadow-green-100'}`
-                          : `${isDark ? 'bg-gray-800/50 text-gray-600' : 'bg-gray-100 text-gray-400'}`
+                          ? `${isDark ? 'bg-gray-800 text-[#7da47f] ring-2 ring-[#7da47f]' : 'bg-white text-[#5a8c5c] ring-2 ring-[#7da47f] shadow-xl shadow-green-100/60 scale-110'}`
+                          : `${isDark ? 'bg-gray-800/50 text-gray-600' : 'bg-white/40 text-gray-400 border border-[#e8e5e0]/50'}`
                         }`}
                     >
-                      {isCompleted ? <Check className="w-4 h-4" /> : <StepIcon className="w-4 h-4" />}
+                      {isCompleted ? <Check className="w-5 h-5" strokeWidth={3} /> : <StepIcon className={`w-5 h-5 ${isActive ? 'animate-pulse' : ''}`} />}
                     </div>
-                    <span className={`hidden sm:block text-[11px] font-medium ${isActive ? (isDark ? 'text-white' : 'text-gray-900') :
+                    <span className={`hidden sm:block text-[10px] font-bold uppercase tracking-wider ${isActive ? (isDark ? 'text-white' : 'text-[#3a3a3a]') :
                       isCompleted ? (isDark ? 'text-green-400' : 'text-[#5a8c5c]') :
                         (isDark ? 'text-gray-600' : 'text-gray-400')
                       }`}>
@@ -418,12 +428,10 @@ export default function EnhancedOnboardingPage() {
                     <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       Date of Birth
                     </label>
-                    <input
-                      type="date"
-                      value={formData.dateOfBirth}
-                      onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
-                      className={`w-full px-4 py-2.5 border rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#7da47f] ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'
-                        }`}
+                    <DatePicker
+                      date={formData.dateOfBirth}
+                      onChange={(val) => updateFormData('dateOfBirth', val)}
+                      isDark={isDark}
                     />
                   </div>
 
@@ -431,19 +439,23 @@ export default function EnhancedOnboardingPage() {
                     <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       Grade Level
                     </label>
-                    <select
+                    <Select
                       value={formData.gradeLevel}
-                      onChange={(e) => updateFormData('gradeLevel', e.target.value)}
-                      className={`w-full px-4 py-2.5 border rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#7da47f] ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'
-                        }`}
+                      onValueChange={(val) => updateFormData('gradeLevel', val)}
                     >
-                      <option value="">Select grade level</option>
-                      {Array.from({ length: 12 }, (_, i) => (
-                        <option key={i + 1} value={String(i + 1)}>{i + 1}{['st', 'nd', 'rd'][i] || 'th'} Grade</option>
-                      ))}
-                      <option value="college">College</option>
-                      <option value="adult">Adult Learner</option>
-                    </select>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select grade level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <SelectItem key={i + 1} value={String(i + 1)}>
+                            {i + 1}{['st', 'nd', 'rd'][i] || 'th'} Grade
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="college">College</SelectItem>
+                        <SelectItem value="adult">Adult Learner</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
@@ -451,12 +463,10 @@ export default function EnhancedOnboardingPage() {
                   <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     School Name <span className="text-gray-400 font-normal">(Optional)</span>
                   </label>
-                  <input
+                  <Input
                     type="text"
                     value={formData.schoolName}
                     onChange={(e) => updateFormData('schoolName', e.target.value)}
-                    className={`w-full px-4 py-2.5 border rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#7da47f] ${isDark ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-500' : 'bg-white border-gray-200 text-gray-900'
-                      }`}
                     placeholder="Enter your school name"
                   />
                 </div>
@@ -465,16 +475,18 @@ export default function EnhancedOnboardingPage() {
                   <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     Native Language
                   </label>
-                  <select
+                  <Select
                     value={formData.nativeLanguage}
-                    onChange={(e) => updateFormData('nativeLanguage', e.target.value)}
-                    className={`w-full px-4 py-2.5 border rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#7da47f] ${isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'
-                      }`}
+                    onValueChange={(val) => updateFormData('nativeLanguage', val)}
                   >
-                    <option value="">Select your native language</option>
-                    <option value="english">English</option>
-                    <option value="tamil">Tamil (தமிழ்)</option>
-                  </select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select your native language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="english">English</SelectItem>
+                      <SelectItem value="tamil">Tamil (தமிழ்)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Language Selection Cards */}
@@ -596,19 +608,21 @@ export default function EnhancedOnboardingPage() {
                           <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                             What&apos;s your goal with {lang}?
                           </label>
-                          <select
+                          <Select
                             value={goals.learningGoal}
-                            onChange={(e) => updateLanguageGoal(lang, 'learningGoal', e.target.value)}
-                            className={`w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#7da47f] ${isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200 text-gray-900'
-                              }`}
+                            onValueChange={(val) => updateLanguageGoal(lang, 'learningGoal', val)}
                           >
-                            <option value="">Select a goal</option>
-                            <option value="fun">Just for fun &amp; personal interest</option>
-                            <option value="school">Improve in school</option>
-                            <option value="exam">Prepare for an exam</option>
-                            <option value="career">Career or professional growth</option>
-                            <option value="connect">Connect with family or community</option>
-                          </select>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a goal" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="fun">Just for fun &amp; personal interest</SelectItem>
+                              <SelectItem value="school">Improve in school</SelectItem>
+                              <SelectItem value="exam">Prepare for an exam</SelectItem>
+                              <SelectItem value="career">Career or professional growth</SelectItem>
+                              <SelectItem value="connect">Connect with family or community</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
 
                         {/* Preferred Style */}
@@ -732,12 +746,10 @@ export default function EnhancedOnboardingPage() {
                   <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     IEP Goals <span className="text-gray-400 font-normal">(Optional)</span>
                   </label>
-                  <textarea
+                  <Textarea
                     value={formData.iepGoals}
                     onChange={(e) => updateFormData('iepGoals', e.target.value)}
                     rows={3}
-                    className={`w-full px-4 py-3 border rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#7da47f] resize-none ${isDark ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-500' : 'bg-white border-gray-200 text-gray-900'
-                      }`}
                     placeholder="Share any IEP goals or learning objectives..."
                   />
                 </div>
@@ -1057,11 +1069,11 @@ export default function EnhancedOnboardingPage() {
             <button
               onClick={handlePrevious}
               disabled={currentStep === 1}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${currentStep === 1
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 active:scale-95 ${currentStep === 1
                 ? 'opacity-0 pointer-events-none'
                 : isDark
                   ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 shadow-sm'
+                  : 'bg-white text-[#4a4a4a] hover:bg-[#f8faf8] border border-[#e8e5e0] shadow-sm hover:shadow-md hover:border-[#7a9b7e]/30'
                 }`}
             >
               <ChevronLeft className="w-4 h-4" />
@@ -1072,7 +1084,7 @@ export default function EnhancedOnboardingPage() {
               <button
                 onClick={handleNext}
                 disabled={isLoading}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] text-white hover:from-[#6b946d] hover:to-[#4a7c4c] font-medium text-sm transition-all duration-200 shadow-md shadow-green-200/30 disabled:opacity-50"
+                className="flex items-center gap-2 px-8 py-2.5 rounded-xl bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] text-white hover:shadow-lg hover:shadow-green-200/40 hover:scale-[1.02] active:scale-95 font-bold text-sm transition-all duration-300 shadow-md shadow-green-200/30 disabled:opacity-50"
               >
                 {isLoading ? (
                   <>
@@ -1090,7 +1102,7 @@ export default function EnhancedOnboardingPage() {
               <button
                 onClick={handleComplete}
                 disabled={isLoading}
-                className="flex items-center gap-2 px-8 py-2.5 rounded-xl bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] text-white hover:from-[#6b946d] hover:to-[#4a7c4c] font-medium text-sm transition-all duration-200 shadow-md shadow-green-200/30 disabled:opacity-50"
+                className="flex items-center gap-2 px-10 py-3 rounded-xl bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] text-white hover:shadow-xl hover:shadow-green-200/40 hover:scale-[1.05] active:scale-95 font-bold text-sm transition-all duration-300 shadow-lg shadow-green-200/30 disabled:opacity-50"
               >
                 {isLoading ? (
                   <>

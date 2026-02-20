@@ -23,6 +23,7 @@ import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import { useToast } from '@/components/providers/ToastProvider';
 import { TextToSpeech, InlineTextToSpeech } from '@/components/TextToSpeech';
 import { GuidedPractice, MultipleChoice, FillInBlank } from '@/components/PracticeComponents';
+import { BrainGameBreak } from '@/components/BrainGameBreak';
 import {
   Play,
   Pause,
@@ -40,17 +41,35 @@ import {
   BookOpen,
   Subtitles,
   Save,
+  Gamepad2,
+  Trophy,
+  Zap,
 } from 'lucide-react';
 
 interface LessonSection {
   id: string;
-  type: 'text' | 'audio' | 'video' | 'exercise' | 'speech';
+  type: 'text' | 'audio' | 'video' | 'exercise' | 'speech' | 'instruction' | 'vocabulary' | 'practice' | 'summary';
   title: string;
   content: {
     text?: string;
     audioUrl?: string;
     videoUrl?: string;
     transcript?: string;
+    translation?: string;
+    words?: {
+      word: string;
+      translation: string;
+      phonetic: string;
+      example: string;
+    }[];
+    question?: string;
+    options?: {
+      id: string;
+      text: string;
+      correct: boolean;
+    }[];
+    correctFeedback?: string;
+    incorrectFeedback?: string;
     exercise?: {
       question: string;
       type: 'multiple-choice' | 'fill-blank' | 'matching' | 'speech';
@@ -85,6 +104,9 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isSavingProgress, setIsSavingProgress] = useState(false);
+
+  // Brain game break
+  const [showBrainGame, setShowBrainGame] = useState(false);
 
   // Media player state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -123,7 +145,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
 
   // Start timer when lesson loads
   useEffect(() => {
-    if (lesson) {
+    if (lesson && !showBrainGame) {
       timerRef.current = setInterval(() => {
         setElapsedTime((prev) => prev + 1);
       }, 1000);
@@ -132,7 +154,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
         if (timerRef.current) clearInterval(timerRef.current);
       };
     }
-  }, [lesson]);
+  }, [lesson, showBrainGame]);
 
   // Auto-save progress every 30 seconds
   useEffect(() => {
@@ -479,7 +501,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
 
   return (
     <div
-      className="min-h-screen bg-[#f5f1eb]"
+      className="min-h-screen bg-gradient-to-br from-[#fbf9f6] via-[#f5f1eb] to-[#f0f4f0] selection:bg-[#7da47f]/20"
       style={{
         fontSize: `${preferences.fontSize}px`,
         fontFamily: preferences.fontFamily === 'lexend' ? 'Lexend' :
@@ -503,15 +525,14 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                   <span>Saving...</span>
                 </div>
               )}
-              {!preferences.adhdMode && (
-                <button
-                  onClick={() => setShowTranscript(!showTranscript)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200"
-                >
-                  <Subtitles className="w-5 h-5" />
-                  Transcripts
-                </button>
-              )}
+              <button
+                onClick={() => setShowTranscript(!showTranscript)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${showTranscript ? 'bg-[#7da47f] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+              >
+                <Subtitles className="w-5 h-5" />
+                {showTranscript ? 'Hide Support' : 'Transcripts'}
+              </button>
             </div>
           </div>
 
@@ -534,9 +555,8 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center justify-between">
             <span>{currentSection.title}</span>
-            {/* TTS Control for Text Sections */}
-            {currentSection.type === 'text' && (
-              <InlineTextToSpeech text={currentSection.content.text || ''} />
+            {currentSection.type === 'text' && showTranscript && (
+              <InlineTextToSpeech text={currentSection.content.text || ''} className="animate-in fade-in duration-300" />
             )}
           </h2>
           {/* Active Mode Badge */}
@@ -557,16 +577,109 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
 
         {/* Section Content */}
         <div className="bg-white rounded-3xl p-8 shadow-lg">
-          {/* APD / Dyslexia Helper: Full Audio Player for Text */}
-          {(isApdMode || isDyslexiaMode) && currentSection.type === 'text' && (
-            <div className="mb-6 p-4 bg-[#f0f4f0] rounded-xl border border-[#d4dcd5]">
-              <p className="text-xs font-semibold text-[#5d7e61] mb-2 uppercase tracking-wide">
-                Audio Support Enabled
-              </p>
-              <TextToSpeech
-                text={currentSection.content.text || ''}
-                autoHighlight={true}
-              />
+          {/* INSTRUCTION SECTION */}
+          {currentSection.type === 'instruction' && (
+            <div className="prose prose-lg max-w-none prose-p:text-gray-700 prose-headings:text-[#3a6d3c]">
+              <div className="flex items-center gap-3 mb-6 p-4 bg-[#f4f7f4] rounded-2xl border border-[#7da47f]/10">
+                <div className="p-2 bg-white rounded-xl shadow-sm">
+                  <BookOpen className="w-6 h-6 text-[#5a8c5c]" />
+                </div>
+                <h3 className="text-xl font-bold text-[#3a6d3c] m-0">Getting Started</h3>
+              </div>
+              {currentSection.content.text?.split('\n').map((paragraph: string, idx: number) => (
+                <p key={idx} className="mb-4 leading-relaxed">
+                  {paragraph.startsWith('•') ? (
+                    <span className="flex items-start gap-2">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#7da47f] shrink-0" />
+                      {paragraph.replace('•', '').trim()}
+                    </span>
+                  ) : paragraph}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {/* VOCABULARY SECTION */}
+          {currentSection.type === 'vocabulary' && (
+            <div className="grid gap-4">
+              {currentSection.content.words?.map((item: any, idx: number) => (
+                <div key={idx} className="p-6 bg-[#f4f7f4] rounded-2xl border border-[#7da47f]/10 hover:border-[#7da47f]/30 transition-all group">
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-2xl font-bold text-[#3a6d3c]">{item.word}</h3>
+                      {showTranscript && <InlineTextToSpeech text={item.word} language="en-US" className="animate-in fade-in duration-300" />}
+                    </div>
+                    {showTranscript && (
+                      <span className="text-sm font-medium text-[#7da47f] px-2 py-0.5 bg-white rounded-md shadow-sm border border-[#7da47f]/10 animate-in fade-in duration-300">
+                        [{item.phonetic}]
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <p className="text-lg text-gray-700 font-medium">{item.translation}</p>
+                    {showTranscript && <InlineTextToSpeech text={item.translation} language="ta-IN" className="animate-in fade-in duration-300" />}
+                  </div>
+                  <div className="mt-4 p-3 bg-white/60 rounded-xl text-sm italic text-gray-600 border border-dashed border-[#7da47f]/20">
+                    "{item.example}"
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* PRACTICE / QUIZ SECTION */}
+          {currentSection.type === 'practice' && (
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{currentSection.content.question}</h3>
+                <p className="text-gray-500">Select the correct answer below</p>
+              </div>
+              <div className="grid gap-3">
+                {currentSection.content.options?.map((opt: any) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => {
+                      if (opt.correct) {
+                        handleCorrectAnswer(currentSection.id);
+                        info('Correct!', currentSection.content.correctFeedback || 'Great job!');
+                      } else {
+                        info('Try again', currentSection.content.incorrectFeedback || 'That\'s not quite right.');
+                      }
+                    }}
+                    className="p-4 text-left rounded-2xl border-2 border-[#e8e5e0] hover:border-[#7da47f] hover:bg-[#f4f7f4] text-gray-700 font-medium transition-all active:scale-[0.98]"
+                  >
+                    {opt.text}
+                  </button>
+                ))}
+              </div>
+              {feedback[currentSection.id] && (
+                <div className="mt-8 p-4 bg-green-50 border-2 border-green-200 rounded-2xl text-center animate-in zoom-in duration-300">
+                  <p className="font-bold text-green-800 text-lg">✨ Correct! ✨</p>
+                  <p className="text-green-700">{currentSection.content.correctFeedback}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* SUMMARY SECTION */}
+          {currentSection.type === 'summary' && (
+            <div className="text-center py-8">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-[#f4f7f4] mb-6 border-2 border-[#7da47f]/20 shadow-sm relative">
+                <Trophy className="w-10 h-10 text-[#5a8c5c]" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#fbbf24] rounded-full flex items-center justify-center text-white shadow-md">
+                  <Zap className="w-5 h-5 fill-current" />
+                </div>
+              </div>
+              <h2 className="text-3xl font-black text-[#3a6d3c] mb-6">Lesson Complete!</h2>
+              <div className="bg-[#fcfdfc] border border-[#7da47f]/10 rounded-3xl p-8 text-left max-w-lg mx-auto shadow-sm">
+                <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                  {currentSection.content.text?.split('\n').map((line: string, i: number) => (
+                    <p key={i} className={line.startsWith('#') ? 'text-xl font-bold text-[#3a6d3c] mt-4 mb-2' : 'mb-2'}>
+                      {line.replace(/^#+/, '').replace(/\*\*/g, '')}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
@@ -722,16 +835,55 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                 </div>
               </div>
 
-              {/* Transcript */}
-              {showTranscript && currentSection.content.transcript && (
-                <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5" />
-                    Transcript
-                  </h3>
-                  <p className="text-gray-800" style={{ lineHeight: preferences.lineSpacing }}>
-                    {currentSection.content.transcript}
-                  </p>
+              {/* Transcript Support Box */}
+              {showTranscript && (currentSection.content.transcript || currentSection.content.translation || currentSection.content.words) && (
+                <div className="bg-[#f8faf8] border-2 border-[#7da47f]/20 rounded-2xl p-6 mt-8 animate-in slide-in-from-top-4 duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-[#3a6d3c] flex items-center gap-2">
+                      <BookOpen className="w-5 h-5" />
+                      {currentSection.content.transcript ? 'Video Transcript' : 'Language & Audio Support'}
+                    </h3>
+                    {!currentSection.content.transcript && (
+                      <div className="flex gap-2">
+                        <span className="text-xs bg-[#7da47f]/10 text-[#5a8c5c] px-2 py-1 rounded-full font-bold">
+                          Tamil Help
+                        </span>
+                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-bold">
+                          Voice Active
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="text-gray-800 leading-relaxed bg-white p-4 rounded-xl shadow-sm border border-[#7da47f]/5">
+                    {currentSection.content.transcript ? (
+                      <div className="space-y-4">
+                        <p>{currentSection.content.transcript}</p>
+                        <InlineTextToSpeech text={currentSection.content.transcript ?? ''} language="en-US" className="mt-2" />
+                      </div>
+                    ) : (currentSection.content.translation || (currentSection.content.words && (
+                      <div className="space-y-2">
+                        <p className="font-semibold text-[#5a8c5c] border-b border-gray-100 pb-2 mb-2">Tamil Translations:</p>
+                        {currentSection.content.words.map((w: any, i: number) => (
+                          <div key={i} className="flex flex-wrap items-center justify-between gap-4 py-1 border-b border-gray-50 last:border-0">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{(w as any).word}</span>
+                              <InlineTextToSpeech text={(w as any).word ?? ''} language="en-US" />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[#3a6d3c]">{(w as any).translation}</span>
+                              <InlineTextToSpeech text={(w as any).translation ?? ''} language="ta-IN" />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )) || (
+                        <div className="flex items-center justify-between gap-4">
+                          <p>{currentSection.content.translation}</p>
+                          <InlineTextToSpeech text={currentSection.content.translation ?? ''} language="ta-IN" />
+                        </div>
+                      ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -838,24 +990,39 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-between items-center mt-12 gap-4">
           <button
             onClick={handlePrevious}
             disabled={currentSectionIndex === 0}
-            className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-300 rounded-full hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            className="flex items-center gap-2 px-8 h-12 bg-white border-2 border-[#e8e5e0] text-[#6b6b6b] rounded-full hover:bg-gray-50 hover:border-[#d8d5d0] disabled:opacity-40 disabled:cursor-not-allowed font-bold text-sm transition-all duration-200"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4" />
             Previous
+          </button>
+
+          {/* Brain Break Button */}
+          <button
+            onClick={() => setShowBrainGame(true)}
+            className="flex items-center gap-2 px-8 h-12 bg-[#f2f4f2] text-[#5a8c5c] border-2 border-[#7da47f]/20 rounded-full font-bold text-sm hover:bg-[#ebeeeb] hover:border-[#7da47f]/40 hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
+          >
+            <Gamepad2 className="w-4 h-4" />
+            Brain Break
           </button>
 
           <button
             onClick={handleNext}
-            className="flex items-center gap-2 px-6 py-3 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full font-medium"
+            className="flex items-center gap-2 px-8 h-12 bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] text-white rounded-full font-bold text-sm shadow-lg shadow-green-200/50 hover:shadow-green-200/80 hover:scale-105 active:scale-95 transition-all duration-300"
           >
-            {currentSectionIndex === lesson.sections.length - 1 ? 'Complete Lesson' : 'Next'}
-            <ChevronRight className="w-5 h-5" />
+            {currentSectionIndex === lesson.sections.length - 1 ? 'Finish Lesson' : 'Next Step'}
+            <ChevronRight className="w-4 h-4" />
           </button>
         </div>
+
+        {/* Brain Game Modal */}
+        <BrainGameBreak
+          isOpen={showBrainGame}
+          onClose={() => setShowBrainGame(false)}
+        />
       </main>
     </div>
   );

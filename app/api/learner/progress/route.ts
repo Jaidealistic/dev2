@@ -11,12 +11,16 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    interface JWTPayload {
+      userId: string;
+    }
+
     const token = authHeader.split(' ')[1];
-    let decoded: any;
+    let decoded: JWTPayload;
     try {
-        decoded = jwt.verify(token, SECRET_KEY);
+      decoded = jwt.verify(token, SECRET_KEY) as JWTPayload;
     } catch (err) {
-        return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
     const { userId } = decoded;
 
@@ -39,13 +43,18 @@ export async function GET(req: Request) {
     });
 
     // Calculate analytics
+    interface LessonProgress {
+      status: string;
+      score: number | null;
+    }
+
     const totalLessons = lessonProgress.length;
-    const completedLessons = lessonProgress.filter(p => p.status === 'COMPLETED' || p.status === 'MASTERED').length;
-    const masteredLessons = lessonProgress.filter(p => p.status === 'MASTERED').length;
-    
+    const completedLessons = (lessonProgress as unknown as LessonProgress[]).filter((p: LessonProgress) => p.status === 'COMPLETED' || p.status === 'MASTERED').length;
+    const masteredLessons = (lessonProgress as unknown as LessonProgress[]).filter((p: LessonProgress) => p.status === 'MASTERED').length;
+
     // Calculate average score (ignoring nulls)
-    const scores = lessonProgress.map(p => p.score).filter(s => s !== null) as number[];
-    const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+    const scores = (lessonProgress as unknown as LessonProgress[]).map((p: LessonProgress) => p.score).filter((s: number | null): s is number => s !== null);
+    const avgScore = scores.length > 0 ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length) : 0;
 
     // Mock total time for now as it might be stored in ProgressRecord or aggregated
     // In a real app we'd sum up `timeSpentSec` from ProgressRecord
@@ -53,15 +62,15 @@ export async function GET(req: Request) {
 
     // Fetch competencies (mock/placeholder if empty)
     const competencies = await prisma.nIOSCompetency.findMany({
-        where: { studentId: learnerId }
+      where: { studentId: learnerId }
     });
 
     return NextResponse.json({
       competencies: competencies.length > 0 ? competencies : [
-          // Mock data if empty
-          { id: 'c1', competencyName: 'Vocabulary', masteryLevel: 'DEVELOPING', score: 65 },
-          { id: 'c2', competencyName: 'Grammar', masteryLevel: 'BEGINNER', score: 40 },
-          { id: 'c3', competencyName: 'Pronunciation', masteryLevel: 'PROFICIENT', score: 85 }
+        // Mock data if empty
+        { id: 'c1', competencyName: 'Vocabulary', masteryLevel: 'DEVELOPING', score: 65 },
+        { id: 'c2', competencyName: 'Grammar', masteryLevel: 'BEGINNER', score: 40 },
+        { id: 'c3', competencyName: 'Pronunciation', masteryLevel: 'PROFICIENT', score: 85 }
       ],
       lessonProgress: lessonProgress.length > 0 ? lessonProgress : [],
       analytics: {

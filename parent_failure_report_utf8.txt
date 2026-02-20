@@ -1,0 +1,106 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mD:/sem6/software eng/dev2[39m
+
+npx : [90mstderr[2m | _legacy/services/backend-a
+pi/src/__tests__/parent.test.ts[2m > 
+[22m[2mParent Routes[2m > [22m[2mGET 
+/api/parent/dashboard[2m > [22m[2mshould 
+return parent dashboard data
+At line:1 char:1
++ npx vitest run _legacy/services/backend-api/src/
+__tests__/parent.test ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([90 
+   mstderr[2m... dashboard data:String) [], Rem  
+  oteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[22m[39mError fetching parent dashboard: 
+TypeError: Cannot read properties of undefined 
+(reading 'map')
+    at D:/sem6/software eng/dev2/_legacy/services/
+backend-api/src/routes/parent.ts:57:30
+[90m    at processTicksAndRejections 
+(node:internal/process/task_queues:95:5)[39m
+
+ [31mΓ¥»[39m _legacy/services/backend-api/src/__tests__/parent.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 112[2mms[22m[39m
+[31m       [31m├ù[31m should link a child by studentId[39m[32m 85[2mms[22m[39m
+[31m       [31m├ù[31m should return parent dashboard data[39m[32m 24[2mms[22m[39m
+
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Failed 
+Tests 2 [49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+
+[41m[1m FAIL [22m[49m _legacy/services/backend
+-api/src/__tests__/parent.test.ts[2m > 
+[22mParent Routes[2m > [22mPOST 
+/api/parent/children/link[2m > [22mshould link 
+a child by studentId
+[31m[1mAssertionError[22m: expected 404 to be 
+200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 404[39m
+
+[36m [2mΓ¥»[22m _legacy/services/backend-api/sr
+c/__tests__/parent.test.ts:[2m57:37[22m[39m
+    [90m 55| [39m                
+[33m.[39m[34msend[39m({ studentId 
+})[33m;[39m
+    [90m 56| [39m
+    [90m 57| [39m            [34mexpect[39m(re
+sponse[33m.[39mstatus)[33m.[39m[34mtoBe[39m(
+[34m200[39m)[33m;[39m
+    [90m   | [39m                               
+     [31m^[39m
+    [90m 58| [39m            
+expect(response.body.message).toBe('Child linked 
+successfuΓÇª
+    [90m 59| [39m            [34mexpect[39m(re
+sponse[33m.[39mbody[33m.[39mfamilyMember)[33m
+.[39m[34mtoBeDefined[39m()[33m;[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ
+»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/2]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m _legacy/services/backend
+-api/src/__tests__/parent.test.ts[2m > 
+[22mParent Routes[2m > [22mGET 
+/api/parent/dashboard[2m > [22mshould return 
+parent dashboard data
+[31m[1mAssertionError[22m: expected 500 to be 
+200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 500[39m
+
+[36m [2mΓ¥»[22m _legacy/services/backend-api/sr
+c/__tests__/parent.test.ts:[2m83:37[22m[39m
+    [90m 81| [39m            const response = 
+await request(app).get('/api/parent/dashbΓÇª
+    [90m 82| [39m
+    [90m 83| [39m            [34mexpect[39m(re
+sponse[33m.[39mstatus)[33m.[39m[34mtoBe[39m(
+[34m200[39m)[33m;[39m
+    [90m   | [39m                               
+     [31m^[39m
+    [90m 84| [39m            [34mexpect[39m(re
+sponse[33m.[39mbody[33m.[39mchildren)[33m.[3
+9m[34mtoHaveLength[39m([34m1[39m)[33m;[39m
+    [90m 85| [39m        })[33m;[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ
+»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/2]ΓÄ»[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m   Start at [22m 22:12:09
+[2m   Duration [22m 4.64s[2m (transform 484ms, setup 0ms, import 1.93s, tests 112ms, environment 1.98s)[22m
+

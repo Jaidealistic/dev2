@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/db';
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -30,14 +28,35 @@ export async function GET() {
       },
     });
 
-    const students = educator?.students.map((es) => {
+    interface ProgressRecord {
+      score: number | null;
+    }
+
+    interface StudentUser {
+      firstName: string | null;
+      lastName: string | null;
+    }
+
+    interface LearnerProfile {
+      id: string;
+      dateOfBirth: Date | null;
+      disabilities: any; // Json type
+      progressRecords: ProgressRecord[];
+    }
+
+    interface EducatorStudentRelation {
+      student: LearnerProfile;
+      studentUser: StudentUser | null;
+    }
+
+    const students = (educator?.students as unknown as EducatorStudentRelation[] | undefined)?.map((es: EducatorStudentRelation) => {
       const student = es.student;
       const user = es.studentUser;
       const scores = student.progressRecords
-        .filter(p => p.score !== null)
-        .map(p => p.score!);
-      
-      const age = student.dateOfBirth 
+        .filter((p: ProgressRecord) => p.score !== null)
+        .map((p: ProgressRecord) => p.score!);
+
+      const age = student.dateOfBirth
         ? new Date().getFullYear() - new Date(student.dateOfBirth).getFullYear()
         : 0;
 
@@ -48,7 +67,7 @@ export async function GET() {
         disabilities: student.disabilities,
         lessonsCompleted: student.progressRecords.length,
         averageScore: scores.length > 0
-          ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+          ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length)
           : 0,
       };
     }) || [];

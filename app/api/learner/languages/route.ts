@@ -11,8 +11,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    interface JWTPayload {
+      userId: string;
+    }
+
     const token = authHeader.split(' ')[1];
-    const decoded: any = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, SECRET_KEY) as unknown as JWTPayload;
     const { userId } = decoded;
 
     const body = await req.json();
@@ -39,7 +43,7 @@ export async function POST(req: Request) {
       // Since schema only supports one learning language for now:
       await prisma.learnerProfile.update({
         where: { id: user.learnerProfile.id },
-        data: { learningLanguage: language.toUpperCase() as any }
+        data: { learningLanguage: language.toUpperCase() }
       });
 
       return NextResponse.json({ success: true, languages: [language.toUpperCase()] });

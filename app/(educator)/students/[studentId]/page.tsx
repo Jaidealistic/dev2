@@ -1,13 +1,11 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import ProgressChart from '@/components/educator/ProgressChart';
 import NIOSTracker from '@/components/educator/NIOSTracker';
-
-const prisma = new PrismaClient();
 
 export default async function StudentDetailPage({
   params,

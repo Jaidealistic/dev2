@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/db';
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -39,15 +37,26 @@ export async function GET() {
     // For now, let's fetch lessons count separately if needed or assume 0 for MVP if relation not in schema yet.
     // Checking dev2-rem-work.txt, it implies `educator.createdContent?.length`.
     // I'll leave it as 0 for now to avoid build error if relation is missing, or try to fetch if I can confirm schema.
-    const activeLessons = 0; 
-    
-    const allProgress = educator.students.flatMap(s => s.student.progressRecords);
+    const activeLessons = 0;
+
+    interface ProgressRecord {
+      score: number | null;
+      timeSpentSec: number | null;
+    }
+
+    interface EducatorStudentRelation {
+      student: {
+        progressRecords: ProgressRecord[];
+      };
+    }
+
+    const allProgress = (educator.students as unknown as EducatorStudentRelation[]).flatMap((s: EducatorStudentRelation) => s.student.progressRecords);
     const averageProgress = allProgress.length > 0
-      ? Math.round(allProgress.reduce((sum, p) => sum + (p.score || 0), 0) / allProgress.length)
+      ? Math.round(allProgress.reduce((sum: number, p: ProgressRecord) => sum + (p.score || 0), 0) / allProgress.length)
       : 0;
 
     const totalTeachingHours = Math.round(
-      allProgress.reduce((sum, p) => sum + (p.timeSpentSec || 0), 0) / 3600
+      allProgress.reduce((sum: number, p: ProgressRecord) => sum + (p.timeSpentSec || 0), 0) / 3600
     );
 
     return NextResponse.json({

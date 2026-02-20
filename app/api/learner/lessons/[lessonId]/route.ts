@@ -13,8 +13,42 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+interface LessonStep {
+  id: string;
+  type: string;
+  title: string;
+  content?: string;
+  audioUrl?: string | null;
+  words?: {
+    word: string;
+    translation: string;
+    phonetic: string;
+    example: string;
+  }[];
+  question?: string;
+  options?: {
+    id: string;
+    text: string;
+    correct: boolean;
+  }[];
+  correctFeedback?: string;
+  incorrectFeedback?: string;
+}
+
+interface ProfessionalLesson {
+  _id: string;
+  title: string;
+  description: string;
+  targetLanguage: string;
+  learningLanguage: string;
+  level: string;
+  estimatedTime: number;
+  disabilityTypes?: string[];
+  steps: LessonStep[];
+}
+
 // Professional lesson library
-const PROFESSIONAL_LESSONS: Record<string, any> = {
+const PROFESSIONAL_LESSONS: Record<string, ProfessionalLesson> = {
 
   /* ══════════════════════════════════════════════════════════════
      ADHD-OPTIMISED LESSONS
@@ -804,7 +838,7 @@ export async function GET(
         estimatedDuration: lesson.estimatedTime,
         competencies: [],
         disabilityTypes: lesson.disabilityTypes || [],
-        steps: lesson.steps.map((step: any) => ({
+        steps: (lesson.steps as LessonStep[]).map((step: LessonStep) => ({
           id: step.id,
           stepType: step.type, // Map 'type' to 'stepType'
           title: step.title,
@@ -826,7 +860,7 @@ export async function GET(
       description: defaultLesson.description,
       estimatedDuration: defaultLesson.estimatedTime,
       competencies: [],
-      steps: defaultLesson.steps.map((step: any) => ({
+      steps: (defaultLesson.steps as LessonStep[]).map((step: LessonStep) => ({
         id: step.id,
         stepType: step.type,
         title: step.title,

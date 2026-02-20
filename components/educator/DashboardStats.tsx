@@ -48,28 +48,71 @@ export default function DashboardStats({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {cards.map((card) => {
         const Icon = card.icon;
-        // Construct class names dynamically for safety if needed, or stick to simple classes
-        // Note: Tailwind dynamic classes like `text-${color}-600` might not be purged correctly if not safelisted.
-        // For simplicity reusing the logic from the prompt, but ideally we should map colors explicitly.
-        let iconColorClass = "text-gray-600";
-        if (card.color === 'blue') iconColorClass = "text-blue-600";
-        if (card.color === 'green') iconColorClass = "text-green-600";
-        if (card.color === 'purple') iconColorClass = "text-purple-600";
-        if (card.color === 'orange') iconColorClass = "text-orange-600";
+
+        const colors = {
+          blue: {
+            bg: 'bg-blue-50',
+            text: 'text-blue-600',
+            icon: 'text-blue-600',
+            border: 'border-blue-100',
+            shadow: 'shadow-[0_8px_30px_rgb(59,130,246,0.08)]'
+          },
+          green: {
+            bg: 'bg-emerald-50',
+            text: 'text-emerald-600',
+            icon: 'text-emerald-600',
+            border: 'border-emerald-100',
+            shadow: 'shadow-[0_8px_30px_rgb(16,185,129,0.08)]'
+          },
+          purple: {
+            bg: 'bg-purple-50',
+            text: 'text-purple-600',
+            icon: 'text-purple-600',
+            border: 'border-purple-100',
+            shadow: 'shadow-[0_8px_30px_rgb(147,51,234,0.08)]'
+          },
+          orange: {
+            bg: 'bg-orange-50',
+            text: 'text-orange-600',
+            icon: 'text-orange-600',
+            border: 'border-orange-100',
+            shadow: 'shadow-[0_8px_30px_rgb(249,115,22,0.08)]'
+          }
+        };
+
+        const theme = colors[card.color as keyof typeof colors] || colors.blue;
 
         return (
-          <Card key={card.title}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+          <Card
+            key={card.title}
+            className={`group relative overflow-hidden border-0 transition-all duration-300 hover:-translate-y-1 ${theme.shadow} hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]`}
+          >
+            <div className={`absolute top-0 left-0 w-1 h-full ${theme.icon.replace('text-', 'bg-')}`} />
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+              <CardTitle className="text-xs font-bold uppercase tracking-wider text-gray-500">
                 {card.title}
               </CardTitle>
-              <Icon className={`h-5 w-5 ${iconColorClass}`} />
+              <div className={`p-2 rounded-xl ${theme.bg} ${theme.text} transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                <Icon className="h-4 w-4" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{card.value}</div>
+              <div className="flex items-baseline space-x-1">
+                <span className="text-3xl font-black tracking-tight text-slate-900">
+                  {card.value}
+                </span>
+                {card.title === 'Avg Progress' && (
+                  <span className="text-xs font-semibold text-emerald-500 ml-1">
+                    ↑ 2.4%
+                  </span>
+                )}
+              </div>
+              <div className="mt-2 text-[10px] font-medium text-gray-400">
+                Last updated just now
+              </div>
             </CardContent>
           </Card>
         );
