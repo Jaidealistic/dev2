@@ -13,13 +13,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { 
-  Award, 
-  TrendingUp, 
-  Clock, 
-  Target, 
-  Sparkles, 
-  ChevronRight, 
+import { useAccessibility } from '@/components/providers/AccessibilityProvider';
+import {
+  Award,
+  TrendingUp,
+  Clock,
+  Target,
+  Sparkles,
+  ChevronRight,
   Home,
   BookOpen,
   Star
@@ -52,6 +53,7 @@ export default function LessonCompletePage() {
   const router = useRouter();
   const params = useParams();
   const lessonId = params.lessonId as string;
+  const { preferences } = useAccessibility();
 
   const [summary, setSummary] = useState<LessonSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -84,42 +86,43 @@ export default function LessonCompletePage() {
       }
 
       const data = await response.json();
-      
-      // Mock data for now
-      const mockSummary: LessonSummary = {
-        lessonId,
-        lessonTitle: 'Spanish Greetings',
-        score: 85,
-        duration: 1260, // 21 minutes
-        sectionsCompleted: 5,
-        totalSections: 5,
-        strengths: [
-          'Excellent pronunciation of "Buenos días"',
-          'Quick recognition of greeting vocabulary',
-          'Strong performance on listening comprehension',
-          'Confident participation in speech practice'
-        ],
-        newBadges: [
-          {
-            id: 'first-lesson',
-            name: 'First Steps',
-            icon: '🎓',
-            description: 'Completed your first lesson!'
-          }
-        ],
-        nextLesson: {
-          id: 'lesson-2',
-          title: 'Introducing Yourself',
-          description: 'Learn how to introduce yourself and ask others their names in Spanish.',
-          estimatedDuration: 15
-        },
-        encouragementMessage: 'You showed great persistence today! Your pronunciation is improving with each practice session.'
-      };
 
-      setSummary(mockSummary);
+      if (data.success && data.summary) {
+        const apiSummary = data.summary;
+
+        // Map API response to LessonSummary interface
+        const mappedSummary: LessonSummary = {
+          lessonId,
+          lessonTitle: apiSummary.lessonTitle,
+          score: apiSummary.score,
+          duration: apiSummary.timeSpent,
+          sectionsCompleted: apiSummary.sectionsCompleted || 5,
+          totalSections: 5,
+          strengths: apiSummary.strengths || [
+            `Excellent focus throughout the lesson`,
+            `Strong understanding of ${apiSummary.lessonTitle}`,
+            `Good pace and consistency`,
+            `Successful completion of all practice exercises`
+          ],
+          newBadges: apiSummary.badges.map((b: any) => ({
+            id: b.id,
+            name: b.name,
+            icon: b.icon === 'trophy' ? '🏆' : '⚡',
+            description: b.description
+          })),
+          encouragementMessage: apiSummary.score >= 90
+            ? "Outstanding work! You've mastered this topic with incredible focus."
+            : "Great job! Your dedication to learning is showing real results.",
+          nextLesson: apiSummary.nextLesson
+        };
+
+        setSummary(mappedSummary);
+      } else {
+        throw new Error('Invalid summary data');
+      }
     } catch (error) {
       console.error('Error loading summary:', error);
-      alert('Failed to load lesson summary. Redirecting to dashboard...');
+      alert('Could not load your session summary. Returning to dashboard.');
       router.push('/learner/dashboard');
     } finally {
       setIsLoading(false);
@@ -146,7 +149,15 @@ export default function LessonCompletePage() {
   const scorePercentage = summary.score;
 
   return (
-    <div className="min-h-screen bg-[#f5f1eb] py-12 px-6">
+    <div
+      className="min-h-screen bg-[#f5f1eb] py-12 px-6"
+      style={{
+        fontSize: `${preferences.fontSize}px`,
+        fontFamily: preferences.fontFamily === 'lexend' ? 'Lexend' :
+          preferences.fontFamily === 'opendyslexic' ? 'OpenDyslexic' :
+            preferences.fontFamily === 'atkinson' ? 'Atkinson Hyperlegible' : 'system-ui',
+      }}
+    >
       <div className="container mx-auto max-w-4xl">
         {/* Celebration Header */}
         <div className="text-center mb-12">
@@ -237,11 +248,10 @@ export default function LessonCompletePage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {summary.newBadges.map((badge) => (
-                <div 
-                  key={badge.id} 
-                  className={`bg-white rounded-2xl p-6 border-2 border-yellow-300 transition-all duration-500 ${
-                    showBadgeAnimation ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-                  }`}
+                <div
+                  key={badge.id}
+                  className={`bg-white rounded-2xl p-6 border-2 border-yellow-300 transition-all duration-500 ${showBadgeAnimation ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+                    }`}
                 >
                   <div className="text-center">
                     <div className="text-6xl mb-3">{badge.icon}</div>
@@ -289,7 +299,7 @@ export default function LessonCompletePage() {
             <Home className="w-5 h-5" />
             Back to Dashboard
           </button>
-          
+
           {summary.nextLesson && (
             <button
               onClick={() => router.push(`/learner/lessons/${summary.nextLesson!.id}`)}

@@ -353,6 +353,9 @@ function AccessibilityStyleInjector({
     document.body.style.lineHeight = `${preferences.lineSpacing}`;
     document.body.style.letterSpacing = `${preferences.letterSpacing}px`;
 
+    // Explicitly set on root for rem scaling
+    root.style.fontSize = `${preferences.fontSize}px`;
+
     // Disable animations if reduced motion is enabled
     if (preferences.reducedMotion) {
       const style = document.createElement('style');
@@ -384,6 +387,7 @@ function getFontStack(fontFamily: string): string {
     system: 'system-ui, -apple-system, sans-serif',
     lexend: '"Lexend", system-ui, sans-serif',
     opendyslexic: '"OpenDyslexic", system-ui, sans-serif',
+    atkinson: '"Atkinson Hyperlegible", system-ui, sans-serif',
   };
   return stacks[fontFamily] || stacks.lexend;
 }

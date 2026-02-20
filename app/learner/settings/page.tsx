@@ -177,6 +177,7 @@ export default function LearnerSettingsPage() {
             {[
               { value: 'lexend', label: 'Lexend', stack: '"Lexend", system-ui, sans-serif' },
               { value: 'opendyslexic', label: 'OpenDyslexic', stack: '"OpenDyslexic", system-ui, sans-serif' },
+              { value: 'atkinson', label: 'Atkinson', stack: '"Atkinson Hyperlegible", system-ui, sans-serif' },
             ].map((font) => (
               <button
                 key={font.value}
