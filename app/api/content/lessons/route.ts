@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import dbConnect from '@/lib/mongodb';
+import Lesson from '@/lib/models/Lesson';
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -11,18 +13,39 @@ export async function POST(req: Request) {
   }
 
   try {
+    await dbConnect();
     const body = await req.json();
 
+    // 1. Create the base lesson in Postgres to get a stable ID
     const lesson = await prisma.lesson.create({
       data: {
-        title: body.title,
-        description: body.description,
-        language: body.language,
-        gradeLevel: body.level,
+        title: typeof body.title === 'string' ? body.title : body.title.en,
+        description: body.description || '',
+        language: body.language || 'en',
+        gradeLevel: body.level || 'beginner',
         creatorId: session.user.id!,
         isPublished: body.status === 'published',
       },
     });
+
+    // 2. Save the full complex content to MongoDB using the same ID
+    const mongoLesson = new Lesson({
+      lessonId: lesson.id,
+      title: body.title,
+      level: body.level,
+      language: body.language,
+      estimatedDuration: body.estimatedDuration || 30,
+      prepTimeMinutes: body.prepTimeMinutes || 0,
+      content: body.content || { introduction: { text: { en: '', ta: '' } }, sections: [] },
+      teachingGuide: body.teachingGuide || { overview: { en: '', ta: '' }, learningObjectives: { en: [], ta: [] }, steps: [] },
+      niosCompetencies: body.niosCompetencies || [],
+      createdBy: session.user.id!,
+      status: body.status || 'draft',
+      tags: body.tags || [],
+      difficulty: body.difficulty || 5,
+    });
+
+    await mongoLesson.save();
 
     return NextResponse.json({
       success: true,
