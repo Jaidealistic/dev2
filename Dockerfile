@@ -49,11 +49,10 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Manually copy Prisma engines if not picked up by Next.js standalone build
-# We copy across all common linux engines just in case
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma/client/query_engine-linux-musl-openssl-3.0.x.so.node ./node_modules/.prisma/client/
+# IMPORTANT: Copy the Prisma engines so they are available to the standalone app
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 
-# Install openssl in runner for runtime prisma connection
+# Install openssl and libc6-compat in runner for runtime prisma connection
 RUN apk add --no-cache openssl libc6-compat
 
 USER nextjs
@@ -61,10 +60,7 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT 3000
-# set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
 # Run migrations before starting the app
 CMD npx prisma migrate deploy && node server.js
