@@ -16,13 +16,15 @@ COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
 
-# Re-install openssl for prisma generation in builder
-RUN apk add --no-cache openssl
+# Provide a dummy DATABASE_URL during build to satisfy Prisma validation
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+# Skip prisma postinstall since we run it explicitly
+ENV PRISMA_SKIP_POSTINSTALL_GENERATE=1
+
+# Re-install openssl and libc6-compat for prisma generation in builder
+RUN apk add --no-cache openssl libc6-compat
 RUN npx prisma generate
 RUN npm run build
 
@@ -31,7 +33,6 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
@@ -49,10 +50,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Manually copy Prisma engines if not picked up by Next.js standalone build
+# We copy across all common linux engines just in case
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma/client/query_engine-linux-musl-openssl-3.0.x.so.node ./node_modules/.prisma/client/
 
 # Install openssl in runner for runtime prisma connection
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl libc6-compat
 
 USER nextjs
 
@@ -64,4 +66,5 @@ ENV HOSTNAME "0.0.0.0"
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD ["node", "server.js"]
+# Run migrations before starting the app
+CMD npx prisma migrate deploy && node server.js
