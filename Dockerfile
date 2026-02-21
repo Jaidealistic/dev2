@@ -8,6 +8,7 @@ RUN npm install --legacy-peer-deps --ignore-scripts
 
 # Stage 2: Build the application
 FROM node:20-alpine AS builder
+RUN apk add --no-cache openssl
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
