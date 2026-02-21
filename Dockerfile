@@ -48,6 +48,9 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Manually copy Prisma engines if not picked up by Next.js standalone build
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma/client/query_engine-linux-musl-openssl-3.0.x.so.node ./node_modules/.prisma/client/
+
 # Install openssl in runner for runtime prisma connection
 RUN apk add --no-cache openssl
 
