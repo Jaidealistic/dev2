@@ -58,13 +58,7 @@ services:
       - linguaaccess-network
     restart: unless-stopped
     healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "require('http').get('http://localhost:3002/health', (r) => { process.exit(r.statusCode === 200 ? 0 : 1); })",
-        ]
+      test: [ "CMD", "node", "-e", "require('http').get('http://localhost:3002/health', (r) => { process.exit(r.statusCode === 200 ? 0 : 1); })" ]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -74,28 +68,28 @@ services:
   # NOTIFICATION SERVICE (Optional)
   # Developer 2 Service
   # ============================================
-  notification:
-    build:
-      context: ./services/notification-service
-      dockerfile: Dockerfile
-    container_name: linguaaccess-notification
-    ports:
-      - "3003:3003"
-    environment:
-      - NODE_ENV=development
-      - PORT=3003
-      - REDIS_URL=redis://redis:6379
-      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
-      - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
-      - FCM_SERVER_KEY=${FCM_SERVER_KEY}
-    depends_on:
-      - redis
-    volumes:
-      - ./services/notification-service:/app
-      - /app/node_modules
-    networks:
-      - linguaaccess-network
-    restart: unless-stopped
+  #  notification:
+  #    build:
+  #      context: ./services/notification-service
+  #      dockerfile: Dockerfile
+  #    container_name: linguaaccess-notification
+  #    ports:
+  #      - "3003:3003"
+  #    environment:
+  #      - NODE_ENV=development
+  #      - PORT=3003
+  #      - REDIS_URL=redis://redis:6379
+  #      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+  #      - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
+  #      - FCM_SERVER_KEY=${FCM_SERVER_KEY}
+  #    depends_on:
+  #      - redis
+  #    volumes:
+  #      - ./services/notification-service:/app
+  #      - /app/node_modules
+  #    networks:
+  #      - linguaaccess-network
+  #    restart: unless-stopped
 
   # ============================================
   # ML SERVICE (Python FastAPI)
@@ -114,7 +108,7 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-credentials.json
     volumes:
       - ./services/ml-service:/app
-      - ./gcp-credentials.json:/app/gcp-credentials.json:ro
+    #      - ./gcp-credentials.json:/app/gcp-credentials.json:ro
     networks:
       - linguaaccess-network
     restart: unless-stopped
@@ -145,7 +139,7 @@ services:
       - linguaaccess-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -183,7 +177,7 @@ services:
     restart: unless-stopped
     command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 3s
       retries: 5
