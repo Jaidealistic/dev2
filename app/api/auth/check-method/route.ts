@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       select: {
         role: true,
         firstName: true,
-        password: true, // we check if this looks like a pattern hash or password hash, ideally we'd have a separate field
+        password: true,
       },
     });
 
