@@ -106,28 +106,28 @@ const CONFIG: Record<ToastType, {
     title: string;
 }> = {
     success: {
-        icon: <CheckCircle className="w-4 h-4 text-[#5d7e61]" />,
+        icon: <CheckCircle className="w-4 h-4 text-[#5d7e61]" aria-hidden="true" />,
         bar: 'bg-[#7a9b7e]',
         bg: 'bg-[#f0f4f0]',
         border: 'border-[#c5d9c7]',
         title: 'text-[#2d4a30]',
     },
     error: {
-        icon: <XCircle className="w-4 h-4 text-[#c27171]" />,
+        icon: <XCircle className="w-4 h-4 text-[#c27171]" aria-hidden="true" />,
         bar: 'bg-[#c27171]',
         bg: 'bg-[#fdf0f0]',
         border: 'border-[#e8c5c5]',
         title: 'text-[#7a2a2a]',
     },
     info: {
-        icon: <Info className="w-4 h-4 text-[#5a7a94]" />,
+        icon: <Info className="w-4 h-4 text-[#5a7a94]" aria-hidden="true" />,
         bar: 'bg-[#7a9bb5]',
         bg: 'bg-[#f0f4f8]',
         border: 'border-[#c5d4e0]',
         title: 'text-[#2a4a5e]',
     },
     warning: {
-        icon: <AlertTriangle className="w-4 h-4 text-[#9a7a3a]" />,
+        icon: <AlertTriangle className="w-4 h-4 text-[#9a7a3a]" aria-hidden="true" />,
         bar: 'bg-[#c4a44a]',
         bg: 'bg-[#fdf8ee]',
         border: 'border-[#e0d0a0]',
