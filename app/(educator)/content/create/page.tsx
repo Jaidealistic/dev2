@@ -69,7 +69,7 @@ export default function CreateLessonPage() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => handleSave('draft')} disabled={saving}>
-            <Save className="h-4 w-4 mr-2" />
+            <Save className="h-4 w-4 mr-2" aria-hidden="true" />
             Save Draft
           </Button>
           <Button onClick={() => handleSave('published')} disabled={saving}>
@@ -241,7 +241,7 @@ export default function CreateLessonPage() {
                 Add vocabulary, practice exercises, and quizzes
               </p>
               <Button variant="outline">
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 mr-2" aria-hidden="true" />
                 Add Section
               </Button>
             </CardContent>
@@ -298,7 +298,7 @@ export default function CreateLessonPage() {
                 </div>
 
                 <Button variant="outline">
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="h-4 w-4 mr-2" aria-hidden="true" />
                   Add Teaching Step
                 </Button>
               </div>

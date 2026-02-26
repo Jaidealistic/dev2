@@ -308,7 +308,7 @@ export default function EnhancedOnboardingPage() {
       <header className="container mx-auto px-6 py-5 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-            <BookOpen className="w-5 h-5 text-white" />
+            <BookOpen className="w-5 h-5 text-white" aria-hidden="true" />
           </div>
           <span className={`text-2xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
             Lexfix
@@ -378,7 +378,7 @@ export default function EnhancedOnboardingPage() {
               <div className="space-y-8">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] mb-5 shadow-lg shadow-green-200/40">
-                    <Sparkles className="w-8 h-8 text-white" />
+                    <Sparkles className="w-8 h-8 text-white" aria-hidden="true" />
                   </div>
                   <h1 className={`text-3xl sm:text-4xl font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     Welcome to Lexfix!
@@ -508,7 +508,7 @@ export default function EnhancedOnboardingPage() {
                         >
                           {isSelected && (
                             <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-                              <Check className="w-3.5 h-3.5 text-white" />
+                              <Check className="w-3.5 h-3.5 text-white" aria-hidden="true" />
                             </div>
                           )}
                           <span className="text-3xl mb-2 block">{lang.flag}</span>
@@ -593,7 +593,7 @@ export default function EnhancedOnboardingPage() {
                               >
                                 {goals.confidenceLevel === opt.value && (
                                   <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-                                    <Check className="w-3 h-3 text-white" />
+                                    <Check className="w-3 h-3 text-white" aria-hidden="true" />
                                   </div>
                                 )}
                                 <span className="block mb-1">{opt.emoji}</span>
@@ -647,7 +647,7 @@ export default function EnhancedOnboardingPage() {
                               >
                                 {goals.preferredStyle === opt.value && (
                                   <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-                                    <Check className="w-3 h-3 text-white" />
+                                    <Check className="w-3 h-3 text-white" aria-hidden="true" />
                                   </div>
                                 )}
                                 <span className="block mb-1">{opt.emoji}</span>
@@ -677,7 +677,7 @@ export default function EnhancedOnboardingPage() {
                                   : (isDark ? 'border-gray-600 text-gray-400 hover:border-gray-500 bg-gray-800/40' : 'border-gray-200 text-gray-600 bg-white/60 hover:border-[#7da47f]/50')
                                   }`}
                               >
-                                {goals.weeklyHours === opt.value && <Check className="w-3.5 h-3.5 inline mr-1" />}
+                                {goals.weeklyHours === opt.value && <Check className="w-3.5 h-3.5 inline mr-1" aria-hidden="true" />}
                                 {opt.label}
                               </button>
                             ))}
@@ -735,7 +735,7 @@ export default function EnhancedOnboardingPage() {
                           ? 'bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] border-[#5a8c5c]'
                           : (isDark ? 'border-gray-600' : 'border-gray-300')
                           }`}>
-                          {isSelected && <Check className="w-3 h-3 text-white" />}
+                          {isSelected && <Check className="w-3 h-3 text-white" aria-hidden="true" />}
                         </div>
                       </button>
                     );
@@ -790,7 +790,7 @@ export default function EnhancedOnboardingPage() {
                       >
                         {formData.fontFamily === font.value && (
                           <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-                            <Check className="w-3 h-3 text-white" />
+                            <Check className="w-3 h-3 text-white" aria-hidden="true" />
                           </div>
                         )}
                         <div className={`${font.style} font-semibold text-sm ${formData.fontFamily === font.value ? (isDark ? 'text-white' : 'text-gray-900') : (isDark ? 'text-gray-300' : 'text-gray-700')}`}>{font.label}</div>
@@ -898,7 +898,7 @@ export default function EnhancedOnboardingPage() {
                       >
                         {formData.colorScheme === scheme.value && (
                           <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-                            <Check className="w-2.5 h-2.5 text-white" />
+                            <Check className="w-2.5 h-2.5 text-white" aria-hidden="true" />
                           </div>
                         )}
                         <span className="text-xl block mb-1">{scheme.icon}</span>
@@ -987,7 +987,7 @@ export default function EnhancedOnboardingPage() {
               <div className="space-y-6">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] mb-4 shadow-lg shadow-green-200/40">
-                    <Check className="w-7 h-7 text-white" />
+                    <Check className="w-7 h-7 text-white" aria-hidden="true" />
                   </div>
                   <h2 className={`text-2xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     You&apos;re All Set!
@@ -998,7 +998,7 @@ export default function EnhancedOnboardingPage() {
                   {formData.placementLevel && (
                     <div className={`inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-full text-sm font-semibold ${isDark ? 'bg-green-900/40 text-green-300' : 'bg-green-100 text-green-700'
                       }`}>
-                      <Sparkles className="w-4 h-4" />
+                      <Sparkles className="w-4 h-4" aria-hidden="true" />
                       Placement Level: {formData.placementLevel}
                     </div>
                   )}
@@ -1008,7 +1008,7 @@ export default function EnhancedOnboardingPage() {
                   {/* Profile Summary */}
                   <div className={`p-4 rounded-xl border ${isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-gradient-to-r from-[#f0f7f0] to-[#e0ede1] border-[#c5d8c7]'}`}>
                     <h3 className={`font-semibold text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      <User className="w-4 h-4" /> Profile
+                      <User className="w-4 h-4" aria-hidden="true" /> Profile
                     </h3>
                     <div className={`text-sm space-y-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                       <p>Grade: {formData.gradeLevel || 'Not specified'}</p>
@@ -1021,7 +1021,7 @@ export default function EnhancedOnboardingPage() {
                   {Object.keys(formData.languageGoals).length > 0 && (
                     <div className={`p-4 rounded-xl border ${isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-gradient-to-r from-[#f0f7f0] to-[#e0ede1] border-[#c5d8c7]'}`}>
                       <h3 className={`font-semibold text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        <BookOpen className="w-4 h-4" /> Language Goals
+                        <BookOpen className="w-4 h-4" aria-hidden="true" /> Language Goals
                       </h3>
                       <div className="space-y-2">
                         {Object.entries(formData.languageGoals).map(([lang, g]) => (
@@ -1041,7 +1041,7 @@ export default function EnhancedOnboardingPage() {
                   {formData.disabilities.length > 0 && !formData.disabilities.includes('none') && (
                     <div className={`p-4 rounded-xl border ${isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-gradient-to-r from-[#f0f7f0] to-[#e0ede1] border-[#c5d8c7]'}`}>
                       <h3 className={`font-semibold text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        <Accessibility className="w-4 h-4" /> Learning Needs
+                        <Accessibility className="w-4 h-4" aria-hidden="true" /> Learning Needs
                       </h3>
                       <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                         {formData.disabilities.join(', ')}
@@ -1052,7 +1052,7 @@ export default function EnhancedOnboardingPage() {
                   {/* Accessibility Summary */}
                   <div className={`p-4 rounded-xl border ${isDark ? 'bg-gray-800/50 border-gray-700' : 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-100'}`}>
                     <h3 className={`font-semibold text-sm mb-2 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      <BookOpen className="w-4 h-4" /> Accessibility
+                      <BookOpen className="w-4 h-4" aria-hidden="true" /> Accessibility
                     </h3>
                     <div className={`text-sm space-y-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                       <p>Font: {formData.fontFamily} &middot; Size: {formData.textSize}px</p>
@@ -1076,7 +1076,7 @@ export default function EnhancedOnboardingPage() {
                   : 'bg-white text-[#4a4a4a] hover:bg-[#f8faf8] border border-[#e8e5e0] shadow-sm hover:shadow-md hover:border-[#7a9b7e]/30'
                 }`}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-4 h-4" aria-hidden="true" />
               Back
             </button>
 
@@ -1088,13 +1088,13 @@ export default function EnhancedOnboardingPage() {
               >
                 {isLoading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
                     Processing...
                   </>
                 ) : (
                   <>
                     {currentStep === 6 ? 'Submit Assessment' : 'Continue'}
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-4 h-4" aria-hidden="true" />
                   </>
                 )}
               </button>
@@ -1106,13 +1106,13 @@ export default function EnhancedOnboardingPage() {
               >
                 {isLoading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
                     Setting up...
                   </>
                 ) : (
                   <>
                     Start Learning
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4" aria-hidden="true" />
                   </>
                 )}
               </button>
