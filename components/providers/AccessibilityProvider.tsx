@@ -23,6 +23,7 @@ const defaultPreferences: AccessibilityPreferences = {
   adhdMode: false,
   autismMode: false,
   apdMode: false,
+  screenReaderMode: false,
 };
 
 interface AccessibilityContextType {
