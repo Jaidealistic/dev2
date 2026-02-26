@@ -15,7 +15,7 @@ export default async function CoOpPage() {
           <p className="text-gray-600">Connect with other homeschooling families near you</p>
         </div>
         <Button>
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="h-4 w-4 mr-2" aria-hidden="true" />
           Create Group
         </Button>
       </div>

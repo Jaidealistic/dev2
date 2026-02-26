@@ -318,7 +318,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-gray-700">
-              <Clock className="w-5 h-5" />
+              <Clock className="w-5 h-5" aria-hidden="true" />
               <span className="font-mono text-lg">{minutes}:{seconds.toString().padStart(2, '0')}</span>
             </div>
             <button
@@ -327,13 +327,13 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
                 isPaused ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-orange-500 hover:bg-orange-600 text-white'
               }`}
             >
-              {isPaused ? <><Play className="w-4 h-4 inline mr-2" />Resume</> : <><Pause className="w-4 h-4 inline mr-2" />Pause</>}
+              {isPaused ? <><Play className="w-4 h-4 inline mr-2" aria-hidden="true" />Resume</> : <><Pause className="w-4 h-4 inline mr-2" aria-hidden="true" />Pause</>}
             </button>
             <button
               onClick={() => setIsFullscreen(!isFullscreen)}
               className="p-2 hover:bg-gray-100 rounded-lg"
             >
-              {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+              {isFullscreen ? <Minimize2 className="w-5 h-5" aria-hidden="true" /> : <Maximize2 className="w-5 h-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -359,7 +359,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
           {/* LEFT PANE: Student View */}
           <div className="bg-white rounded-3xl p-8 shadow-lg">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-gray-200">
-              <BookOpen className="w-6 h-6 text-[#9db4a0]" />
+              <BookOpen className="w-6 h-6 text-[#9db4a0]" aria-hidden="true" />
               <h2 className="text-2xl font-bold text-gray-900">Student View</h2>
             </div>
 
@@ -404,7 +404,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
           {!isFullscreen && (
             <div className="bg-gradient-to-br from-[#f0f7f0] to-[#e0ede1] rounded-3xl p-8 shadow-lg">
               <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-[#c5d8c7]">
-                <Lightbulb className="w-6 h-6 text-[#5a8c5c]" />
+                <Lightbulb className="w-6 h-6 text-[#5a8c5c]" aria-hidden="true" />
                 <h2 className="text-2xl font-bold text-gray-900">Teaching Guide</h2>
               </div>
 
@@ -421,7 +421,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
               {/* Disability-Specific Tips */}
               <div className="mb-6">
                 <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-3">
-                  <AlertTriangle className="w-5 h-5 text-orange-500" />
+                  <AlertTriangle className="w-5 h-5 text-orange-500" aria-hidden="true" />
                   Disability-Specific Tips:
                 </h3>
                 <div className="space-y-3">
@@ -451,7 +451,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
                   <ul className="space-y-2">
                     {currentStep.teachingGuide.materials.map((material: string, idx: number) => (
                       <li key={idx} className="flex items-center gap-2 p-3 bg-white rounded-xl">
-                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        <CheckCircle className="w-5 h-5 text-green-600" aria-hidden="true" />
                         <span className="text-gray-800">{material}</span>
                       </li>
                     ))}
@@ -462,7 +462,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
               {/* Estimated Duration */}
               <div className="mb-6 p-4 bg-white rounded-2xl">
                 <div className="flex items-center gap-2 text-gray-700">
-                  <Clock className="w-5 h-5" />
+                  <Clock className="w-5 h-5" aria-hidden="true" />
                   <span>Estimated time: <strong>{currentStep.teachingGuide.estimatedDuration} minutes</strong></span>
                 </div>
               </div>
@@ -470,7 +470,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
               {/* Teacher Notes */}
               <div>
                 <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-3">
-                  <FileText className="w-5 h-5" />
+                  <FileText className="w-5 h-5" aria-hidden="true" />
                   Your Notes:
                 </h3>
                 <textarea
@@ -484,7 +484,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
                   onClick={saveNotes}
                   className="mt-3 flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-medium text-sm"
                 >
-                  <Save className="w-4 h-4" />
+                  <Save className="w-4 h-4" aria-hidden="true" />
                   Save Notes
                 </button>
               </div>
@@ -499,7 +499,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
             disabled={currentStepIndex === 0}
             className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-300 rounded-full font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5" aria-hidden="true" />
             Previous Step
           </button>
 
@@ -508,7 +508,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
               onClick={handleStepComplete}
               className="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-medium"
             >
-              <CheckCircle className="w-5 h-5" />
+              <CheckCircle className="w-5 h-5" aria-hidden="true" />
               Mark Complete
             </button>
 
@@ -517,7 +517,7 @@ export default function TeachingInterface({ lessonId, studentId, languageAvailab
               className="flex items-center gap-2 px-6 py-3 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full font-medium"
             >
               {currentStepIndex === lesson.steps.length - 1 ? 'Finish Lesson' : 'Next Step'}
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>

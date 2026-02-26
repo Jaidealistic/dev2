@@ -116,25 +116,25 @@ export default function HomeschoolHub() {
         {/* Quick Actions */}
         <div className="grid grid-cols-4 gap-4 mb-8">
           <button className="bg-white rounded-2xl p-6 hover:shadow-lg transition-shadow">
-            <BookOpen className="w-8 h-8 text-[#9db4a0] mb-3" />
+            <BookOpen className="w-8 h-8 text-[#9db4a0] mb-3" aria-hidden="true" />
             <h3 className="font-bold text-gray-900 mb-1">Teaching Guides</h3>
             <p className="text-sm text-gray-600">Access lesson plans</p>
           </button>
 
           <button className="bg-white rounded-2xl p-6 hover:shadow-lg transition-shadow">
-            <FileText className="w-8 h-8 text-blue-500 mb-3" />
+            <FileText className="w-8 h-8 text-blue-500 mb-3" aria-hidden="true" />
             <h3 className="font-bold text-gray-900 mb-1">Portfolio</h3>
             <p className="text-sm text-gray-600">Document progress</p>
           </button>
 
           <button className="bg-white rounded-2xl p-6 hover:shadow-lg transition-shadow">
-            <Download className="w-8 h-8 text-green-500 mb-3" />
+            <Download className="w-8 h-8 text-green-500 mb-3" aria-hidden="true" />
             <h3 className="font-bold text-gray-900 mb-1">Resources</h3>
             <p className="text-sm text-gray-600">Printables & materials</p>
           </button>
 
           <button className="bg-white rounded-2xl p-6 hover:shadow-lg transition-shadow">
-            <Users className="w-8 h-8 text-[#7da47f] mb-3" />
+            <Users className="w-8 h-8 text-[#7da47f] mb-3" aria-hidden="true" />
             <h3 className="font-bold text-gray-900 mb-1">Co-op</h3>
             <p className="text-sm text-gray-600">Community groups</p>
           </button>
@@ -144,7 +144,7 @@ export default function HomeschoolHub() {
         <div className="bg-white rounded-3xl p-8 shadow-lg">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <Calendar className="w-7 h-7 text-[#9db4a0]" />
+              <Calendar className="w-7 h-7 text-[#9db4a0]" aria-hidden="true" />
               Weekly Schedule
             </h2>
             <div className="flex items-center gap-4">
@@ -189,7 +189,7 @@ export default function HomeschoolHub() {
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-[#9db4a0] rounded-full flex items-center justify-center">
-                              <BookOpen className="w-6 h-6 text-white" />
+                              <BookOpen className="w-6 h-6 text-white" aria-hidden="true" />
                             </div>
                             <div>
                               <p className="font-medium text-gray-900">Lesson #{lesson.lessonId}</p>
@@ -204,10 +204,10 @@ export default function HomeschoolHub() {
                           </div>
                           <div className="flex items-center gap-2">
                             {lesson.status === 'completed' ? (
-                              <CheckCircle className="w-5 h-5 text-green-500" />
+                              <CheckCircle className="w-5 h-5 text-green-500" aria-hidden="true" />
                             ) : (
                               <button className="px-4 py-2 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full text-sm font-medium">
-                                <Play className="w-4 h-4 inline mr-1" />
+                                <Play className="w-4 h-4 inline mr-1" aria-hidden="true" />
                                 Start Teaching
                               </button>
                             )}
@@ -217,7 +217,7 @@ export default function HomeschoolHub() {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                      <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" aria-hidden="true" />
                       <p className="text-gray-600">No lessons scheduled this week</p>
                       <button className="mt-4 px-6 py-2 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full font-medium">
                         Schedule Lessons
@@ -229,7 +229,7 @@ export default function HomeschoolHub() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" aria-hidden="true" />
               <p className="text-lg text-gray-600 mb-4">No children linked yet</p>
               <Link
                 href="/parent/children/link"
@@ -248,7 +248,7 @@ export default function HomeschoolHub() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <CheckCircle className="w-4 h-4 text-green-600" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Start with engagement</p>
@@ -257,7 +257,7 @@ export default function HomeschoolHub() {
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <CheckCircle className="w-4 h-4 text-green-600" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Take breaks</p>
@@ -266,7 +266,7 @@ export default function HomeschoolHub() {
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <CheckCircle className="w-4 h-4 text-green-600" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Use multi-sensory approaches</p>

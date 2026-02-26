@@ -209,10 +209,10 @@ export default function ParentLearningHub() {
   };
 
   const categoryIcons = {
-    teaching: <BookOpen className="w-5 h-5" />,
-    disability: <Heart className="w-5 h-5" />,
-    assessment: <TrendingUp className="w-5 h-5" />,
-    'well-being': <Lightbulb className="w-5 h-5" />,
+    teaching: <BookOpen className="w-5 h-5" aria-hidden="true" />,
+    disability: <Heart className="w-5 h-5" aria-hidden="true" />,
+    assessment: <TrendingUp className="w-5 h-5" aria-hidden="true" />,
+    'well-being': <Lightbulb className="w-5 h-5" aria-hidden="true" />,
   };
 
   async function handleRegisterOfficeHour(sessionId: string) {
@@ -244,7 +244,7 @@ export default function ParentLearningHub() {
                 </p>
                 <p className="text-sm text-gray-600">Courses Completed</p>
               </div>
-              <Award className="w-10 h-10 text-[#9db4a0]" />
+              <Award className="w-10 h-10 text-[#9db4a0]" aria-hidden="true" />
             </div>
           </div>
 
@@ -313,7 +313,7 @@ export default function ParentLearningHub() {
                       {course.category.replace('-', ' ')}
                     </span>
                     {course.status === 'completed' && (
-                      <CheckCircle className="w-6 h-6 text-green-600" />
+                      <CheckCircle className="w-6 h-6 text-green-600" aria-hidden="true" />
                     )}
                   </div>
 
@@ -322,11 +322,11 @@ export default function ParentLearningHub() {
 
                   <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
                     <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
+                      <Clock className="w-4 h-4" aria-hidden="true" />
                       {course.duration} min
                     </span>
                     <span className="flex items-center gap-1">
-                      <BookOpen className="w-4 h-4" />
+                      <BookOpen className="w-4 h-4" aria-hidden="true" />
                       {course.modules} modules
                     </span>
                   </div>
@@ -354,17 +354,17 @@ export default function ParentLearningHub() {
                     >
                       {course.status === 'not-started' ? (
                         <>
-                          <Play className="w-5 h-5" />
+                          <Play className="w-5 h-5" aria-hidden="true" />
                           Start Course
                         </>
                       ) : course.status === 'completed' ? (
                         <>
-                          <CheckCircle className="w-5 h-5" />
+                          <CheckCircle className="w-5 h-5" aria-hidden="true" />
                           Review
                         </>
                       ) : (
                         <>
-                          <Play className="w-5 h-5" />
+                          <Play className="w-5 h-5" aria-hidden="true" />
                           Continue
                         </>
                       )}
@@ -375,7 +375,7 @@ export default function ParentLearningHub() {
                         className="px-4 py-3 border-2 border-[#9db4a0] text-[#9db4a0] rounded-full font-medium hover:bg-[#9db4a0] hover:text-white"
                         title="Download Certificate"
                       >
-                        <Download className="w-5 h-5" />
+                        <Download className="w-5 h-5" aria-hidden="true" />
                       </button>
                     )}
                   </div>
@@ -386,7 +386,7 @@ export default function ParentLearningHub() {
             {/* Certificates Section */}
             <div className="mt-8 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-3xl p-8 border-2 border-yellow-200">
               <div className="flex items-center gap-4 mb-6">
-                <Award className="w-12 h-12 text-yellow-600" />
+                <Award className="w-12 h-12 text-yellow-600" aria-hidden="true" />
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Your Certificates</h2>
                   <p className="text-gray-600">Download and share your achievements</p>
@@ -395,14 +395,14 @@ export default function ParentLearningHub() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {courses.filter(c => c.status === 'completed' && c.certificateAvailable).map((course) => (
                   <div key={course.id} className="bg-white rounded-2xl p-4 border border-yellow-300">
-                    <Award className="w-8 h-8 text-yellow-600 mb-2" />
+                    <Award className="w-8 h-8 text-yellow-600 mb-2" aria-hidden="true" />
                     <h3 className="font-bold text-gray-900 mb-1">{course.title}</h3>
                     <p className="text-sm text-gray-600 mb-3">Completed February 2026</p>
                     <button
                       onClick={() => handleDownloadCertificate(course.id)}
                       className="w-full flex items-center justify-center gap-2 py-2 bg-yellow-500 text-white rounded-full font-medium hover:bg-yellow-600"
                     >
-                      <Download className="w-4 h-4" />
+                      <Download className="w-4 h-4" aria-hidden="true" />
                       Download
                     </button>
                   </div>
@@ -426,7 +426,7 @@ export default function ParentLearningHub() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
-                        <Calendar className="w-5 h-5 text-[#5a8c5c]" />
+                        <Calendar className="w-5 h-5 text-[#5a8c5c]" aria-hidden="true" />
                         <span className="font-medium text-gray-900">
                           {new Date(session.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                         </span>
@@ -440,7 +440,7 @@ export default function ParentLearningHub() {
                         <span>Host: {session.host}</span>
                         <span>•</span>
                         <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
+                          <Users className="w-4 h-4" aria-hidden="true" />
                           {session.spotsLeft} spots left
                         </span>
                       </div>
@@ -448,7 +448,7 @@ export default function ParentLearningHub() {
                     <div>
                       {session.registered ? (
                         <div className="px-6 py-3 bg-green-100 text-green-700 rounded-full font-medium flex items-center gap-2">
-                          <CheckCircle className="w-5 h-5" />
+                          <CheckCircle className="w-5 h-5" aria-hidden="true" />
                           Registered
                         </div>
                       ) : (
@@ -471,7 +471,7 @@ export default function ParentLearningHub() {
               <div className="space-y-3">
                 {['Teaching with Visual Schedules', 'Multi-Sensory Math Strategies', 'Building Reading Confidence'].map((title, idx) => (
                   <div key={idx} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
-                    <Video className="w-6 h-6 text-gray-400" />
+                    <Video className="w-6 h-6 text-gray-400" aria-hidden="true" />
                     <span className="flex-1 font-medium text-gray-900">{title}</span>
                     <button className="px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:border-[#9db4a0] hover:text-[#9db4a0]">
                       Watch
@@ -495,7 +495,7 @@ export default function ParentLearningHub() {
                 href="/parent/community/new-post"
                 className="flex items-center gap-2 px-6 py-3 bg-[#9db4a0] text-white rounded-full font-medium hover:bg-[#8ca394]"
               >
-                <MessageCircle className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5" aria-hidden="true" />
                 New Post
               </Link>
             </div>
@@ -534,11 +534,11 @@ export default function ParentLearningHub() {
                       <p className="text-gray-700 mb-4">{post.excerpt}</p>
                       <div className="flex items-center gap-6 text-sm text-gray-600">
                         <button className="flex items-center gap-1 hover:text-[#9db4a0]">
-                          <MessageCircle className="w-4 h-4" />
+                          <MessageCircle className="w-4 h-4" aria-hidden="true" />
                           {post.replies} replies
                         </button>
                         <button className="flex items-center gap-1 hover:text-[#9db4a0]">
-                          <Heart className="w-4 h-4" />
+                          <Heart className="w-4 h-4" aria-hidden="true" />
                           {post.likes} likes
                         </button>
                       </div>
@@ -551,7 +551,7 @@ export default function ParentLearningHub() {
             {/* Community Guidelines */}
             <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-3xl border-2 border-green-200">
               <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <Users className="w-6 h-6 text-green-600" />
+                <Users className="w-6 h-6 text-green-600" aria-hidden="true" />
                 Community Guidelines
               </h3>
               <ul className="text-sm text-gray-700 space-y-2">

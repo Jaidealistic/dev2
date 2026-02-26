@@ -56,7 +56,7 @@ export default function ParentOnboardingPage() {
       {/* Header */}
       <header className="container mx-auto px-6 py-6 flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-          <BookOpen className="w-5 h-5 text-white" />
+          <BookOpen className="w-5 h-5 text-white" aria-hidden="true" />
         </div>
         <Link href="/" className="text-2xl font-bold text-[#5a8c5c]">
           Lexfix
@@ -73,7 +73,7 @@ export default function ParentOnboardingPage() {
                   step === s ? 'bg-[#7da47f] text-white shadow-lg shadow-[#9db4a0]/30' :
                   step > s ? 'bg-green-500 text-white' : 'bg-slate-200 text-slate-400'
                 }`}>
-                  {step > s ? <CheckCircle2 className="w-5 h-5" /> : s}
+                  {step > s ? <CheckCircle2 className="w-5 h-5" aria-hidden="true" /> : s}
                 </div>
                 {s < 3 && <div className={`w-12 h-0.5 ${step > s ? 'bg-green-400' : 'bg-slate-200'}`} />}
               </div>
@@ -84,7 +84,7 @@ export default function ParentOnboardingPage() {
           {step === 1 && (
             <div className="bg-white/80 rounded-2xl p-8 shadow-sm border border-[#d6ddd7] text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-[#f0f7f0] rounded-2xl mb-4">
-                <Users className="w-8 h-8 text-[#5a8c5c]" />
+                <Users className="w-8 h-8 text-[#5a8c5c]" aria-hidden="true" />
               </div>
               <h1 className="text-3xl font-bold text-slate-900 mb-2">Welcome, Parent!</h1>
               <p className="text-slate-500 mb-6 max-w-sm mx-auto">
@@ -102,7 +102,7 @@ export default function ParentOnboardingPage() {
                 onClick={() => setStep(2)}
                 className="w-full py-3 bg-[#7da47f] hover:bg-[#6b946d] text-white font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2"
               >
-                Link My Children <ArrowRight className="w-4 h-4" />
+                Link My Children <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           )}
@@ -112,7 +112,7 @@ export default function ParentOnboardingPage() {
             <div className="bg-white/80 rounded-2xl p-8 shadow-sm border border-[#d6ddd7]">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-14 h-14 bg-[#f0f7f0] rounded-2xl mb-3">
-                  <UserPlus className="w-7 h-7 text-[#5a8c5c]" />
+                  <UserPlus className="w-7 h-7 text-[#5a8c5c]" aria-hidden="true" />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900">Link Your Children</h2>
                 <p className="text-slate-500 text-sm mt-1">Enter each child&apos;s Student ID to connect</p>
@@ -139,8 +139,8 @@ export default function ParentOnboardingPage() {
               </div>
 
               {linkError && (
-                <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm mb-4">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <div role="alert" className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm mb-4">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                   {linkError}
                 </div>
               )}
@@ -168,7 +168,7 @@ export default function ParentOnboardingPage() {
 
               {linkedChildren.length === 0 && (
                 <div className="text-center py-8 text-slate-400">
-                  <Users className="w-12 h-12 mx-auto mb-2 opacity-40" />
+                  <Users className="w-12 h-12 mx-auto mb-2 opacity-40" aria-hidden="true" />
                   <p className="text-sm">No children linked yet</p>
                   <p className="text-xs mt-1">Enter a Student ID above to get started</p>
                 </div>
@@ -182,7 +182,7 @@ export default function ParentOnboardingPage() {
                   onClick={() => setStep(3)}
                   className="flex-1 py-3 bg-[#7da47f] hover:bg-[#6b946d] text-white font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2"
                 >
-                  {linkedChildren.length > 0 ? 'Continue' : 'Skip for Now'} <ArrowRight className="w-4 h-4" />
+                  {linkedChildren.length > 0 ? 'Continue' : 'Skip for Now'} <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -192,7 +192,7 @@ export default function ParentOnboardingPage() {
           {step === 3 && (
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-2xl mb-4">
-                <CheckCircle2 className="w-8 h-8 text-green-600" />
+                <CheckCircle2 className="w-8 h-8 text-green-600" aria-hidden="true" />
               </div>
               <h2 className="text-3xl font-bold text-slate-900 mb-2">You&apos;re All Set!</h2>
               <p className="text-slate-500 mb-6">
@@ -221,9 +221,9 @@ export default function ParentOnboardingPage() {
                 className="w-full py-3 bg-[#7da47f] hover:bg-[#6b946d] disabled:bg-slate-300 text-white font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2"
               >
                 {completing ? (
-                  <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Setting up...</>
+                  <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" /> Setting up...</>
                 ) : (
-                  <>Go to Dashboard <ArrowRight className="w-4 h-4" /></>
+                  <>Go to Dashboard <ArrowRight className="w-4 h-4" aria-hidden="true" /></>
                 )}
               </button>
             </div>

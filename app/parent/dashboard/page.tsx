@@ -51,7 +51,7 @@ export default function ParentDashboard() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#f8f6f2] via-[#f0ede6] to-[#e8e4db] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-3 border-[#7da47f] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <div className="w-12 h-12 border-3 border-[#7da47f] border-t-transparent rounded-full animate-spin mx-auto mb-3" aria-hidden="true" />
           <p className="text-slate-500">Loading dashboard...</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ export default function ParentDashboard() {
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-white" />
+              <BookOpen className="w-5 h-5 text-white" aria-hidden="true" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-slate-900">Parent Dashboard</h1>
@@ -84,7 +84,7 @@ export default function ParentDashboard() {
             </div>
           </div>
           <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all text-sm">
-            <LogOut className="w-4 h-4" /> Sign Out
+            <LogOut className="w-4 h-4" aria-hidden="true" /> Sign Out
           </button>
         </div>
       </header>
@@ -94,7 +94,7 @@ export default function ParentDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white/80 rounded-2xl p-5 border border-[#d6ddd7] shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#f0f7f0] rounded-xl flex items-center justify-center"><Clock className="w-5 h-5 text-[#5a8c5c]" /></div>
+              <div className="w-10 h-10 bg-[#f0f7f0] rounded-xl flex items-center justify-center"><Clock className="w-5 h-5 text-[#5a8c5c]" aria-hidden="true" /></div>
               <div>
                 <p className="text-2xl font-bold text-slate-900">{data.weeklyReport.totalMinutes}</p>
                 <p className="text-xs text-slate-400">Minutes Practiced</p>
@@ -103,7 +103,7 @@ export default function ParentDashboard() {
           </div>
           <div className="bg-white/80 rounded-2xl p-5 border border-[#d6ddd7] shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#f0f7f0] rounded-xl flex items-center justify-center"><GraduationCap className="w-5 h-5 text-[#7da47f]" /></div>
+              <div className="w-10 h-10 bg-[#f0f7f0] rounded-xl flex items-center justify-center"><GraduationCap className="w-5 h-5 text-[#7da47f]" aria-hidden="true" /></div>
               <div>
                 <p className="text-2xl font-bold text-slate-900">{data.weeklyReport.lessonsCompleted}</p>
                 <p className="text-xs text-slate-400">Lessons Completed</p>
@@ -112,7 +112,7 @@ export default function ParentDashboard() {
           </div>
           <div className="bg-white/80 rounded-2xl p-5 border border-[#d6ddd7] shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#f0f7f0] rounded-xl flex items-center justify-center"><Award className="w-5 h-5 text-[#5a8c5c]" /></div>
+              <div className="w-10 h-10 bg-[#f0f7f0] rounded-xl flex items-center justify-center"><Award className="w-5 h-5 text-[#5a8c5c]" aria-hidden="true" /></div>
               <div>
                 <p className="text-2xl font-bold text-slate-900">{data.weeklyReport.newWordsLearned}</p>
                 <p className="text-xs text-slate-400">Words Learned</p>
@@ -124,26 +124,26 @@ export default function ParentDashboard() {
         {/* Children */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-slate-900">
-            <Users className="w-5 h-5 inline mr-2 text-[#5a8c5c]" />
+            <Users className="w-5 h-5 inline mr-2 text-[#5a8c5c]" aria-hidden="true" />
             My Children ({data.children.length})
           </h2>
           <Link
             href="/parent/onboarding"
             className="flex items-center gap-1.5 px-4 py-2 text-sm text-[#5a8c5c] hover:bg-[#f0f7f0] rounded-xl transition-all font-medium"
           >
-            <UserPlus className="w-4 h-4" /> Link More
+            <UserPlus className="w-4 h-4" aria-hidden="true" /> Link More
           </Link>
         </div>
 
         {data.children.length === 0 ? (
           <div className="bg-white/80 rounded-2xl p-12 border border-[#d6ddd7] shadow-sm text-center">
-            <Users className="w-16 h-16 mx-auto text-slate-200 mb-4" />
+            <Users className="w-16 h-16 mx-auto text-slate-200 mb-4" aria-hidden="true" />
             <h3 className="text-lg font-bold text-slate-900 mb-2">No children linked yet</h3>
             <p className="text-slate-500 mb-6 max-w-sm mx-auto">
               Ask your child for their Student ID (e.g., LXF-A3K9) after they complete their onboarding.
             </p>
             <Link href="/parent/onboarding" className="inline-flex items-center gap-2 px-6 py-3 bg-[#7da47f] text-white font-semibold rounded-xl hover:bg-[#6b946d] transition-all">
-              <UserPlus className="w-4 h-4" /> Link a Child
+              <UserPlus className="w-4 h-4" aria-hidden="true" /> Link a Child
             </Link>
           </div>
         ) : (
@@ -164,7 +164,7 @@ export default function ParentDashboard() {
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 px-3 py-1 bg-orange-50 rounded-lg">
-                    <Flame className="w-4 h-4 text-orange-500" />
+                    <Flame className="w-4 h-4 text-orange-500" aria-hidden="true" />
                     <span className="text-sm font-semibold text-orange-600">{child.currentStreak} day streak</span>
                   </div>
                 </div>

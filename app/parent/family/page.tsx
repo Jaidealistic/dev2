@@ -166,7 +166,7 @@ export default function FamilyDashboard() {
                 href="/parent/resources"
                 className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-full font-medium hover:border-[#9db4a0] hover:text-[#9db4a0]"
               >
-                <Library className="w-5 h-5" />
+                <Library className="w-5 h-5" aria-hidden="true" />
                 Resource Library
               </Link>
             </div>
@@ -176,7 +176,7 @@ export default function FamilyDashboard() {
           {selectedChildren.length > 0 && (
             <div className="mt-4 bg-[#9db4a0] bg-opacity-10 border-2 border-[#9db4a0] rounded-2xl p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <CheckSquare className="w-5 h-5 text-[#9db4a0]" />
+                <CheckSquare className="w-5 h-5 text-[#9db4a0]" aria-hidden="true" />
                 <span className="font-medium text-gray-900">
                   {selectedChildren.length} children selected
                 </span>
@@ -192,21 +192,21 @@ export default function FamilyDashboard() {
                   onClick={() => handleBulkAction('pause')}
                   className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-full font-medium hover:bg-orange-600"
                 >
-                  <Pause className="w-4 h-4" />
+                  <Pause className="w-4 h-4" aria-hidden="true" />
                   Pause All
                 </button>
                 <button
                   onClick={() => handleBulkAction('vacation')}
                   className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-full font-medium hover:bg-blue-600"
                 >
-                  <Plane className="w-4 h-4" />
+                  <Plane className="w-4 h-4" aria-hidden="true" />
                   Vacation Mode
                 </button>
                 <button
                   onClick={() => handleBulkAction('attendance')}
                   className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full font-medium hover:bg-green-600"
                 >
-                  <CheckSquare className="w-4 h-4" />
+                  <CheckSquare className="w-4 h-4" aria-hidden="true" />
                   Mark Attendance
                 </button>
               </div>
@@ -238,7 +238,7 @@ export default function FamilyDashboard() {
           <div className="space-y-6">
             <div className="bg-gradient-to-r from-[#f0f7f0] to-[#e0ede1] rounded-3xl p-6 border-2 border-[#c5d8c7]">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Calendar className="w-6 h-6 text-[#5a8c5c]" />
+                <Calendar className="w-6 h-6 text-[#5a8c5c]" aria-hidden="true" />
                 Today's Parallel Schedule
               </h2>
               <p className="text-gray-600 mb-6">Tuesday, February 8, 2026</p>
@@ -288,7 +288,7 @@ export default function FamilyDashboard() {
                           <p className="text-sm font-bold text-gray-900 mb-1">{item.subject}</p>
                           <div className="flex items-center justify-between text-xs text-gray-600">
                             <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
+                              <Clock className="w-3 h-3" aria-hidden="true" />
                               {item.duration}m
                             </span>
                             <span className="capitalize">{item.type}</span>
@@ -304,7 +304,7 @@ export default function FamilyDashboard() {
             {/* Staggered Independent Work Suggestions */}
             <div className="bg-white rounded-3xl p-6 shadow-sm">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <BookOpen className="w-6 h-6 text-blue-600" />
+                <BookOpen className="w-6 h-6 text-blue-600" aria-hidden="true" />
                 Staggered Independent Work
               </h2>
               <p className="text-gray-600 mb-6">Suggested schedule to minimize overlapping guided sessions</p>
