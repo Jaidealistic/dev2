@@ -23,7 +23,7 @@ export default function RecentActivity({ educatorId }: { educatorId: string }) {
         {activities.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <div className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 mb-4">
-              <Clock className="h-6 w-6" />
+              <Clock className="h-6 w-6" aria-hidden="true" />
             </div>
             <p className="text-sm font-medium text-slate-400">No recent activity detected</p>
           </div>

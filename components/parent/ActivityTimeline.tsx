@@ -212,11 +212,11 @@ export function ActivityTimeline({
     return (
       <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl">
         <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-[#7da47f]" />
+          <Calendar className="w-5 h-5 text-[#7da47f]" aria-hidden="true" />
           Activity Timeline
         </h3>
         <div className="flex items-center justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin text-[#7da47f]" />
+          <Loader2 className="w-6 h-6 animate-spin text-[#7da47f]" aria-hidden="true" />
         </div>
       </div>
     );
@@ -225,7 +225,7 @@ export function ActivityTimeline({
   if (activities.length === 0) {
     return (
       <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl text-center">
-        <Calendar className="w-10 h-10 text-[#9db4a0] mx-auto mb-2" />
+        <Calendar className="w-10 h-10 text-[#9db4a0] mx-auto mb-2" aria-hidden="true" />
         <p className="font-semibold text-gray-900">No activity yet</p>
         <p className="text-sm text-gray-600 mt-1">
           Activities will appear here once your child starts learning.
@@ -237,7 +237,7 @@ export function ActivityTimeline({
   return (
     <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl">
       <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <Calendar className="w-5 h-5 text-[#7da47f]" />
+        <Calendar className="w-5 h-5 text-[#7da47f]" aria-hidden="true" />
         Activity Timeline
       </h3>
 
@@ -277,14 +277,14 @@ export function ActivityTimeline({
                         <span className="text-xs font-semibold text-[#5a8c5c]">{evt.score}%</span>
                       )}
                       <span className="text-xs text-gray-400 flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
+                        <Clock className="w-3 h-3" aria-hidden="true" />
                         {relativeTime(evt.timestamp)}
                       </span>
                       {evt.description && (
                         isExpanded ? (
-                          <ChevronUp className="w-4 h-4 text-gray-400" />
+                          <ChevronUp className="w-4 h-4 text-gray-400" aria-hidden="true" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-gray-400" />
+                          <ChevronDown className="w-4 h-4 text-gray-400" aria-hidden="true" />
                         )
                       )}
                     </div>
