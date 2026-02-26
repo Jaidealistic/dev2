@@ -141,11 +141,11 @@ export function RecommendedLessons({
     return (
       <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl">
         <div className="flex items-center gap-2 mb-4">
-          <Sparkles className="w-5 h-5 text-[#7da47f]" />
+          <Sparkles className="w-5 h-5 text-[#7da47f]" aria-hidden="true" />
           <h3 className="text-lg font-bold text-gray-900">Recommended for You</h3>
         </div>
         <div className="flex items-center justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin text-[#7da47f]" />
+          <Loader2 className="w-6 h-6 animate-spin text-[#7da47f]" aria-hidden="true" />
         </div>
       </div>
     );
@@ -155,7 +155,7 @@ export function RecommendedLessons({
     return (
       <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl">
         <div className="flex items-center gap-2 text-amber-600 text-sm">
-          <AlertCircle className="w-4 h-4" />
+          <AlertCircle className="w-4 h-4" aria-hidden="true" />
           {error}
         </div>
       </div>
@@ -165,7 +165,7 @@ export function RecommendedLessons({
   if (lessons.length === 0) {
     return (
       <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl text-center">
-        <Star className="w-8 h-8 text-[#7da47f] mx-auto mb-2" />
+        <Star className="w-8 h-8 text-[#7da47f] mx-auto mb-2" aria-hidden="true" />
         <p className="font-semibold text-gray-900">All caught up!</p>
         <p className="text-sm text-gray-600 mt-1">
           You&apos;ve completed all available lessons. New content coming soon!
@@ -178,7 +178,7 @@ export function RecommendedLessons({
     <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-[#7da47f]" />
+          <Sparkles className="w-5 h-5 text-[#7da47f]" aria-hidden="true" />
           <h3 className="text-lg font-bold text-gray-900">Recommended for You</h3>
         </div>
         <Link
@@ -203,12 +203,12 @@ export function RecommendedLessons({
                 </p>
                 <p className="text-xs text-[#5a8c5c] mt-0.5">{lesson.reason}</p>
               </div>
-              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#7da47f] flex-shrink-0 mt-1 transition-colors" />
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#7da47f] flex-shrink-0 mt-1 transition-colors" aria-hidden="true" />
             </div>
 
             <div className="mt-3 flex items-center gap-3 text-xs text-gray-500">
               <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
+                <Clock className="w-3.5 h-3.5" aria-hidden="true" />
                 {lesson.estimatedMinutes} min
               </span>
               <span className="capitalize">{lesson.language}</span>

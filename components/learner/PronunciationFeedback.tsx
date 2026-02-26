@@ -114,7 +114,7 @@ export function PronunciationFeedback({
       {hasErrors && (
         <div className="p-4 bg-white border border-[#d6ddd7] rounded-xl">
           <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-amber-500" />
+            <AlertCircle className="w-4 h-4 text-amber-500" aria-hidden="true" />
             Let&apos;s look at the details
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -141,7 +141,7 @@ export function PronunciationFeedback({
                   >
                     {word}
                     {matchesExactly && (
-                      <CheckCircle className="w-3 h-3 inline ml-1" />
+                      <CheckCircle className="w-3 h-3 inline ml-1" aria-hidden="true" />
                     )}
                   </span>
                 );
@@ -162,7 +162,7 @@ export function PronunciationFeedback({
             onClick={onTryAgain}
             className="flex items-center gap-2 px-5 py-2.5 bg-[#7da47f] text-white rounded-full font-medium hover:bg-[#6b946d] transition-colors"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-4 h-4" aria-hidden="true" />
             Try Again
           </button>
         )}
@@ -172,7 +172,7 @@ export function PronunciationFeedback({
           className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#c5d8c7] text-[#5a8c5c] rounded-full font-medium hover:bg-[#f0f7f0] transition-colors"
           aria-label={`Listen to "${expected}" spoken slowly`}
         >
-          <Volume2 className="w-4 h-4" />
+          <Volume2 className="w-4 h-4" aria-hidden="true" />
           Listen Again
         </button>
       </div>
