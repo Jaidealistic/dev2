@@ -319,11 +319,11 @@ export default function PronunciationPracticePage() {
         {/* Page Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href="/learner/dashboard" className="p-2 rounded-full hover:bg-gray-200" aria-label="Back to dashboard">
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
+            <ArrowLeft className="w-6 h-6 text-gray-600" aria-hidden="true" />
           </Link>
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <Mic className="w-8 h-8 text-[#9db4a0]" />
+              <Mic className="w-8 h-8 text-[#9db4a0]" aria-hidden="true" />
               Pronunciation Practice
             </h1>
             <p className="text-gray-600 mt-1">Practice speaking and improve your pronunciation</p>
@@ -334,7 +334,7 @@ export default function PronunciationPracticePage() {
         {!isSupported && (
           <div className="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-6 mb-8">
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+              <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" aria-hidden="true" />
               <div>
                 <h2 className="font-bold text-yellow-900 mb-1">Speech Recognition Not Available</h2>
                 <p className="text-yellow-800">
@@ -380,7 +380,7 @@ export default function PronunciationPracticePage() {
                 onClick={resetPractice}
                 className="flex items-center gap-1 text-gray-500 hover:text-gray-700"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="w-4 h-4" aria-hidden="true" />
                 Reset
               </button>
             </div>
@@ -406,7 +406,7 @@ export default function PronunciationPracticePage() {
                   className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-white/20 hover:bg-white/30 rounded-full text-white font-medium transition-colors"
                   aria-label={`Listen to pronunciation of ${currentWord.word}`}
                 >
-                  <Volume2 className="w-5 h-5" />
+                  <Volume2 className="w-5 h-5" aria-hidden="true" />
                   Listen
                 </button>
               </div>
@@ -424,9 +424,9 @@ export default function PronunciationPracticePage() {
                   aria-label={isRecording ? 'Stop recording' : 'Start recording'}
                 >
                   {isRecording ? (
-                    <MicOff className="w-10 h-10 text-white" />
+                    <MicOff className="w-10 h-10 text-white" aria-hidden="true" />
                   ) : (
-                    <Mic className="w-10 h-10 text-white" />
+                    <Mic className="w-10 h-10 text-white" aria-hidden="true" />
                   )}
                 </button>
 
@@ -450,11 +450,11 @@ export default function PronunciationPracticePage() {
                     }`}>
                     <div className="flex items-center justify-center gap-3 mb-2">
                       {score >= 90 ? (
-                        <CheckCircle className="w-8 h-8 text-green-600" />
+                        <CheckCircle className="w-8 h-8 text-green-600" aria-hidden="true" />
                       ) : score >= 70 ? (
-                        <Star className="w-8 h-8 text-blue-600" />
+                        <Star className="w-8 h-8 text-blue-600" aria-hidden="true" />
                       ) : (
-                        <RotateCcw className="w-8 h-8 text-orange-600" />
+                        <RotateCcw className="w-8 h-8 text-orange-600" aria-hidden="true" />
                       )}
                       <span className={`text-4xl font-bold ${score >= 90 ? 'text-green-600' :
                         score >= 70 ? 'text-blue-600' :
@@ -478,7 +478,7 @@ export default function PronunciationPracticePage() {
                     onClick={prevWord}
                     className="flex items-center gap-2 px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full font-medium"
                   >
-                    <ArrowLeft className="w-5 h-5" />
+                    <ArrowLeft className="w-5 h-5" aria-hidden="true" />
                     Previous
                   </button>
                   <span className="text-gray-500 font-medium">
@@ -489,7 +489,7 @@ export default function PronunciationPracticePage() {
                     className="flex items-center gap-2 px-5 py-3 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full font-medium"
                   >
                     Next
-                    <ArrowRight className="w-5 h-5" />
+                    <ArrowRight className="w-5 h-5" aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -534,9 +534,9 @@ export default function PronunciationPracticePage() {
                     <div key={idx} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                       <div className="flex items-center gap-2">
                         {entry.correct ? (
-                          <CheckCircle className="w-4 h-4 text-green-500" />
+                          <CheckCircle className="w-4 h-4 text-green-500" aria-hidden="true" />
                         ) : (
-                          <RotateCcw className="w-4 h-4 text-orange-500" />
+                          <RotateCcw className="w-4 h-4 text-orange-500" aria-hidden="true" />
                         )}
                         <span className="text-sm font-medium text-gray-900">{entry.word}</span>
                       </div>

@@ -128,7 +128,7 @@ export default function LessonsListPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]">
         <div className="text-center space-y-4">
-          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" />
+          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" aria-hidden="true" />
           <p className="text-[#6b6b6b] text-base" style={{ lineHeight: '1.8' }}>
             {t('status.dataLoading')}
           </p>
@@ -254,7 +254,7 @@ export default function LessonsListPage() {
           <div className="flex flex-col md:flex-row gap-3">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8a8a8a]" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8a8a8a]" aria-hidden="true" />
               <input
                 type="search"
                 placeholder={t('lessons.searchLessons')}
@@ -279,7 +279,7 @@ export default function LessonsListPage() {
                 <option value="COMPLETED">{t('lessons.completed')}</option>
                 <option value="MASTERED">{t('lessons.mastered')}</option>
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8a8a8a] pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8a8a8a] pointer-events-none" aria-hidden="true" />
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@ export default function LessonsListPage() {
         {/* Lessons list */}
         {filteredLessons.length === 0 ? (
           <div className="text-center py-16">
-            <BookOpen className="w-10 h-10 text-[#d4dcd5] mx-auto mb-4" />
+            <BookOpen className="w-10 h-10 text-[#d4dcd5] mx-auto mb-4" aria-hidden="true" />
             <h2 className="text-lg font-semibold text-[#2d2d2d] mb-2">
               {searchQuery || statusFilter !== 'all' || languageFilter !== 'all'
                 ? t('lessons.noLessonsFound')
@@ -346,12 +346,12 @@ export default function LessonsListPage() {
                   {/* Meta row */}
                   <div className="flex flex-wrap items-center gap-3 text-xs text-[#8a8a8a] mb-4">
                     <span className="flex items-center gap-1">
-                      <Globe className="w-3.5 h-3.5" />
+                      <Globe className="w-3.5 h-3.5" aria-hidden="true" />
                       {lesson.language}
                     </span>
                     {lesson.duration && (
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
+                        <Clock className="w-3.5 h-3.5" aria-hidden="true" />
                         {lesson.duration} {t('lessons.minutes')}
                       </span>
                     )}
@@ -393,7 +393,7 @@ export default function LessonsListPage() {
                   <div className="flex items-center justify-between">
                     {lesson.progress.status === 'COMPLETED' || lesson.progress.status === 'MASTERED' ? (
                       <div className="flex items-center gap-1.5 text-sm text-[#7a9b7e]">
-                        <CheckCircle className="w-4 h-4" />
+                        <CheckCircle className="w-4 h-4" aria-hidden="true" />
                         <span>{t('lessons.completed')}</span>
                       </div>
                     ) : (
@@ -408,7 +408,7 @@ export default function LessonsListPage() {
                         : lesson.progress.status === 'IN_PROGRESS'
                           ? t('lessons.resumeLesson')
                           : t('lessons.retakeLesson')}
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                     </Link>
                   </div>
                 </div>

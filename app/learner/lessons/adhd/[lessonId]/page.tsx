@@ -123,7 +123,7 @@ export default function ADHDLessonPage() {
         return (
             <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]">
                 <div className="text-center">
-                    <div className="w-12 h-12 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto mb-4" />
+                    <div className="w-12 h-12 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto mb-4" aria-hidden="true" />
                     <p className="text-[#6b6b6b]">Loading your lesson...</p>
                 </div>
             </div>

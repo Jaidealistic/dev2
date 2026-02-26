@@ -94,7 +94,7 @@ export default function LearnerProfile() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]">
         <div className="text-center space-y-4">
-          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" />
+          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" aria-hidden="true" />
           <p className="text-[#6b6b6b] text-base" style={{ lineHeight: '1.8' }}>
             Loading your profile...
           </p>
@@ -197,9 +197,9 @@ export default function LearnerProfile() {
               aria-label={copied ? 'Student ID copied' : 'Copy student ID'}
             >
               {copied ? (
-                <Check className="w-5 h-5 text-[#7a9b7e]" />
+                <Check className="w-5 h-5 text-[#7a9b7e]" aria-hidden="true" />
               ) : (
-                <Copy className="w-5 h-5" />
+                <Copy className="w-5 h-5" aria-hidden="true" />
               )}
             </button>
           </div>
@@ -208,28 +208,28 @@ export default function LearnerProfile() {
         {/* ── Personal Information ── */}
         <section className="bg-white rounded-xl border border-[#f0ede8] p-5 mb-5" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <h2 className="text-sm font-semibold text-[#2d2d2d] mb-4 flex items-center gap-2">
-            <User className="w-4 h-4 text-[#7a9b7e]" />
+            <User className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
             Personal Information
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <ProfileField
-              icon={<User className="w-3.5 h-3.5" />}
+              icon={<User className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Full Name"
               value={`${profile.firstName} ${profile.lastName}`}
             />
             <ProfileField
-              icon={<Mail className="w-3.5 h-3.5" />}
+              icon={<Mail className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Email"
               value={profile.email}
             />
             <ProfileField
-              icon={<Shield className="w-3.5 h-3.5" />}
+              icon={<Shield className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Role"
               value={profile.role === 'LEARNER' ? 'Student / Learner' : profile.role}
             />
             <ProfileField
-              icon={<Calendar className="w-3.5 h-3.5" />}
+              icon={<Calendar className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Member since"
               value={createdDate}
             />
@@ -239,18 +239,18 @@ export default function LearnerProfile() {
         {/* ── Learning Profile ── */}
         <section className="bg-white rounded-xl border border-[#f0ede8] p-5 mb-5" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <h2 className="text-sm font-semibold text-[#2d2d2d] mb-4 flex items-center gap-2">
-            <GraduationCap className="w-4 h-4 text-[#7a9b7e]" />
+            <GraduationCap className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
             Learning Profile
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <ProfileField
-              icon={<Globe className="w-3.5 h-3.5" />}
+              icon={<Globe className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Native Language"
               value={profile.nativeLanguage || 'Not set'}
             />
             <ProfileField
-              icon={<Globe className="w-3.5 h-3.5" />}
+              icon={<Globe className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Learning Languages"
               value={
                 learningLanguages.length > 0
@@ -259,12 +259,12 @@ export default function LearnerProfile() {
               }
             />
             <ProfileField
-              icon={<GraduationCap className="w-3.5 h-3.5" />}
+              icon={<GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Grade Level"
               value={profile.gradeLevel || 'Not set'}
             />
             <ProfileField
-              icon={<BookOpen className="w-3.5 h-3.5" />}
+              icon={<BookOpen className="w-3.5 h-3.5" aria-hidden="true" />}
               label="Onboarding"
               value={profile.onboardingComplete ? 'Completed' : 'Not completed'}
             />
@@ -292,7 +292,7 @@ export default function LearnerProfile() {
         {Object.keys(languageGoals).length > 0 && (
           <section className="bg-white rounded-xl border border-[#f0ede8] p-5 mb-5" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <h2 className="text-sm font-semibold text-[#2d2d2d] mb-4 flex items-center gap-2">
-              <Globe className="w-4 h-4 text-[#7a9b7e]" />
+              <Globe className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
               Language Goals
             </h2>
 
@@ -341,7 +341,7 @@ export default function LearnerProfile() {
         {Object.keys(accessibility).length > 0 && (
           <section className="bg-white rounded-xl border border-[#f0ede8] p-5 mb-5" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <h2 className="text-sm font-semibold text-[#2d2d2d] mb-4 flex items-center gap-2">
-              <Settings className="w-4 h-4 text-[#7a9b7e]" />
+              <Settings className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
               Accessibility Preferences
             </h2>
 
@@ -372,7 +372,7 @@ export default function LearnerProfile() {
               className="mt-4 inline-flex items-center gap-1.5 text-sm text-[#7a9b7e] hover:text-[#5d7e61] font-medium"
             >
               Edit in Settings
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
             </Link>
           </section>
         )}
@@ -380,28 +380,28 @@ export default function LearnerProfile() {
         {/* ── Learning Stats ── */}
         <section className="bg-white rounded-xl border border-[#f0ede8] p-5 mb-5" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <h2 className="text-sm font-semibold text-[#2d2d2d] mb-4 flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-[#7a9b7e]" />
+            <BookOpen className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
             Learning Stats
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <StatCard
-              icon={<BookOpen className="w-4 h-4 text-[#7a9b7e]" />}
+              icon={<BookOpen className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />}
               label="Lessons done"
               value={`${profile.completedLessons ?? 0}/${profile.totalLessons ?? 16}`}
             />
             <StatCard
-              icon={<Calendar className="w-4 h-4 text-[#7a97b0]" />}
+              icon={<Calendar className="w-4 h-4 text-[#7a97b0]" aria-hidden="true" />}
               label="Learning streak"
               value={`${profile.currentStreak ?? 0} days`}
             />
             <StatCard
-              icon={<Globe className="w-4 h-4 text-[#7a9b7e]" />}
+              icon={<Globe className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />}
               label="Words learned"
               value={String(profile.wordsLearned ?? 0)}
             />
             <StatCard
-              icon={<Clock className="w-4 h-4 text-[#7a97b0]" />}
+              icon={<Clock className="w-4 h-4 text-[#7a97b0]" aria-hidden="true" />}
               label="Practice time"
               value={`${profile.totalPracticeMinutes ?? 0} min`}
             />
