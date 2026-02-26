@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Lexend, Atkinson_Hyperlegible } from 'next/font/google';
 import './globals.css';
 import { AccessibilityProvider } from '@/components/providers/AccessibilityProvider';
+import TalkBackToggle from '@/components/TalkBackToggle';
 
 /**
  * Import dyslexia-friendly fonts
@@ -133,7 +134,24 @@ export default function RootLayout({
             {children}
           </main>
 
+          {/* Global live region for screen reader announcements */}
+          <div
+            id="aria-live-region"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            className="sr-only"
+          />
+          <div
+            id="aria-alert-region"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            className="sr-only"
+          />
 
+          {/* TalkBack mode: in-app screen reader with single-tap-to-read, double-tap-to-activate */}
+          <TalkBackToggle />
         </AccessibilityProvider>
       </body>
     </html>
