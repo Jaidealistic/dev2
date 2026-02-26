@@ -125,7 +125,7 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                 {phase === 'pick' && (
                     <div className="p-8 text-center">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white mb-4 shadow-md border border-[#7da47f]/10">
-                            <Gamepad2 className="w-8 h-8 text-[#5a8c5c]" />
+                            <Gamepad2 className="w-8 h-8 text-[#5a8c5c]" aria-hidden="true" />
                         </div>
                         <h2 className="text-2xl font-bold text-[#3a6d3c] mb-1">Brain Break! 🎮</h2>
                         <p className="text-sm text-gray-500 mb-6">Pick a 10-second mini-game</p>
@@ -141,7 +141,7 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                                     <p className="font-bold text-gray-900 group-hover:text-[#3a6d3c]">Emoji Match</p>
                                     <p className="text-xs text-gray-500">Find matching pairs</p>
                                 </div>
-                                <Zap className="w-5 h-5 text-yellow-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <Zap className="w-5 h-5 text-yellow-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
                             </button>
 
                             {/* Quick Math */}
@@ -154,7 +154,7 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                                     <p className="font-bold text-gray-900 group-hover:text-[#3a6d3c]">Quick Math</p>
                                     <p className="text-xs text-gray-500">Solve fast arithmetic</p>
                                 </div>
-                                <Zap className="w-5 h-5 text-yellow-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <Zap className="w-5 h-5 text-yellow-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
                             </button>
 
                             {/* Color Word */}
@@ -167,7 +167,7 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                                     <p className="font-bold text-gray-900 group-hover:text-[#3a6d3c]">Color Word</p>
                                     <p className="text-xs text-gray-500">Stroop challenge</p>
                                 </div>
-                                <Zap className="w-5 h-5 text-yellow-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <Zap className="w-5 h-5 text-yellow-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
                             </button>
                         </div>
                     </div>
@@ -192,7 +192,7 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                         {/* Score */}
                         <div className="text-center mb-4">
                             <span className="inline-flex items-center gap-1.5 text-sm font-bold text-[#5a8c5c] bg-[#f0f7f0] px-3 py-1 rounded-full">
-                                <Trophy className="w-3.5 h-3.5" /> {score}
+                                <Trophy className="w-3.5 h-3.5" aria-hidden="true" /> {score}
                             </span>
                         </div>
 
@@ -207,7 +207,7 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                 {phase === 'done' && (
                     <div className="p-8 text-center">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] mb-4 shadow-lg shadow-green-200/50">
-                            <Trophy className="w-8 h-8 text-white" />
+                            <Trophy className="w-8 h-8 text-white" aria-hidden="true" />
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900 mb-1">
                             {score >= 5 ? '🏆 Amazing!' : score >= 3 ? '⭐ Great!' : '👏 Nice try!'}
@@ -219,7 +219,7 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                             className="px-8 py-3 rounded-2xl bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] text-white font-bold text-sm hover:shadow-lg hover:shadow-green-200/40 transition-all active:scale-95"
                         >
                             <span className="flex items-center gap-2">
-                                Back to Lesson <Sparkles className="w-4 h-4" />
+                                Back to Lesson <Sparkles className="w-4 h-4" aria-hidden="true" />
                             </span>
                         </button>
                     </div>

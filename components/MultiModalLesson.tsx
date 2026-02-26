@@ -516,12 +516,12 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
             <h1 className="text-2xl font-bold text-gray-900">{lesson.title}</h1>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 text-gray-600">
-                <Clock className="w-5 h-5" />
+                <Clock className="w-5 h-5" aria-hidden="true" />
                 <span>{Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}</span>
               </div>
               {isSavingProgress && (
                 <div className="flex items-center gap-2 text-gray-500 text-sm">
-                  <Save className="w-4 h-4 animate-pulse" />
+                  <Save className="w-4 h-4 animate-pulse" aria-hidden="true" />
                   <span>Saving...</span>
                 </div>
               )}
@@ -530,7 +530,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                 className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${showTranscript ? 'bg-[#7da47f] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
               >
-                <Subtitles className="w-5 h-5" />
+                <Subtitles className="w-5 h-5" aria-hidden="true" />
                 {showTranscript ? 'Hide Support' : 'Transcripts'}
               </button>
             </div>
@@ -563,7 +563,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
           {isAdhdMode && (
             <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-4 mb-4 flex items-center gap-3">
               <div className="bg-yellow-100 p-2 rounded-full">
-                <Clock className="w-5 h-5 text-yellow-700" />
+                <Clock className="w-5 h-5 text-yellow-700" aria-hidden="true" />
               </div>
               <div>
                 <p className="font-bold text-yellow-900 text-sm">Focus Mode Active</p>
@@ -582,7 +582,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
             <div className="prose prose-lg max-w-none prose-p:text-gray-700 prose-headings:text-[#3a6d3c]">
               <div className="flex items-center gap-3 mb-6 p-4 bg-[#f4f7f4] rounded-2xl border border-[#7da47f]/10">
                 <div className="p-2 bg-white rounded-xl shadow-sm">
-                  <BookOpen className="w-6 h-6 text-[#5a8c5c]" />
+                  <BookOpen className="w-6 h-6 text-[#5a8c5c]" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold text-[#3a6d3c] m-0">Getting Started</h3>
               </div>
@@ -665,9 +665,9 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
           {currentSection.type === 'summary' && (
             <div className="text-center py-8">
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-[#f4f7f4] mb-6 border-2 border-[#7da47f]/20 shadow-sm relative">
-                <Trophy className="w-10 h-10 text-[#5a8c5c]" />
+                <Trophy className="w-10 h-10 text-[#5a8c5c]" aria-hidden="true" />
                 <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#fbbf24] rounded-full flex items-center justify-center text-white shadow-md">
-                  <Zap className="w-5 h-5 fill-current" />
+                  <Zap className="w-5 h-5 fill-current" aria-hidden="true" />
                 </div>
               </div>
               <h2 className="text-3xl font-black text-[#3a6d3c] mb-6">Lesson Complete!</h2>
@@ -740,7 +740,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                           disabled={active === 0}
                           className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-[#6b6b6b] bg-[#f5f3ef] hover:bg-[#ede9e3] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                         >
-                          <ChevronLeft className="w-4 h-4" /> Prev
+                          <ChevronLeft className="w-4 h-4" aria-hidden="true" /> Prev
                         </button>
                         <span className="text-xs text-[#8a8a8a]">{active + 1} / {total}</span>
                         <button
@@ -748,7 +748,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                           disabled={active === total - 1}
                           className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-white bg-[#7a9b7e] hover:bg-[#6b8c6f] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                         >
-                          Next <ChevronRight className="w-4 h-4" />
+                          Next <ChevronRight className="w-4 h-4" aria-hidden="true" />
                         </button>
                       </div>
                     </div>
@@ -794,7 +794,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                     className="p-3 bg-white rounded-full hover:bg-gray-100 border-2 border-gray-300"
                     aria-label="Rewind 5 seconds"
                   >
-                    <SkipBack className="w-6 h-6" />
+                    <SkipBack className="w-6 h-6" aria-hidden="true" />
                   </button>
 
                   <button
@@ -802,7 +802,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                     className="p-6 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full"
                     aria-label={isPlaying ? 'Pause' : 'Play'}
                   >
-                    {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8" />}
+                    {isPlaying ? <Pause className="w-8 h-8" aria-hidden="true" /> : <Play className="w-8 h-8" aria-hidden="true" />}
                   </button>
 
                   <button
@@ -814,7 +814,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                     className="p-3 bg-white rounded-full hover:bg-gray-100 border-2 border-gray-300"
                     aria-label="Forward 5 seconds"
                   >
-                    <SkipForward className="w-6 h-6" />
+                    <SkipForward className="w-6 h-6" aria-hidden="true" />
                   </button>
 
                   <button
@@ -822,7 +822,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                     className="p-3 bg-white rounded-full hover:bg-gray-100 border-2 border-gray-300"
                     aria-label={isMuted ? 'Unmute' : 'Mute'}
                   >
-                    {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
+                    {isMuted ? <VolumeX className="w-6 h-6" aria-hidden="true" /> : <Volume2 className="w-6 h-6" aria-hidden="true" />}
                   </button>
 
                   <button
@@ -840,7 +840,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                 <div className="bg-[#f8faf8] border-2 border-[#7da47f]/20 rounded-2xl p-6 mt-8 animate-in slide-in-from-top-4 duration-300">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-bold text-[#3a6d3c] flex items-center gap-2">
-                      <BookOpen className="w-5 h-5" />
+                      <BookOpen className="w-5 h-5" aria-hidden="true" />
                       {currentSection.content.transcript ? 'Video Transcript' : 'Language & Audio Support'}
                     </h3>
                     {!currentSection.content.transcript && (
@@ -968,7 +968,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
                     } text-white transition-all`}
                   aria-label={isRecording ? 'Stop recording' : 'Start recording'}
                 >
-                  <Mic className="w-16 h-16" />
+                  <Mic className="w-16 h-16" aria-hidden="true" />
                 </button>
               </div>
 
@@ -996,7 +996,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
             disabled={currentSectionIndex === 0}
             className="flex items-center gap-2 px-8 h-12 bg-white border-2 border-[#e8e5e0] text-[#6b6b6b] rounded-full hover:bg-gray-50 hover:border-[#d8d5d0] disabled:opacity-40 disabled:cursor-not-allowed font-bold text-sm transition-all duration-200"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4" aria-hidden="true" />
             Previous
           </button>
 
@@ -1005,7 +1005,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
             onClick={() => setShowBrainGame(true)}
             className="flex items-center gap-2 px-8 h-12 bg-[#f2f4f2] text-[#5a8c5c] border-2 border-[#7da47f]/20 rounded-full font-bold text-sm hover:bg-[#ebeeeb] hover:border-[#7da47f]/40 hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
           >
-            <Gamepad2 className="w-4 h-4" />
+            <Gamepad2 className="w-4 h-4" aria-hidden="true" />
             Brain Break
           </button>
 
@@ -1014,7 +1014,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
             className="flex items-center gap-2 px-8 h-12 bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] text-white rounded-full font-bold text-sm shadow-lg shadow-green-200/50 hover:shadow-green-200/80 hover:scale-105 active:scale-95 transition-all duration-300"
           >
             {currentSectionIndex === lesson.sections.length - 1 ? 'Finish Lesson' : 'Next Step'}
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
 

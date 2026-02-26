@@ -233,7 +233,7 @@ export function PronunciationEvaluator({
                         aria-label="Listen to pronunciation"
                         title="Listen"
                     >
-                        <Volume2 className="w-4 h-4" />
+                        <Volume2 className="w-4 h-4" aria-hidden="true" />
                     </button>
                 </div>
                 <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-lg p-3 max-w-md mx-auto">
@@ -255,7 +255,7 @@ export function PronunciationEvaluator({
                         } text-white shadow-lg`}
                     aria-label="Start pronunciation test"
                 >
-                    <Mic className="w-8 h-8" />
+                    <Mic className="w-8 h-8" aria-hidden="true" />
                 </button>
             </div>
 
@@ -312,7 +312,7 @@ export function PronunciationEvaluator({
                         <div className="mt-3 pt-3 border-t border-gray-200">
                             <div className="flex items-center gap-2">
                                 {score >= 95 ? (
-                                    <Check className="w-5 h-5 text-green-600" />
+                                    <Check className="w-5 h-5 text-green-600" aria-hidden="true" />
                                 ) : score >= 60 ? (
                                     <span className="text-yellow-600 text-xl">⚠️</span>
                                 ) : (
