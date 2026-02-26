@@ -125,7 +125,7 @@ export function SimplifiedView({
       {schedule && schedule.length > 0 && (
         <div className="mb-4 p-4 bg-white border-2 border-[#c5d8c7] rounded-xl">
           <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-            <List className="w-4 h-4 text-[#5a8c5c]" />
+            <List className="w-4 h-4 text-[#5a8c5c]" aria-hidden="true" />
             What&apos;s Happening Today
           </h3>
           <ol className="space-y-2">
@@ -173,7 +173,7 @@ export function SimplifiedView({
             aria-expanded={isOpen}
             aria-controls="simplified-controls"
           >
-            <Layout className="w-4 h-4" />
+            <Layout className="w-4 h-4" aria-hidden="true" />
             Simplified View Settings
           </button>
 
@@ -188,37 +188,37 @@ export function SimplifiedView({
                   label="Hide decorative images"
                   checked={settings.hideImages}
                   onChange={(v) => update('hideImages', v)}
-                  icon={<ImageOff className="w-4 h-4" />}
+                  icon={<ImageOff className="w-4 h-4" aria-hidden="true" />}
                 />
                 <ToggleOption
                   label="Stop all animations"
                   checked={settings.hideAnimations}
                   onChange={(v) => update('hideAnimations', v)}
-                  icon={<Minimize2 className="w-4 h-4" />}
+                  icon={<Minimize2 className="w-4 h-4" aria-hidden="true" />}
                 />
                 <ToggleOption
                   label="Remove shadows"
                   checked={settings.hideShadows}
                   onChange={(v) => update('hideShadows', v)}
-                  icon={<Layout className="w-4 h-4" />}
+                  icon={<Layout className="w-4 h-4" aria-hidden="true" />}
                 />
                 <ToggleOption
                   label="Remove gradients"
                   checked={settings.hideGradients}
                   onChange={(v) => update('hideGradients', v)}
-                  icon={<Layout className="w-4 h-4" />}
+                  icon={<Layout className="w-4 h-4" aria-hidden="true" />}
                 />
                 <ToggleOption
                   label="Muted colours"
                   checked={settings.mutedColours}
                   onChange={(v) => update('mutedColours', v)}
-                  icon={<VolumeX className="w-4 h-4" />}
+                  icon={<VolumeX className="w-4 h-4" aria-hidden="true" />}
                 />
                 <ToggleOption
                   label="Larger click targets"
                   checked={settings.largeTargets}
                   onChange={(v) => update('largeTargets', v)}
-                  icon={<Maximize2 className="w-4 h-4" />}
+                  icon={<Maximize2 className="w-4 h-4" aria-hidden="true" />}
                 />
               </div>
 
@@ -249,7 +249,7 @@ export function SimplifiedView({
                 onClick={resetDefaults}
                 className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#5a8c5c] transition-colors"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                 Reset to defaults
               </button>
             </div>

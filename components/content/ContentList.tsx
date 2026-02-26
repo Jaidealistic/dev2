@@ -63,13 +63,13 @@ export default function ContentList({ educatorId }: { educatorId: string }) {
             <div className="flex gap-2">
               <Button size="sm" variant="outline" asChild className="flex-1">
                 <Link href={`/educator/content/${lesson.lessonId}/edit`}>
-                  <Edit className="h-4 w-4 mr-2" />
+                  <Edit className="h-4 w-4 mr-2" aria-hidden="true" />
                   Edit
                 </Link>
               </Button>
               <Button size="sm" variant="outline" asChild className="flex-1">
                 <Link href={`/educator/content/${lesson.lessonId}/preview`}>
-                  <Eye className="h-4 w-4 mr-2" />
+                  <Eye className="h-4 w-4 mr-2" aria-hidden="true" />
                   Preview
                 </Link>
               </Button>
@@ -78,7 +78,7 @@ export default function ContentList({ educatorId }: { educatorId: string }) {
                 variant="ghost" 
                 onClick={() => handleDelete(lesson.lessonId)}
               >
-                <Trash className="h-4 w-4" />
+                <Trash className="h-4 w-4" aria-hidden="true" />
               </Button>
             </div>
           </CardContent>
