@@ -102,21 +102,23 @@ export function LoginForm() {
   return (
     <div className="w-full max-w-md space-y-5">
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{error}</div>
+        <div role="alert" className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{error}</div>
       )}
 
       {/* STEP 1: Email */}
       {step === 'email' && (
-        <form onSubmit={handleEmailSubmit} className="space-y-4">
+        <form onSubmit={handleEmailSubmit} className="space-y-4" aria-label="Email step">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
+            <label htmlFor="login-email" className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
               <input
+                id="login-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900"
+                autoComplete="email"
               />
             </div>
           </div>
@@ -132,10 +134,10 @@ export function LoginForm() {
 
       {/* STEP 2a: Password (Parent/Educator) */}
       {step === 'password' && (
-        <form onSubmit={handlePasswordSubmit} className="space-y-4">
+        <form onSubmit={handlePasswordSubmit} className="space-y-4" aria-label="Password step">
           <div className="flex items-center gap-2 mb-2">
-            <button type="button" onClick={() => { setStep('email'); setError(''); }} className="text-slate-400 hover:text-slate-600">
-              <ArrowLeft className="w-4 h-4" />
+            <button type="button" onClick={() => { setStep('email'); setError(''); }} className="text-slate-400 hover:text-slate-600" aria-label="Go back to email step">
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             </button>
             <p className="text-sm text-slate-500">Welcome back, <span className="font-semibold text-slate-700">{userName}</span></p>
           </div>
@@ -143,10 +145,11 @@ export function LoginForm() {
           <div className="text-xs text-slate-400 bg-slate-50 px-3 py-2 rounded-lg">{email}</div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+            <label htmlFor="login-password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
               <input
+                id="login-password"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -155,8 +158,8 @@ export function LoginForm() {
                 autoComplete="current-password"
                 autoFocus
               />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" aria-label={showPassword ? 'Hide password' : 'Show password'}>
+                {showPassword ? <EyeOff className="w-5 h-5" aria-hidden="true" /> : <Eye className="w-5 h-5" aria-hidden="true" />}
               </button>
             </div>
           </div>
@@ -180,8 +183,8 @@ export function LoginForm() {
       {step === 'pattern' && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <button onClick={() => { setStep('email'); setPatternError(''); setError(''); }} className="text-slate-400 hover:text-slate-600">
-              <ArrowLeft className="w-4 h-4" />
+            <button onClick={() => { setStep('email'); setPatternError(''); setError(''); }} className="text-slate-400 hover:text-slate-600" aria-label="Go back to email step">
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             </button>
             <p className="text-sm text-slate-500">Welcome back, <span className="font-semibold text-slate-700">{userName}</span>!</p>
           </div>
@@ -191,8 +194,8 @@ export function LoginForm() {
           <PatternLock mode="verify" onPatternComplete={handlePatternSubmit} error={patternError} disabled={loading} />
 
           {loading && (
-            <div className="flex items-center justify-center gap-2 text-[#5a8c5c]">
-              <div className="w-5 h-5 border-2 border-[#5a8c5c] border-t-transparent rounded-full animate-spin" />
+            <div className="flex items-center justify-center gap-2 text-[#5a8c5c]" role="status" aria-live="polite">
+              <div className="w-5 h-5 border-2 border-[#5a8c5c] border-t-transparent rounded-full animate-spin" aria-hidden="true" />
               <span className="text-sm font-medium">Signing in...</span>
             </div>
           )}

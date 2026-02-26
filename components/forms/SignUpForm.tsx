@@ -55,58 +55,58 @@ export function SignUpForm({ role, onSuccess }: SignUpFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4" aria-label="Sign up form">
       {apiError && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{apiError}</div>
+        <div role="alert" className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{apiError}</div>
       )}
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">First Name</label>
-          <input {...register('firstName')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="First name" />
-          {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>}
+          <label htmlFor="signup-firstname" className="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+          <input id="signup-firstname" {...register('firstName')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="First name" aria-invalid={!!errors.firstName} aria-describedby={errors.firstName ? 'err-firstname' : undefined} />
+          {errors.firstName && <p id="err-firstname" role="alert" className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
-          <input {...register('lastName')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="Last name" />
-          {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>}
+          <label htmlFor="signup-lastname" className="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+          <input id="signup-lastname" {...register('lastName')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="Last name" aria-invalid={!!errors.lastName} aria-describedby={errors.lastName ? 'err-lastname' : undefined} />
+          {errors.lastName && <p id="err-lastname" role="alert" className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-        <input {...register('email')} type="email" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="you@email.com" autoComplete="email" />
-        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+        <label htmlFor="signup-email" className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+        <input id="signup-email" {...register('email')} type="email" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="you@email.com" autoComplete="email" aria-invalid={!!errors.email} aria-describedby={errors.email ? 'err-email' : undefined} />
+        {errors.email && <p id="err-email" role="alert" className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+        <label htmlFor="signup-password" className="block text-sm font-medium text-slate-700 mb-1">Password</label>
         <div className="relative">
-          <input {...register('password')} type={showPassword ? 'text' : 'password'} className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="At least 8 characters" autoComplete="new-password" />
-          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          <input id="signup-password" {...register('password')} type={showPassword ? 'text' : 'password'} className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="At least 8 characters" autoComplete="new-password" aria-invalid={!!errors.password} aria-describedby={errors.password ? 'err-password' : undefined} />
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" aria-label={showPassword ? 'Hide password' : 'Show password'}>
+            {showPassword ? <EyeOff className="w-5 h-5" aria-hidden="true" /> : <Eye className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
-        {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+        {errors.password && <p id="err-password" role="alert" className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
-        <input {...register('confirmPassword')} type="password" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="Re-enter password" autoComplete="new-password" />
-        {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
+        <label htmlFor="signup-confirm" className="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
+        <input id="signup-confirm" {...register('confirmPassword')} type="password" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900" placeholder="Re-enter password" autoComplete="new-password" aria-invalid={!!errors.confirmPassword} aria-describedby={errors.confirmPassword ? 'err-confirm' : undefined} />
+        {errors.confirmPassword && <p id="err-confirm" role="alert" className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
       </div>
 
-      <div className="space-y-3 pt-2">
+      <div className="space-y-3 pt-2" role="group" aria-label="Agreement checkboxes">
         <label className="flex items-start gap-3 cursor-pointer">
-          <input {...register('agreeToTerms')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" />
+          <input {...register('agreeToTerms')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" aria-invalid={!!errors.agreeToTerms} />
           <span className="text-sm text-slate-600">I agree to the <span className="text-[#5a8c5c] font-medium">Terms of Service</span></span>
         </label>
-        {errors.agreeToTerms && <p className="text-red-500 text-xs ml-7">{errors.agreeToTerms.message}</p>}
+        {errors.agreeToTerms && <p role="alert" className="text-red-500 text-xs ml-7">{errors.agreeToTerms.message}</p>}
         <label className="flex items-start gap-3 cursor-pointer">
-          <input {...register('agreeToPrivacy')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" />
+          <input {...register('agreeToPrivacy')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" aria-invalid={!!errors.agreeToPrivacy} />
           <span className="text-sm text-slate-600">I agree to the <span className="text-[#5a8c5c] font-medium">Privacy Policy</span></span>
         </label>
-        {errors.agreeToPrivacy && <p className="text-red-500 text-xs ml-7">{errors.agreeToPrivacy.message}</p>}
+        {errors.agreeToPrivacy && <p role="alert" className="text-red-500 text-xs ml-7">{errors.agreeToPrivacy.message}</p>}
       </div>
 
       <button
@@ -115,8 +115,8 @@ export function SignUpForm({ role, onSuccess }: SignUpFormProps) {
         className="w-full py-3 bg-[#7da47f] hover:bg-[#6b946d] disabled:bg-slate-300 text-white font-semibold rounded-xl shadow-sm hover:shadow transition-all"
       >
         {isLoading ? (
-          <span className="flex items-center justify-center gap-2">
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <span className="flex items-center justify-center gap-2" role="status" aria-live="polite">
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" />
             Creating Account...
           </span>
         ) : 'Create Account'}
