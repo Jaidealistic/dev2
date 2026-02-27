@@ -162,7 +162,7 @@ export default function LessonCompletePage() {
         {/* Celebration Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6">
-            <Sparkles className="w-12 h-12 text-green-600" />
+            <Sparkles className="w-12 h-12 text-green-600" aria-hidden="true" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-3">
             Lesson Complete! 🎉
@@ -175,7 +175,7 @@ export default function LessonCompletePage() {
         {/* Encouragement Message */}
         <div className="bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200 rounded-3xl p-8 mb-8">
           <div className="flex items-start gap-4">
-            <Star className="w-8 h-8 text-green-600 flex-shrink-0 mt-1" />
+            <Star className="w-8 h-8 text-green-600 flex-shrink-0 mt-1" aria-hidden="true" />
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 Great Job Today!
@@ -192,7 +192,7 @@ export default function LessonCompletePage() {
           {/* Score */}
           <div className="bg-white rounded-2xl p-6 border-2 border-gray-200">
             <div className="flex items-center gap-3 mb-2">
-              <Target className="w-6 h-6 text-[#9db4a0]" />
+              <Target className="w-6 h-6 text-[#9db4a0]" aria-hidden="true" />
               <p className="text-sm font-medium text-gray-600">Score</p>
             </div>
             <p className="text-4xl font-bold text-gray-900">{scorePercentage}%</p>
@@ -201,7 +201,7 @@ export default function LessonCompletePage() {
           {/* Time Spent */}
           <div className="bg-white rounded-2xl p-6 border-2 border-gray-200">
             <div className="flex items-center gap-3 mb-2">
-              <Clock className="w-6 h-6 text-[#9db4a0]" />
+              <Clock className="w-6 h-6 text-[#9db4a0]" aria-hidden="true" />
               <p className="text-sm font-medium text-gray-600">Time Spent</p>
             </div>
             <p className="text-4xl font-bold text-gray-900">
@@ -212,7 +212,7 @@ export default function LessonCompletePage() {
           {/* Sections Completed */}
           <div className="bg-white rounded-2xl p-6 border-2 border-gray-200">
             <div className="flex items-center gap-3 mb-2">
-              <BookOpen className="w-6 h-6 text-[#9db4a0]" />
+              <BookOpen className="w-6 h-6 text-[#9db4a0]" aria-hidden="true" />
               <p className="text-sm font-medium text-gray-600">Sections</p>
             </div>
             <p className="text-4xl font-bold text-gray-900">
@@ -224,7 +224,7 @@ export default function LessonCompletePage() {
         {/* Strengths - What Went Well */}
         <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 mb-8">
           <div className="flex items-center gap-3 mb-6">
-            <TrendingUp className="w-7 h-7 text-green-600" />
+            <TrendingUp className="w-7 h-7 text-green-600" aria-hidden="true" />
             <h2 className="text-2xl font-bold text-gray-900">What You Did Well</h2>
           </div>
           <div className="space-y-3">
@@ -243,7 +243,7 @@ export default function LessonCompletePage() {
         {summary.newBadges.length > 0 && (
           <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-3xl p-8 border-2 border-yellow-200 mb-8">
             <div className="flex items-center gap-3 mb-6">
-              <Award className="w-7 h-7 text-yellow-600" />
+              <Award className="w-7 h-7 text-yellow-600" aria-hidden="true" />
               <h2 className="text-2xl font-bold text-gray-900">New Badge Earned</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -274,7 +274,7 @@ export default function LessonCompletePage() {
                   <h3 className="text-xl font-bold mb-2">{summary.nextLesson.title}</h3>
                   <p className="text-white text-opacity-90 mb-3">{summary.nextLesson.description}</p>
                   <div className="flex items-center gap-2 text-sm">
-                    <Clock className="w-4 h-4" />
+                    <Clock className="w-4 h-4" aria-hidden="true" />
                     <span>{summary.nextLesson.estimatedDuration} minutes</span>
                   </div>
                 </div>
@@ -283,7 +283,7 @@ export default function LessonCompletePage() {
                   className="flex items-center gap-2 px-6 py-3 bg-white text-[#9db4a0] rounded-full font-bold hover:bg-opacity-90 transition-all flex-shrink-0"
                 >
                   Start Now
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -296,7 +296,7 @@ export default function LessonCompletePage() {
             onClick={() => router.push('/learner/dashboard')}
             className="flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-gray-300 rounded-full font-bold text-gray-700 hover:bg-gray-50 transition-all"
           >
-            <Home className="w-5 h-5" />
+            <Home className="w-5 h-5" aria-hidden="true" />
             Back to Dashboard
           </button>
 
@@ -306,7 +306,7 @@ export default function LessonCompletePage() {
               className="flex items-center justify-center gap-2 px-8 py-4 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full font-bold transition-all"
             >
               Continue Learning
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
             </button>
           )}
         </div>

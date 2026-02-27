@@ -157,7 +157,7 @@ export function TextToSpeech({
                         aria-label="Pause"
                         title="Pause"
                     >
-                        <Pause className="w-4 h-4" />
+                        <Pause className="w-4 h-4" aria-hidden="true" />
                     </button>
                 )}
 
@@ -182,14 +182,14 @@ export function TextToSpeech({
                     aria-label="Settings"
                     title="Speed settings"
                 >
-                    <Settings className="w-4 h-4" />
+                    <Settings className="w-4 h-4" aria-hidden="true" />
                 </button>
             </div>
 
             {/* Speed Control (Expanded) */}
             {showSettings && (
                 <div className="flex items-center gap-2 bg-white rounded-lg p-2 border border-[#e8e5e0] shadow-sm animate-in fade-in slide-in-from-left-2 duration-200">
-                    <Volume2 className="w-3.5 h-3.5 text-gray-500" />
+                    <Volume2 className="w-3.5 h-3.5 text-gray-500" aria-hidden="true" />
                     <label className="text-xs text-gray-600 font-medium whitespace-nowrap">
                         Speed:
                     </label>
@@ -259,7 +259,7 @@ export function InlineTextToSpeech({ text, language = 'en-US', className = '' }:
                 </>
             ) : (
                 <>
-                    <Volume2 className="w-3 h-3" />
+                    <Volume2 className="w-3 h-3" aria-hidden="true" />
                     <span>Listen</span>
                 </>
             )}

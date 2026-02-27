@@ -77,9 +77,9 @@ function SkillBar({ skill }: { skill: SkillArea }) {
 
   const trendIcon =
     skill.trend === 'up' ? (
-      <TrendingUp className="w-3.5 h-3.5 text-[#5a8c5c]" />
+      <TrendingUp className="w-3.5 h-3.5 text-[#5a8c5c]" aria-hidden="true" />
     ) : skill.trend === 'new' ? (
-      <Sparkles className="w-3.5 h-3.5 text-[#9db4a0]" />
+      <Sparkles className="w-3.5 h-3.5 text-[#9db4a0]" aria-hidden="true" />
     ) : null;
 
   return (
@@ -115,7 +115,7 @@ function BadgeList({
           style={{ color, backgroundColor: bgColor }}
         >
           {s.name}
-          {s.trend === 'up' && <TrendingUp className="w-3 h-3" />}
+          {s.trend === 'up' && <TrendingUp className="w-3 h-3" aria-hidden="true" />}
         </span>
       ))}
     </div>
@@ -169,11 +169,11 @@ export function StrengthsChallengesReport({
     return (
       <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl">
         <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Star className="w-5 h-5 text-[#7da47f]" />
+          <Star className="w-5 h-5 text-[#7da47f]" aria-hidden="true" />
           Strengths & Growth Areas
         </h3>
         <div className="flex items-center justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin text-[#7da47f]" />
+          <Loader2 className="w-6 h-6 animate-spin text-[#7da47f]" aria-hidden="true" />
         </div>
       </div>
     );
@@ -182,7 +182,7 @@ export function StrengthsChallengesReport({
   return (
     <div className="p-6 bg-white/80 border border-[#d6ddd7] rounded-2xl">
       <h3 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
-        <Star className="w-5 h-5 text-[#7da47f]" />
+        <Star className="w-5 h-5 text-[#7da47f]" aria-hidden="true" />
         Strengths & Growth Areas
       </h3>
       {childName && (
@@ -207,7 +207,7 @@ export function StrengthsChallengesReport({
       {strengths.length > 0 && (
         <div className="mb-4">
           <p className="flex items-center gap-1 text-sm font-semibold text-[#5a8c5c] mb-2">
-            <Target className="w-4 h-4" /> Strengths
+            <Target className="w-4 h-4" aria-hidden="true" /> Strengths
           </p>
           <BadgeList skills={strengths} color="#3d6e3f" bgColor="#e0ede1" />
           <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
@@ -220,7 +220,7 @@ export function StrengthsChallengesReport({
       {challenges.length > 0 && (
         <div className="mb-4">
           <p className="flex items-center gap-1 text-sm font-semibold text-amber-700 mb-2">
-            <Lightbulb className="w-4 h-4" /> Working On
+            <Lightbulb className="w-4 h-4" aria-hidden="true" /> Working On
           </p>
           <BadgeList skills={challenges} color="#92690e" bgColor="#fef3c7" />
           <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
@@ -233,7 +233,7 @@ export function StrengthsChallengesReport({
       {emerging.length > 0 && (
         <div>
           <p className="flex items-center gap-1 text-sm font-semibold text-[#9db4a0] mb-2">
-            <Sparkles className="w-4 h-4" /> Just Getting Started
+            <Sparkles className="w-4 h-4" aria-hidden="true" /> Just Getting Started
           </p>
           <BadgeList skills={emerging} color="#5a8c5c" bgColor="#f0f7f0" />
           <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">

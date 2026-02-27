@@ -158,7 +158,7 @@ export default function ProgressPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]">
         <div className="text-center space-y-4">
-          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" />
+          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" aria-hidden="true" />
           <p className="text-[#6b6b6b] text-base">{t('status.dataLoading')}</p>
         </div>
       </div>
@@ -186,7 +186,7 @@ export default function ProgressPage() {
           {/* Logo + back */}
           <div className="flex items-center gap-4">
             <Link href="/learner/dashboard" className="flex items-center gap-1.5 text-[#6b6b6b] hover:text-[#2d2d2d] transition-colors">
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium hidden sm:inline">{t('common.back')}</span>
             </Link>
             <span className="text-base font-semibold text-[#2d2d2d]">Lexfix</span>
@@ -250,10 +250,10 @@ export default function ProgressPage() {
         {/* ── Stat cards ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { icon: <BookOpen className="w-4 h-4" />, value: analytics.totalLessons, label: t('progress.totalLessons'), color: 'text-[#5a7a94]', bg: 'bg-[#f0f4f8]' },
-            { icon: <CheckCircle className="w-4 h-4" />, value: analytics.completedLessons ?? 0, label: t('progress.lessonsCompleted'), color: 'text-[#5d7e61]', bg: 'bg-[#f0f4f0]' },
-            { icon: <Target className="w-4 h-4" />, value: `${analytics.avgScore}%`, label: t('progress.averageScore'), color: 'text-[#9a7a3a]', bg: 'bg-[#fef9e7]' },
-            { icon: <Clock className="w-4 h-4" />, value: fmt(analytics.totalTime), label: t('progress.timeSpent'), color: 'text-[#7a9b7e]', bg: 'bg-[#f0f4f0]' },
+            { icon: <BookOpen className="w-4 h-4" aria-hidden="true" />, value: analytics.totalLessons, label: t('progress.totalLessons'), color: 'text-[#5a7a94]', bg: 'bg-[#f0f4f8]' },
+            { icon: <CheckCircle className="w-4 h-4" aria-hidden="true" />, value: analytics.completedLessons ?? 0, label: t('progress.lessonsCompleted'), color: 'text-[#5d7e61]', bg: 'bg-[#f0f4f0]' },
+            { icon: <Target className="w-4 h-4" aria-hidden="true" />, value: `${analytics.avgScore}%`, label: t('progress.averageScore'), color: 'text-[#9a7a3a]', bg: 'bg-[#fef9e7]' },
+            { icon: <Clock className="w-4 h-4" aria-hidden="true" />, value: fmt(analytics.totalTime), label: t('progress.timeSpent'), color: 'text-[#7a9b7e]', bg: 'bg-[#f0f4f0]' },
           ].map((card, i) => (
             <div key={i} className="bg-white rounded-xl border border-[#f0ede8] p-4" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
               <div className={`inline-flex p-2 rounded-lg ${card.bg} ${card.color} mb-3`}>
@@ -276,7 +276,7 @@ export default function ProgressPage() {
               <div className="flex flex-col items-center gap-2">
                 <div className="w-[88px] h-[88px] rounded-full bg-[#fef9e7] border-[7px] border-[#c4a44a] flex items-center justify-center">
                   <div className="text-center">
-                    <Flame className="w-5 h-5 text-[#c4a44a] mx-auto" />
+                    <Flame className="w-5 h-5 text-[#c4a44a] mx-auto" aria-hidden="true" />
                     <span className="text-base font-bold text-[#2d2d2d]">{analytics.currentStreak}</span>
                   </div>
                 </div>
@@ -309,25 +309,25 @@ export default function ProgressPage() {
         {activeTab === 'overview' && (
           <div className="space-y-3">
             {lessonProgress.length === 0 ? (
-              <EmptyState icon={<BookOpen className="w-8 h-8 text-[#c5c0b8]" />} message="No activity yet. Start your first lesson!" cta={{ href: '/learner/lessons', label: 'Browse Lessons' }} />
+              <EmptyState icon={<BookOpen className="w-8 h-8 text-[#c5c0b8]" aria-hidden="true" />} message="No activity yet. Start your first lesson!" cta={{ href: '/learner/lessons', label: 'Browse Lessons' }} />
             ) : (
               lessonProgress.slice(0, 10).map((p: any, i: number) => (
                 <div key={p.id || i} className="bg-white rounded-xl border border-[#f0ede8] p-4 flex items-center gap-4" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                   <div className={`p-2.5 rounded-lg flex-shrink-0 ${p.status === 'MASTERED' ? 'bg-[#fef9e7]' :
                       p.status === 'COMPLETED' ? 'bg-[#f0f4f0]' : 'bg-[#f0f4f8]'
                     }`}>
-                    {p.status === 'MASTERED' ? <Star className="w-4 h-4 text-[#c4a44a]" /> :
-                      p.status === 'COMPLETED' ? <CheckCircle className="w-4 h-4 text-[#5d7e61]" /> :
-                        <RotateCcw className="w-4 h-4 text-[#5a7a94]" />}
+                    {p.status === 'MASTERED' ? <Star className="w-4 h-4 text-[#c4a44a]" aria-hidden="true" /> :
+                      p.status === 'COMPLETED' ? <CheckCircle className="w-4 h-4 text-[#5d7e61]" aria-hidden="true" /> :
+                        <RotateCcw className="w-4 h-4 text-[#5a7a94]" aria-hidden="true" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-[#2d2d2d] truncate">
                       {p.lessonTitle || p.lessonId}
                     </p>
                     <div className="flex gap-3 text-xs text-[#8a8a8a] mt-0.5">
-                      <span className="flex items-center gap-1"><Target className="w-3 h-3" />{p.score ?? 0}%</span>
-                      {p.duration && <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{fmt(p.duration)}</span>}
-                      {p.lastAccessedAt && <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{fmtDate(p.lastAccessedAt)}</span>}
+                      <span className="flex items-center gap-1"><Target className="w-3 h-3" aria-hidden="true" />{p.score ?? 0}%</span>
+                      {p.duration && <span className="flex items-center gap-1"><Clock className="w-3 h-3" aria-hidden="true" />{fmt(p.duration)}</span>}
+                      {p.lastAccessedAt && <span className="flex items-center gap-1"><Calendar className="w-3 h-3" aria-hidden="true" />{fmtDate(p.lastAccessedAt)}</span>}
                     </div>
                   </div>
                   <StatusBadge status={p.status} />
@@ -342,7 +342,7 @@ export default function ProgressPage() {
           <div className="bg-white rounded-xl border border-[#f0ede8] overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             {lessonProgress.length === 0 ? (
               <div className="p-12 text-center">
-                <EmptyState icon={<BookOpen className="w-8 h-8 text-[#c5c0b8]" />} message="No lessons attempted yet." cta={{ href: '/learner/lessons', label: 'Browse Lessons' }} />
+                <EmptyState icon={<BookOpen className="w-8 h-8 text-[#c5c0b8]" aria-hidden="true" />} message="No lessons attempted yet." cta={{ href: '/learner/lessons', label: 'Browse Lessons' }} />
               </div>
             ) : (
               <table className="w-full text-sm" role="table">
@@ -367,7 +367,7 @@ export default function ProgressPage() {
                       <td className="px-5 py-3.5 text-[#6b6b6b]">{p.attemptCount ?? 1}</td>
                       <td className="px-5 py-3.5 text-[#8a8a8a]">{p.lastAccessedAt ? fmtDate(p.lastAccessedAt) : '—'}</td>
                       <td className="px-5 py-3.5">
-                        <ChevronRight className="w-4 h-4 text-[#c5c0b8]" />
+                        <ChevronRight className="w-4 h-4 text-[#c5c0b8]" aria-hidden="true" />
                       </td>
                     </tr>
                   ))}
@@ -381,7 +381,7 @@ export default function ProgressPage() {
         {activeTab === 'competencies' && (
           <div className="space-y-3">
             {competencies.length === 0 ? (
-              <EmptyState icon={<Award className="w-8 h-8 text-[#c5c0b8]" />} message="Competencies will appear as you complete lessons." />
+              <EmptyState icon={<Award className="w-8 h-8 text-[#c5c0b8]" aria-hidden="true" />} message="Competencies will appear as you complete lessons." />
             ) : (
               competencies.map((c: any, i: number) => {
                 const pct = c.score ?? c.progress ?? 0;

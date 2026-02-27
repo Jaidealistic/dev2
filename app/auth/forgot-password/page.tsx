@@ -27,9 +27,9 @@ export default function ForgotPasswordPage() {
     return (
       <Card className="w-full max-w-md">
         <CardContent className="pt-6 text-center">
-          <CheckCircle2 className="h-16 w-16 text-green-600 mx-auto mb-4" />
+          <CheckCircle2 className="h-16 w-16 text-green-600 mx-auto mb-4" aria-hidden="true" />
           <h2 className="text-2xl font-bold mb-2">Check your email</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-6" role="status" aria-live="polite">
             We've sent password reset instructions to <strong>{email}</strong>
           </p>
           <Button asChild variant="outline" className="w-full">
@@ -44,8 +44,8 @@ export default function ForgotPasswordPage() {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1 text-center">
         <div className="flex justify-center mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-            <BookOpen className="h-7 w-7 text-white" />
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center" aria-hidden="true">
+            <BookOpen className="h-7 w-7 text-white" aria-hidden="true" />
           </div>
         </div>
         <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" aria-hidden="true" />
               <Input
                 id="email"
                 type="email"
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
               href="/auth/login"
               className="inline-flex items-center text-sm text-gray-600 hover:text-blue-600 transition-colors"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
               Back to Login
             </Link>
           </div>

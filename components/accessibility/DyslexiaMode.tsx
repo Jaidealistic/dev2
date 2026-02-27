@@ -135,7 +135,7 @@ export function DyslexiaMode({ children, showControls = true }: DyslexiaModeProp
             aria-expanded={isOpen}
             aria-controls="dyslexia-controls"
           >
-            <Type className="w-4 h-4" />
+            <Type className="w-4 h-4" aria-hidden="true" />
             Dyslexia Reading Settings
           </button>
 
@@ -224,7 +224,7 @@ export function DyslexiaMode({ children, showControls = true }: DyslexiaModeProp
                     className="p-1.5 border border-gray-300 rounded-lg hover:bg-gray-100"
                     aria-label="Decrease font size"
                   >
-                    <Minus className="w-4 h-4" />
+                    <Minus className="w-4 h-4" aria-hidden="true" />
                   </button>
                   <input
                     type="range"
@@ -240,7 +240,7 @@ export function DyslexiaMode({ children, showControls = true }: DyslexiaModeProp
                     className="p-1.5 border border-gray-300 rounded-lg hover:bg-gray-100"
                     aria-label="Increase font size"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-4 h-4" aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -295,7 +295,7 @@ export function DyslexiaMode({ children, showControls = true }: DyslexiaModeProp
                 onClick={resetDefaults}
                 className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#5a8c5c] transition-colors"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                 Reset to defaults
               </button>
             </div>

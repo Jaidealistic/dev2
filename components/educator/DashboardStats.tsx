@@ -96,7 +96,7 @@ export default function DashboardStats({ userId }: { userId: string }) {
                 {card.title}
               </CardTitle>
               <div className={`p-2 rounded-xl ${theme.bg} ${theme.text} transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4" aria-hidden="true" />
               </div>
             </CardHeader>
             <CardContent>

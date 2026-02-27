@@ -178,7 +178,7 @@ export function SpeechRecorder({
   if (state === 'unsupported') {
     return (
       <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
-        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+        <AlertCircle className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
         <span>
           Speech recognition is not supported in your browser. Please use Chrome or Edge.
         </span>
@@ -253,8 +253,8 @@ export function SpeechRecorder({
 
       {/* Error */}
       {state === 'error' && errorMessage && (
-        <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        <div role="alert" className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
           {errorMessage}
         </div>
       )}

@@ -167,9 +167,9 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
 
   const fileTypeIcons = {
     photo: <Image className="w-6 h-6" />,
-    video: <Video className="w-6 h-6" />,
-    pdf: <File className="w-6 h-6" />,
-    document: <FileText className="w-6 h-6" />,
+    video: <Video className="w-6 h-6" aria-hidden="true" />,
+    pdf: <File className="w-6 h-6" aria-hidden="true" />,
+    document: <FileText className="w-6 h-6" aria-hidden="true" />,
   };
 
   return (
@@ -187,7 +187,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
                 onClick={() => setUploadModalOpen(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-[#9db4a0] text-white rounded-full font-medium hover:bg-[#8ca394]"
               >
-                <Upload className="w-5 h-5" />
+                <Upload className="w-5 h-5" aria-hidden="true" />
                 Upload Work Sample
               </button>
               <div className="relative">
@@ -195,7 +195,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
                   onClick={() => handleExport('progress')}
                   className="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-full font-medium hover:border-[#9db4a0] hover:text-[#9db4a0]"
                 >
-                  <Download className="w-5 h-5" />
+                  <Download className="w-5 h-5" aria-hidden="true" />
                   Export Reports
                 </button>
               </div>
@@ -205,12 +205,12 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
           {/* Summary Stats */}
           <div className="mt-6 grid grid-cols-4 gap-4">
             <div className="p-4 bg-blue-50 rounded-2xl">
-              <Clock className="w-6 h-6 text-blue-600 mb-2" />
+              <Clock className="w-6 h-6 text-blue-600 mb-2" aria-hidden="true" />
               <p className="text-2xl font-bold text-gray-900">{totalLearningHours}h</p>
               <p className="text-sm text-gray-600">Total Learning Hours</p>
             </div>
             <div className="p-4 bg-[#f0f7f0] rounded-2xl">
-              <BookOpen className="w-6 h-6 text-[#5a8c5c] mb-2" />
+              <BookOpen className="w-6 h-6 text-[#5a8c5c] mb-2" aria-hidden="true" />
               <p className="text-2xl font-bold text-gray-900">{lessonLogs.length}</p>
               <p className="text-sm text-gray-600">Lesson Logs</p>
             </div>
@@ -220,7 +220,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
               <p className="text-sm text-gray-600">Work Samples</p>
             </div>
             <div className="p-4 bg-orange-50 rounded-2xl">
-              <Award className="w-6 h-6 text-orange-600 mb-2" />
+              <Award className="w-6 h-6 text-orange-600 mb-2" aria-hidden="true" />
               <p className="text-2xl font-bold text-gray-900">{niosCompetencies.length}</p>
               <p className="text-sm text-gray-600">Competencies Tracked</p>
             </div>
@@ -258,11 +258,11 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
               <h2 className="text-2xl font-bold text-gray-900">{currentMonth} Lesson Logs</h2>
               <div className="flex items-center gap-2">
                 <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:border-gray-400">
-                  <Filter className="w-4 h-4" />
+                  <Filter className="w-4 h-4" aria-hidden="true" />
                   Filter
                 </button>
                 <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:border-gray-400">
-                  <Search className="w-4 h-4" />
+                  <Search className="w-4 h-4" aria-hidden="true" />
                   Search
                 </button>
               </div>
@@ -273,7 +273,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <Calendar className="w-5 h-5 text-gray-400" />
+                      <Calendar className="w-5 h-5 text-gray-400" aria-hidden="true" />
                       <span className="text-sm text-gray-600">{new Date(log.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
                       <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
                         {log.subject}
@@ -281,7 +281,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-2">{log.topic}</h3>
                     <p className="text-gray-600 flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
+                      <Clock className="w-4 h-4" aria-hidden="true" />
                       {log.duration} minutes
                     </p>
                   </div>
@@ -312,7 +312,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
                 {log.parentReflection && (
                   <div className="p-4 bg-[#f0f7f0] border border-[#c5d8c7] rounded-2xl mb-4">
                     <p className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4" />
+                      <MessageSquare className="w-4 h-4" aria-hidden="true" />
                       Parent Reflection:
                     </p>
                     <p className="text-gray-900">{log.parentReflection}</p>
@@ -350,7 +350,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
                 onClick={() => setUploadModalOpen(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-[#9db4a0] text-white rounded-full font-medium hover:bg-[#8ca394]"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-5 h-5" aria-hidden="true" />
                 Add New Sample
               </button>
             </div>
@@ -439,7 +439,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
               {lessonLogs.filter(log => log.parentReflection).map((log) => (
                 <div key={log.id} className="bg-white rounded-3xl p-6 shadow-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <Calendar className="w-5 h-5 text-gray-400" />
+                    <Calendar className="w-5 h-5 text-gray-400" aria-hidden="true" />
                     <span className="text-sm text-gray-600">{new Date(log.date).toLocaleDateString()}</span>
                     <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
                       {log.subject}
@@ -471,7 +471,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ childId: s
             </div>
 
             <div className="border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center mb-6">
-              <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" aria-hidden="true" />
               <p className="text-lg font-medium text-gray-900 mb-2">Drag and drop files here</p>
               <p className="text-sm text-gray-600 mb-4">or click to browse</p>
               <input type="file" multiple className="hidden" id="file-upload" />

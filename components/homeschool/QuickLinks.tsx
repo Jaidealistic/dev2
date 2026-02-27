@@ -25,7 +25,7 @@ export default function QuickLinks() {
                 href={link.href}
                 className="flex flex-col items-center justify-center p-6 border rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <Icon className="h-8 w-8 text-blue-600 mb-2" />
+                <Icon className="h-8 w-8 text-blue-600 mb-2" aria-hidden="true" />
                 <span className="text-sm font-medium text-center">{link.label}</span>
               </Link>
             );

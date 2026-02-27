@@ -219,9 +219,9 @@ export function WaveformVisualizer({
         }
       >
         {isRecording ? (
-          <Mic className="w-5 h-5 text-[#5a8c5c] flex-shrink-0" />
+          <Mic className="w-5 h-5 text-[#5a8c5c] flex-shrink-0" aria-hidden="true" />
         ) : (
-          <MicOff className="w-5 h-5 text-gray-400 flex-shrink-0" />
+          <MicOff className="w-5 h-5 text-gray-400 flex-shrink-0" aria-hidden="true" />
         )}
         <div className="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
           <div
@@ -263,7 +263,7 @@ export function WaveformVisualizer({
           style={{ backgroundColor: bgColor }}
         >
           <div className="flex items-center gap-2 text-gray-400">
-            <MicOff className="w-5 h-5" />
+            <MicOff className="w-5 h-5" aria-hidden="true" />
             <span className="text-sm">Click record to start</span>
           </div>
         </div>

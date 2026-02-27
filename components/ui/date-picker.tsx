@@ -47,7 +47,7 @@ export function DatePicker({
                         className
                     )}
                 >
-                    <CalendarIcon className="mr-2.5 h-4 w-4 text-[#7da47f] transition-all group-hover:text-[#5a8c5c] group-hover:scale-110" />
+                    <CalendarIcon className="mr-2.5 h-4 w-4 text-[#7da47f] transition-all group-hover:text-[#5a8c5c] group-hover:scale-110" aria-hidden="true" />
                     {selectedDate ? (
                         <span className={cn(
                             "font-bold",

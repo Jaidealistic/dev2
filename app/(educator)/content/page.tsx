@@ -23,7 +23,7 @@ export default async function ContentPage() {
         </div>
         <Button asChild>
           <Link href="/educator/content/create">
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 mr-2" aria-hidden="true" />
             Create Lesson
           </Link>
         </Button>

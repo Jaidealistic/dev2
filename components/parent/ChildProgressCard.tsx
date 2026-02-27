@@ -122,7 +122,7 @@ export function ChildProgressCard({ child, detailsHref }: ChildProgressCardProps
           <div className="flex items-center gap-2">
             <h4 className="font-bold text-gray-900 truncate">{child.name}</h4>
             {child.trend === 'up' && (
-              <TrendingUp className="w-4 h-4 text-[#5a8c5c]" />
+              <TrendingUp className="w-4 h-4 text-[#5a8c5c]" aria-hidden="true" />
             )}
           </div>
 
@@ -133,11 +133,11 @@ export function ChildProgressCard({ child, detailsHref }: ChildProgressCardProps
 
           <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-gray-600">
             <span className="flex items-center gap-1">
-              <BookOpen className="w-3.5 h-3.5 text-[#7da47f]" />
+              <BookOpen className="w-3.5 h-3.5 text-[#7da47f]" aria-hidden="true" />
               {child.lessonsCompleted}/{child.lessonsTotal} lessons
             </span>
             <span className="flex items-center gap-1">
-              <Flame className="w-3.5 h-3.5 text-orange-500" />
+              <Flame className="w-3.5 h-3.5 text-orange-500" aria-hidden="true" />
               {child.streak}-day streak
             </span>
           </div>
@@ -153,7 +153,7 @@ export function ChildProgressCard({ child, detailsHref }: ChildProgressCardProps
         href={href}
         className="mt-4 flex items-center justify-center gap-1 w-full py-2 text-sm font-medium text-[#5a8c5c] hover:text-[#4a7c4c] bg-[#f0f7f0] hover:bg-[#e0ede1] rounded-lg transition-colors"
       >
-        View details <ArrowRight className="w-4 h-4" />
+        View details <ArrowRight className="w-4 h-4" aria-hidden="true" />
       </Link>
     </div>
   );

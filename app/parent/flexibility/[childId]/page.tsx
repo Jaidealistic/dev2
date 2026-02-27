@@ -82,31 +82,31 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
   const statusCards = {
     active: {
       color: 'bg-green-50 border-green-200',
-      icon: <Play className="w-8 h-8 text-green-600" />,
+      icon: <Play className="w-8 h-8 text-green-600" aria-hidden="true" />,
       title: 'Active Learning',
       description: 'Full schedule with regular lessons',
     },
     paused: {
       color: 'bg-orange-50 border-orange-200',
-      icon: <Pause className="w-8 h-8 text-orange-600" />,
+      icon: <Pause className="w-8 h-8 text-orange-600" aria-hidden="true" />,
       title: 'Paused',
       description: 'Learning temporarily on hold',
     },
     'light-load': {
       color: 'bg-blue-50 border-blue-200',
-      icon: <Battery className="w-8 h-8 text-blue-600" />,
+      icon: <Battery className="w-8 h-8 text-blue-600" aria-hidden="true" />,
       title: 'Light Load',
       description: 'Reduced schedule with essential lessons only',
     },
     'catch-up': {
       color: 'bg-[#f0f7f0] border-[#c5d8c7]',
-      icon: <Zap className="w-8 h-8 text-[#5a8c5c]" />,
+      icon: <Zap className="w-8 h-8 text-[#5a8c5c]" aria-hidden="true" />,
       title: 'Catch-Up Mode',
       description: 'Focused review of previously covered topics',
     },
     'sick-day': {
       color: 'bg-pink-50 border-pink-200',
-      icon: <Heart className="w-8 h-8 text-pink-600" />,
+      icon: <Heart className="w-8 h-8 text-pink-600" aria-hidden="true" />,
       title: 'Sick-Day Mode',
       description: 'Gentle alternative activities',
     },
@@ -137,7 +137,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
               onClick={handleResumePlan}
               className="mt-4 flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-full font-medium hover:bg-green-600"
             >
-              <Play className="w-5 h-5" />
+              <Play className="w-5 h-5" aria-hidden="true" />
               Resume Learning
             </button>
           )}
@@ -149,7 +149,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                <Pause className="w-6 h-6 text-orange-600" />
+                <Pause className="w-6 h-6 text-orange-600" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Pause Learning Plan</h3>
@@ -172,7 +172,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <Battery className="w-6 h-6 text-blue-600" />
+                <Battery className="w-6 h-6 text-blue-600" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Light-Load Weeks</h3>
@@ -195,7 +195,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-[#f0f7f0] rounded-full flex items-center justify-center">
-                <Zap className="w-6 h-6 text-[#5a8c5c]" />
+                <Zap className="w-6 h-6 text-[#5a8c5c]" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Catch-Up Mode</h3>
@@ -218,7 +218,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
-                <Heart className="w-6 h-6 text-pink-600" />
+                <Heart className="w-6 h-6 text-pink-600" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Sick-Day Alternatives</h3>
@@ -242,7 +242,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
         <div className="bg-white rounded-3xl p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-              <Download className="w-6 h-6 text-green-600" />
+              <Download className="w-6 h-6 text-green-600" aria-hidden="true" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Offline Lesson Packs</h2>
@@ -259,7 +259,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
                   onClick={() => handleDownloadOfflinePack(subject)}
                   className="w-full flex items-center justify-center gap-2 py-2 bg-green-500 text-white rounded-full font-medium hover:bg-green-600"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-4 h-4" aria-hidden="true" />
                   Download
                 </button>
               </div>
@@ -267,7 +267,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
           </div>
 
           <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-2xl flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
             <div>
               <p className="text-sm font-bold text-gray-900 mb-1">Offline Mode Tips</p>
               <p className="text-sm text-gray-700">
@@ -413,7 +413,7 @@ export default function FlexibilityTools({ params }: { params: Promise<{ childId
             <div className="space-y-2 mb-6">
               {['English - Reading Comprehension', 'Math - Fraction Operations', 'Tamil - Verb Conjugation'].map((topic, idx) => (
                 <div key={idx} className="flex items-center gap-3 p-3 bg-[#f0f7f0] rounded-xl">
-                  <AlertCircle className="w-5 h-5 text-[#5a8c5c]" />
+                  <AlertCircle className="w-5 h-5 text-[#5a8c5c]" aria-hidden="true" />
                   <span className="text-sm font-medium text-gray-900">{topic}</span>
                 </div>
               ))}

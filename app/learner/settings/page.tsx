@@ -103,7 +103,7 @@ export default function LearnerSettingsPage() {
       <header className="border-b border-[#f0ede8] bg-white/80 backdrop-blur-sm sticky top-0 z-30">
         <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/learner/dashboard" className="flex items-center gap-2 text-[#6b6b6b] hover:text-[#2d2d2d] transition-colors">
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             <span className="text-sm font-medium">Back</span>
           </Link>
           <h1 className="text-base font-semibold text-[#2d2d2d]">Settings</h1>
@@ -114,17 +114,17 @@ export default function LearnerSettingsPage() {
           >
             {isSaving ? (
               <>
-                <div className="animate-spin rounded-full h-3.5 w-3.5 border-2 border-white border-t-transparent" />
+                <div className="animate-spin rounded-full h-3.5 w-3.5 border-2 border-white border-t-transparent" aria-hidden="true" />
                 <span>Saving</span>
               </>
             ) : saveSuccess ? (
               <>
-                <Check className="w-3.5 h-3.5" />
+                <Check className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Saved</span>
               </>
             ) : (
               <>
-                <Save className="w-3.5 h-3.5" />
+                <Save className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Save</span>
               </>
             )}
@@ -137,7 +137,7 @@ export default function LearnerSettingsPage() {
         <p className="text-sm text-[#8a8a8a]">Customise your learning experience and privacy preferences.</p>
 
         {/* ── Learning Support Modes ── */}
-        <Section icon={<Shield className="w-[18px] h-[18px]" />} title="Learning Support Modes">
+        <Section icon={<Shield className="w-[18px] h-[18px]" aria-hidden="true" />} title="Learning Support Modes">
           <p className="text-sm text-[#6b6b6b] mb-4">
             Enable specialized features designed for your learning style.
           </p>
@@ -170,7 +170,7 @@ export default function LearnerSettingsPage() {
         </Section>
 
         {/* ── Accessibility ── */}
-        <Section icon={<Eye className="w-[18px] h-[18px]" />} title="Accessibility">
+        <Section icon={<Eye className="w-[18px] h-[18px]" aria-hidden="true" />} title="Accessibility">
           {/* Font Style */}
           <FieldLabel>Font style</FieldLabel>
           <div className="grid grid-cols-2 gap-2 mb-6">
@@ -190,7 +190,7 @@ export default function LearnerSettingsPage() {
               >
                 {font.label}
                 {formData.fontFamily === font.value && (
-                  <Check className="absolute top-1.5 right-1.5 w-3.5 h-3.5 text-[#7a9b7e]" />
+                  <Check className="absolute top-1.5 right-1.5 w-3.5 h-3.5 text-[#7a9b7e]" aria-hidden="true" />
                 )}
               </button>
             ))}
@@ -273,7 +273,7 @@ export default function LearnerSettingsPage() {
         </Section>
 
         {/* ── Audio & Visual ── */}
-        <Section icon={<Volume2 className="w-[18px] h-[18px]" />} title="Audio & Visual">
+        <Section icon={<Volume2 className="w-[18px] h-[18px]" aria-hidden="true" />} title="Audio & Visual">
           <div className="space-y-2">
             <ToggleOption
               label="Autoplay audio"
@@ -297,7 +297,7 @@ export default function LearnerSettingsPage() {
         </Section>
 
         {/* ── Privacy ── */}
-        <Section icon={<Shield className="w-[18px] h-[18px]" />} title="Privacy">
+        <Section icon={<Shield className="w-[18px] h-[18px]" aria-hidden="true" />} title="Privacy">
           <FieldLabel>Profile visibility</FieldLabel>
           <div className="space-y-1.5 mb-5">
             {[
@@ -318,7 +318,7 @@ export default function LearnerSettingsPage() {
                   <p className="text-xs text-[#8a8a8a]">{opt.desc}</p>
                 </div>
                 {formData.profileVisibility === opt.value && (
-                  <Check className="w-4 h-4 text-[#7a9b7e] flex-shrink-0" />
+                  <Check className="w-4 h-4 text-[#7a9b7e] flex-shrink-0" aria-hidden="true" />
                 )}
               </button>
             ))}
@@ -341,7 +341,7 @@ export default function LearnerSettingsPage() {
         </Section>
 
         {/* ── Notifications ── */}
-        <Section icon={<Bell className="w-[18px] h-[18px]" />} title="Notifications">
+        <Section icon={<Bell className="w-[18px] h-[18px]" aria-hidden="true" />} title="Notifications">
           <div className="space-y-2">
             <ToggleOption
               label="Push notifications"

@@ -25,7 +25,7 @@ export default function DailySchedule() {
                 <div>
                   <h3 className="font-semibold">{lesson.title}</h3>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Clock className="h-4 w-4" />
+                    <Clock className="h-4 w-4" aria-hidden="true" />
                     <span>{lesson.duration} min</span>
                     <span>•</span>
                     <span>{lesson.child}</span>
@@ -33,7 +33,7 @@ export default function DailySchedule() {
                 </div>
               </div>
               <Button size="sm">
-                <Play className="h-4 w-4 mr-2" />
+                <Play className="h-4 w-4 mr-2" aria-hidden="true" />
                 Start
               </Button>
             </div>

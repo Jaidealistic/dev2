@@ -41,7 +41,7 @@ export default function CoOpList() {
                   <div>
                     <h3 className="text-xl font-bold">{coop.name}</h3>
                     <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
-                      <MapPin className="h-4 w-4" />
+                      <MapPin className="h-4 w-4" aria-hidden="true" />
                       <span>{coop.location}</span>
                     </div>
                   </div>
@@ -54,11 +54,11 @@ export default function CoOpList() {
 
                 <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
+                    <Calendar className="h-4 w-4" aria-hidden="true" />
                     <span>{coop.schedule}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
+                    <Users className="h-4 w-4" aria-hidden="true" />
                     <span>{coop.membersCount} families</span>
                   </div>
                 </div>
@@ -76,7 +76,7 @@ export default function CoOpList() {
                 <Button>Join Group</Button>
                 <Button variant="outline" className="flex items-center gap-2">
                   View Details
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </div>
             </div>

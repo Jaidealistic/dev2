@@ -153,9 +153,9 @@ export function FocusMode({
       <div className="flex items-center justify-between gap-3 mb-4 p-3 bg-[#f0f7f0] border border-[#c5d8c7] rounded-xl">
         <div className="flex items-center gap-2">
           {isFocused ? (
-            <Eye className="w-5 h-5 text-[#5a8c5c]" />
+            <Eye className="w-5 h-5 text-[#5a8c5c]" aria-hidden="true" />
           ) : (
-            <EyeOff className="w-5 h-5 text-gray-400" />
+            <EyeOff className="w-5 h-5 text-gray-400" aria-hidden="true" />
           )}
           <span className="text-sm font-medium text-gray-700">
             Focus Mode {taskLabel ? `— ${taskLabel}` : ''}
@@ -188,9 +188,9 @@ export function FocusMode({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               {phase === 'break' ? (
-                <Coffee className="w-5 h-5 text-amber-600" />
+                <Coffee className="w-5 h-5 text-amber-600" aria-hidden="true" />
               ) : (
-                <Clock className="w-5 h-5 text-[#5a8c5c]" />
+                <Clock className="w-5 h-5 text-[#5a8c5c]" aria-hidden="true" />
               )}
               <span className="text-sm font-semibold text-gray-700">
                 {phase === 'idle' && 'Ready to start'}
@@ -228,7 +228,7 @@ export function FocusMode({
                 onClick={startTimer}
                 className="flex items-center gap-1.5 px-4 py-2 bg-[#7da47f] text-white text-sm rounded-lg hover:bg-[#6b946d] transition-colors"
               >
-                <Play className="w-4 h-4" />
+                <Play className="w-4 h-4" aria-hidden="true" />
                 Start Focus Timer
               </button>
             ) : (
@@ -238,7 +238,7 @@ export function FocusMode({
                   className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200 transition-colors"
                   aria-label={isRunning ? 'Pause timer' : 'Resume timer'}
                 >
-                  {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  {isRunning ? <Pause className="w-4 h-4" aria-hidden="true" /> : <Play className="w-4 h-4" aria-hidden="true" />}
                   {isRunning ? 'Pause' : 'Resume'}
                 </button>
                 <button
@@ -246,7 +246,7 @@ export function FocusMode({
                   className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200 transition-colors"
                   aria-label="Skip to next phase"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4" aria-hidden="true" />
                   Skip
                 </button>
                 <button
@@ -254,7 +254,7 @@ export function FocusMode({
                   className="flex items-center gap-1 px-3 py-1.5 text-gray-500 text-sm hover:text-gray-700 transition-colors"
                   aria-label="Reset timer"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                   Reset
                 </button>
               </>
@@ -289,7 +289,7 @@ export function FocusMode({
         {phase === 'break' && isFocused && (
           <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-40 rounded-2xl flex items-center justify-center">
             <div className="text-center p-6">
-              <Coffee className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+              <Coffee className="w-12 h-12 text-amber-500 mx-auto mb-3" aria-hidden="true" />
               <p className="text-lg font-bold text-gray-900">Break Time!</p>
               <p className="text-sm text-gray-600 mt-1">
                 {formatTime(secondsLeft)} remaining — relax!

@@ -147,7 +147,7 @@ export function GuidedPractice({
               className="flex items-center gap-2 px-6 py-3 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Check Answer
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </button>
           )}
 
@@ -156,7 +156,7 @@ export function GuidedPractice({
               onClick={handleShowHint}
               className="flex items-center gap-2 px-6 py-3 bg-yellow-100 hover:bg-yellow-200 text-yellow-900 rounded-full font-medium border-2 border-yellow-300"
             >
-              <Lightbulb className="w-5 h-5" />
+              <Lightbulb className="w-5 h-5" aria-hidden="true" />
               Get Hint
             </button>
           )}
@@ -166,7 +166,7 @@ export function GuidedPractice({
               onClick={handleReset}
               className="flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full font-medium"
             >
-              <RotateCcw className="w-5 h-5" />
+              <RotateCcw className="w-5 h-5" aria-hidden="true" />
               Try Again
             </button>
           )}
@@ -177,7 +177,7 @@ export function GuidedPractice({
       {showHint && hints[currentHintIndex] && (
         <div className="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-5">
           <div className="flex items-start gap-3">
-            <Lightbulb className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+            <Lightbulb className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" aria-hidden="true" />
             <div>
               <h4 className="font-bold text-yellow-900 mb-1">Hint {currentHintIndex + 1}:</h4>
               <p className="text-yellow-900">{hints[currentHintIndex]}</p>
@@ -199,7 +199,7 @@ export function GuidedPractice({
                 feedback.type === 'correct' ? 'text-green-600' : 'text-blue-600'
               }`} />
             ) : (
-              <Sparkles className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
+              <Sparkles className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" aria-hidden="true" />
             )}
             <p className={`text-lg ${
               feedback.type === 'correct' ? 'text-green-900' :
@@ -286,8 +286,8 @@ export function MultipleChoice({
               >
                 <div className="flex items-center justify-between">
                   <span className="text-lg">{option}</span>
-                  {showCorrect && <CheckCircle className="w-6 h-6 text-green-600" />}
-                  {showIncorrect && <Sparkles className="w-6 h-6 text-orange-600" />}
+                  {showCorrect && <CheckCircle className="w-6 h-6 text-green-600" aria-hidden="true" />}
+                  {showIncorrect && <Sparkles className="w-6 h-6 text-orange-600" aria-hidden="true" />}
                 </div>
               </button>
             );
@@ -302,7 +302,7 @@ export function MultipleChoice({
               className="flex items-center gap-2 px-6 py-3 bg-[#9db4a0] hover:bg-[#8ca394] text-white rounded-full font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Submit Answer
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </button>
           )}
 
@@ -311,7 +311,7 @@ export function MultipleChoice({
               onClick={handleReset}
               className="flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full font-medium"
             >
-              <RotateCcw className="w-5 h-5" />
+              <RotateCcw className="w-5 h-5" aria-hidden="true" />
               Try Different Answer
             </button>
           )}
@@ -325,9 +325,9 @@ export function MultipleChoice({
         }`}>
           <div className="flex items-start gap-3">
             {isCorrect ? (
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" aria-hidden="true" />
             ) : (
-              <Sparkles className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
+              <Sparkles className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" aria-hidden="true" />
             )}
             <div>
               <p className={`text-lg font-bold mb-2 ${isCorrect ? 'text-green-900' : 'text-orange-900'}`}>

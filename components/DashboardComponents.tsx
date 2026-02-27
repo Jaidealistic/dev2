@@ -20,7 +20,7 @@ export function BreakReminder({ minutesSinceLastBreak = 45, userHasADHD = false 
     <div className="bg-gradient-to-r from-[#f0f7f0] to-[#e0ede1] border-2 border-[#c5d8c7] rounded-2xl p-6 mb-6 animate-pulse">
       <div className="flex items-start gap-4">
         <div className="bg-blue-100 rounded-full p-3 flex-shrink-0">
-          <Coffee className="w-6 h-6 text-blue-600" />
+          <Coffee className="w-6 h-6 text-blue-600" aria-hidden="true" />
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-bold text-gray-900 mb-2">Time for a break! ☕</h3>
@@ -67,7 +67,7 @@ export function EncouragementMessage({
   return (
     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg p-4 mb-6">
       <div className="flex items-center gap-3">
-        <Award className="w-6 h-6 text-green-600 flex-shrink-0" />
+        <Award className="w-6 h-6 text-green-600 flex-shrink-0" aria-hidden="true" />
         <p className="text-lg font-semibold text-gray-900">{randomMessage}</p>
       </div>
     </div>
@@ -150,7 +150,7 @@ export function ResumeLessonCard({ lastLesson, onResume }: ResumeLessonProps) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <Zap className="w-5 h-5 text-[#5a8c5c]" />
+            <Zap className="w-5 h-5 text-[#5a8c5c]" aria-hidden="true" />
             <p className="text-sm font-semibold text-[#5a8c5c] uppercase">RESUME</p>
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-1">{lastLesson.title}</h3>
@@ -179,7 +179,7 @@ export function ResumeLessonCard({ lastLesson, onResume }: ResumeLessonProps) {
           aria-label={`Resume: ${lastLesson.title}`}
         >
           Continue
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
     </div>

@@ -67,7 +67,7 @@ export default function StudentList({ educatorId }: { educatorId: string }) {
                 <div className="flex items-center gap-8">
                   <div className="hidden sm:block text-right">
                     <div className="flex items-center gap-1.5 justify-end text-slate-400">
-                      <BookOpen className="h-3.5 w-3.5" />
+                      <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />
                       <span className="text-[11px] font-bold uppercase tracking-widest">{student.lessonsCompleted} Lessons</span>
                     </div>
                     <p className="text-sm font-black text-emerald-600 mt-1">
@@ -82,7 +82,7 @@ export default function StudentList({ educatorId }: { educatorId: string }) {
                     asChild
                   >
                     <Link href={`/educator/students/${student.id}`}>
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Link>
                   </Button>
                 </div>

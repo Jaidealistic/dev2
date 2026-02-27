@@ -51,7 +51,7 @@ export default function PortfolioList({ childId }: { childId?: string }) {
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                  <Icon className="h-6 w-6" />
+                  <Icon className="h-6 w-6" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="font-semibold truncate">{item.title}</h3>
@@ -76,7 +76,7 @@ export default function PortfolioList({ childId }: { childId?: string }) {
               <div className="flex justify-between items-center">
                 <span className="text-xs text-gray-500">{item.childName}</span>
                 <Button variant="ghost" size="sm">
-                  <Download className="h-4 w-4" />
+                  <Download className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </div>
             </CardContent>

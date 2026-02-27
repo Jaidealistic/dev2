@@ -95,13 +95,13 @@ export function StrengthsChallengesSnapshot({ child, strengths, challenges }: St
       {/* Strengths */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
-          <Star className="w-5 h-5 text-green-600" />
+          <Star className="w-5 h-5 text-green-600" aria-hidden="true" />
           <h4 className="font-semibold text-gray-900">Strengths</h4>
         </div>
         <div className="space-y-2">
           {strengths.map((strength, idx) => (
             <div key={idx} className="flex items-start gap-2 p-3 bg-green-50 rounded-xl">
-              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-sm text-gray-800">{strength}</p>
             </div>
           ))}
@@ -111,13 +111,13 @@ export function StrengthsChallengesSnapshot({ child, strengths, challenges }: St
       {/* Challenges */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <Target className="w-5 h-5 text-orange-600" />
+          <Target className="w-5 h-5 text-orange-600" aria-hidden="true" />
           <h4 className="font-semibold text-gray-900">Areas to Work On</h4>
         </div>
         <div className="space-y-2">
           {challenges.map((challenge, idx) => (
             <div key={idx} className="flex items-start gap-2 p-3 bg-orange-50 rounded-xl">
-              <Target className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+              <Target className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-sm text-gray-800">{challenge}</p>
             </div>
           ))}
@@ -145,7 +145,7 @@ export function TimeSpentTracker({ child, timeSpent, recommended }: TimeTrackerP
           <h3 className="text-xl font-bold text-gray-900">{child.name}'s Time</h3>
           <p className="text-sm text-gray-600">This week</p>
         </div>
-        <Clock className="w-8 h-8 text-[#9db4a0]" />
+        <Clock className="w-8 h-8 text-[#9db4a0]" aria-hidden="true" />
       </div>
 
       {/* Progress Bar */}
@@ -209,7 +209,7 @@ export function MissedSessionAlert({ child, missedDays, lastActivity, scheduledT
     <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-3xl p-6 shadow-sm border-2 border-orange-200">
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <AlertCircle className="w-6 h-6 text-orange-600" />
+          <AlertCircle className="w-6 h-6 text-orange-600" aria-hidden="true" />
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -268,7 +268,7 @@ export function SuggestedActivitiesCard({ child, activities }: SuggestedActiviti
   return (
     <div className="bg-gradient-to-br from-[#f0f7f0] to-[#e0ede1] rounded-3xl p-6 shadow-sm border-2 border-[#c5d8c7]">
       <div className="flex items-center gap-3 mb-6">
-        <Lightbulb className="w-7 h-7 text-blue-600" />
+        <Lightbulb className="w-7 h-7 text-blue-600" aria-hidden="true" />
         <div>
           <h3 className="text-xl font-bold text-gray-900">
             Home Activities for {child.name}
@@ -296,7 +296,7 @@ export function SuggestedActivitiesCard({ child, activities }: SuggestedActiviti
                   {activity.difficulty}
                 </span>
                 <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <Clock className="w-4 h-4" />
+                  <Clock className="w-4 h-4" aria-hidden="true" />
                   <span>{activity.duration} min</span>
                 </div>
               </div>

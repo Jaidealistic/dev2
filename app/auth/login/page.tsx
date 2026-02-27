@@ -47,8 +47,8 @@ export default function LoginPage() {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1 text-center">
         <div className="flex justify-center mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-            <BookOpen className="h-7 w-7 text-white" />
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center" aria-hidden="true">
+            <BookOpen className="h-7 w-7 text-white" aria-hidden="true" />
           </div>
         </div>
         <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
@@ -57,8 +57,8 @@ export default function LoginPage() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-              <AlertCircle className="h-4 w-4 flex-shrink-0" />
+            <div role="alert" className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              <AlertCircle className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
               <span>{error}</span>
             </div>
           )}

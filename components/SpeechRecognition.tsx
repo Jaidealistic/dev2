@@ -186,9 +186,9 @@ export function SpeechRecognition({
                         title={isListening ? 'Stop recording' : 'Click to speak'}
                     >
                         {isListening ? (
-                            <MicOff className="w-5 h-5" />
+                            <MicOff className="w-5 h-5" aria-hidden="true" />
                         ) : (
-                            <Mic className="w-5 h-5" />
+                            <Mic className="w-5 h-5" aria-hidden="true" />
                         )}
                     </button>
                 </div>
@@ -215,7 +215,7 @@ export function SpeechRecognition({
 
             {/* Helper Text */}
             <p className="mt-2 text-xs text-gray-500">
-                <Volume2 className="w-3 h-3 inline mr-1" />
+                <Volume2 className="w-3 h-3 inline mr-1" aria-hidden="true" />
                 You can type or click the microphone to speak. Your voice will be converted to text.
             </p>
         </div>
@@ -275,7 +275,7 @@ export function InlineSpeechRecognition({
                 : 'bg-[#f0f4f0] text-[#7a9b7e] hover:bg-[#e8f5e9]'
                 } ${className}`}
         >
-            <Mic className="w-3.5 h-3.5" />
+            <Mic className="w-3.5 h-3.5" aria-hidden="true" />
             {isListening ? 'Listening...' : buttonText}
         </button>
     );

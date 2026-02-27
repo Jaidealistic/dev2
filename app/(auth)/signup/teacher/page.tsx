@@ -18,8 +18,8 @@ export default function TeacherSignUpPage() {
   return (
     <div className="min-h-screen bg-[#f5f1eb] flex flex-col">
       {/* Header */}
-      <header className="container mx-auto px-6 py-6">
-        <Link href="/" className="text-3xl font-bold text-gray-900">
+      <header role="banner" className="container mx-auto px-6 py-6">
+        <Link href="/" className="text-3xl font-bold text-gray-900" aria-label="Lexfix home">
           Lexfix
         </Link>
       </header>
@@ -29,10 +29,10 @@ export default function TeacherSignUpPage() {
         <div className="w-full max-w-md">
           {/* Title */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#f5e5e0] rounded-2xl mb-4">
-              <BookOpen className="w-8 h-8 text-[#e8a898]" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#f5e5e0] rounded-2xl mb-4" aria-hidden="true">
+              <BookOpen className="w-8 h-8 text-[#e8a898]" aria-hidden="true" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">
+            <h1 id="teacher-signup-heading" className="text-4xl font-bold text-gray-900 mb-3">
               Teacher Sign Up
             </h1>
             <p className="text-lg text-gray-600">
@@ -41,7 +41,7 @@ export default function TeacherSignUpPage() {
           </div>
 
           {/* Form Card */}
-          <div className="bg-white rounded-3xl p-8 shadow-sm">
+          <div className="bg-white rounded-3xl p-8 shadow-sm" role="region" aria-labelledby="teacher-signup-heading">
             <SignUpForm role="EDUCATOR" />
           </div>
 

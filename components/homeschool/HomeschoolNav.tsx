@@ -24,7 +24,7 @@ export default function HomeschoolNav() {
           <div className="flex items-center gap-8">
             <Link href="/homeschool/hub" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <BookOpen className="h-5 w-5 text-white" />
+                <BookOpen className="h-5 w-5 text-white" aria-hidden="true" />
               </div>
               <span className="font-bold text-lg">LinguaAccess</span>
             </Link>
@@ -43,7 +43,7 @@ export default function HomeschoolNav() {
                         : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-4 w-4" aria-hidden="true" />
                     <span className="text-sm font-medium">{link.label}</span>
                   </Link>
                 );
@@ -52,7 +52,7 @@ export default function HomeschoolNav() {
           </div>
 
           <Button variant="ghost" onClick={() => signOut({ callbackUrl: '/' })}>
-            <LogOut className="h-4 w-4 mr-2" />
+            <LogOut className="h-4 w-4 mr-2" aria-hidden="true" />
             Logout
           </Button>
         </div>

@@ -76,12 +76,12 @@ export default function NIOSReportPage() {
             <Button className="w-full" onClick={handleGenerate} disabled={generating}>
               {generating ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
                   Generating...
                 </>
               ) : (
                 <>
-                  <FileDown className="mr-2 h-4 w-4" />
+                  <FileDown className="mr-2 h-4 w-4" aria-hidden="true" />
                   Download Report (CSV)
                 </>
               )}

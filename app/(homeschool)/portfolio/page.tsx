@@ -15,7 +15,7 @@ export default async function PortfolioPage() {
           <p className="text-gray-600">Showcase student work and achievements</p>
         </div>
         <Button>
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="h-4 w-4 mr-2" aria-hidden="true" />
           Add Item
         </Button>
       </div>

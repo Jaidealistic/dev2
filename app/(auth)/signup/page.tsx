@@ -9,8 +9,8 @@ export const metadata = {
 export default function SignUpPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f6f2] via-[#f0ede6] to-[#e8e4db] flex flex-col">
-      <header className="container mx-auto px-6 py-6">
-        <Link href="/" className="text-2xl font-bold text-[#5a8c5c]">
+      <header role="banner" className="container mx-auto px-6 py-6">
+        <Link href="/" className="text-2xl font-bold text-[#5a8c5c]" aria-label="Lexfix home">
           Lexfix
         </Link>
       </header>
@@ -24,33 +24,33 @@ export default function SignUpPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Student */}
-            <Link href="/signup/student" className="group">
+            <Link href="/signup/student" className="group" aria-label="Sign up as a Student. Start your learning journey with English and Tamil lessons.">
               <div className="bg-white/80 rounded-2xl p-7 border border-[#d6ddd7] shadow-sm hover:shadow-md hover:border-[#9db4a0] transition-all h-full">
-                <div className="w-14 h-14 bg-[#f0f7f0] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <GraduationCap className="w-7 h-7 text-[#5a8c5c]" />
+                <div className="w-14 h-14 bg-[#f0f7f0] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" aria-hidden="true">
+                  <GraduationCap className="w-7 h-7 text-[#5a8c5c]" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">I&apos;m a Student</h3>
                 <p className="text-slate-500 text-sm mb-4">
                   Start your learning journey with English & Tamil lessons. Sign in with a fun pattern instead of a password!
                 </p>
-                <span className="inline-flex items-center gap-1 text-[#5a8c5c] font-semibold text-sm group-hover:gap-2 transition-all">
-                  Get Started <ArrowRight className="w-4 h-4" />
+                <span className="inline-flex items-center gap-1 text-[#5a8c5c] font-semibold text-sm group-hover:gap-2 transition-all" aria-hidden="true">
+                  Get Started <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </span>
               </div>
             </Link>
 
             {/* Parent */}
-            <Link href="/signup/parent" className="group">
+            <Link href="/signup/parent" className="group" aria-label="Sign up as a Parent. Track your child's progress and support their learning.">
               <div className="bg-white/80 rounded-2xl p-7 border border-[#d6ddd7] shadow-sm hover:shadow-md hover:border-[#9db4a0] transition-all h-full">
-                <div className="w-14 h-14 bg-[#f0f7f0] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Users className="w-7 h-7 text-[#7da47f]" />
+                <div className="w-14 h-14 bg-[#f0f7f0] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" aria-hidden="true">
+                  <Users className="w-7 h-7 text-[#7da47f]" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">I&apos;m a Parent</h3>
                 <p className="text-slate-500 text-sm mb-4">
                   Track your child&apos;s progress and support their learning. Link accounts using their Student ID.
                 </p>
-                <span className="inline-flex items-center gap-1 text-[#5a8c5c] font-semibold text-sm group-hover:gap-2 transition-all">
-                  Get Started <ArrowRight className="w-4 h-4" />
+                <span className="inline-flex items-center gap-1 text-[#5a8c5c] font-semibold text-sm group-hover:gap-2 transition-all" aria-hidden="true">
+                  Get Started <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </span>
               </div>
             </Link>

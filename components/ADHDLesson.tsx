@@ -103,7 +103,7 @@ export function ADHDLesson({ lessonId, steps, onComplete }: ADHDLessonProps) {
                 <div className="max-w-3xl mx-auto flex items-center justify-between">
                     {/* Timer */}
                     <div className="flex items-center gap-2 text-[#6b6b6b]">
-                        <Clock className="w-4 h-4" />
+                        <Clock className="w-4 h-4" aria-hidden="true" />
                         <span className="text-sm font-mono font-medium">
                             {formatTime(timer)}
                         </span>
@@ -140,7 +140,7 @@ export function ADHDLesson({ lessonId, steps, onComplete }: ADHDLessonProps) {
                     <div className="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl animate-in zoom-in-95 duration-200">
                         <div className="flex flex-col items-center text-center">
                             <div className="w-16 h-16 bg-[#f0f4f0] rounded-full flex items-center justify-center mb-4">
-                                <Coffee className="w-8 h-8 text-[#7a9b7e]" />
+                                <Coffee className="w-8 h-8 text-[#7a9b7e]" aria-hidden="true" />
                             </div>
                             <h2 className="text-2xl font-bold text-[#2d2d2d] mb-2">
                                 Time for a Break!
@@ -218,7 +218,7 @@ export function ADHDLesson({ lessonId, steps, onComplete }: ADHDLessonProps) {
                                                     : 'border-[#d4dcd5]'
                                                 }`}>
                                                 {answers[currentStep] === idx && (
-                                                    <Check className="w-4 h-4 text-white" />
+                                                    <Check className="w-4 h-4 text-white" aria-hidden="true" />
                                                 )}
                                             </div>
                                             <span className="text-lg text-[#2d2d2d]">{option}</span>
@@ -236,7 +236,7 @@ export function ADHDLesson({ lessonId, steps, onComplete }: ADHDLessonProps) {
                             disabled={currentStep === 0}
                             className="flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-[#e8e5e0] text-[#6b6b6b] hover:bg-[#f5f3ef] transition-colors disabled:opacity-30 disabled:cursor-not-allowed font-medium"
                         >
-                            <ChevronLeft className="w-4 h-4" />
+                            <ChevronLeft className="w-4 h-4" aria-hidden="true" />
                             Back
                         </button>
 
@@ -250,7 +250,7 @@ export function ADHDLesson({ lessonId, steps, onComplete }: ADHDLessonProps) {
                             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#7a9b7e] text-white hover:bg-[#6b8c6f] transition-colors disabled:opacity-30 disabled:cursor-not-allowed font-medium"
                         >
                             Next
-                            <ChevronRight className="w-4 h-4" />
+                            <ChevronRight className="w-4 h-4" aria-hidden="true" />
                         </button>
                     </div>
                 </div>

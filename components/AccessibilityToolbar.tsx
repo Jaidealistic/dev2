@@ -228,9 +228,9 @@ export function AccessibilityToolbar() {
                 <span className="font-medium text-gray-900">Font Family</span>
               </div>
               {activePanel === 'font' ? (
-                <ChevronUp className="w-5 h-5 text-gray-500" />
+                <ChevronUp className="w-5 h-5 text-gray-500" aria-hidden="true" />
               ) : (
-                <ChevronDown className="w-5 h-5 text-gray-500" />
+                <ChevronDown className="w-5 h-5 text-gray-500" aria-hidden="true" />
               )}
             </button>
 
@@ -275,9 +275,9 @@ export function AccessibilityToolbar() {
                 <span className="font-medium text-gray-900">Color Scheme</span>
               </div>
               {activePanel === 'color' ? (
-                <ChevronUp className="w-5 h-5 text-gray-500" />
+                <ChevronUp className="w-5 h-5 text-gray-500" aria-hidden="true" />
               ) : (
-                <ChevronDown className="w-5 h-5 text-gray-500" />
+                <ChevronDown className="w-5 h-5 text-gray-500" aria-hidden="true" />
               )}
             </button>
 
@@ -316,9 +316,9 @@ export function AccessibilityToolbar() {
                 <span className="font-medium text-gray-900">Disability Modes</span>
               </div>
               {activePanel === 'disability' ? (
-                <ChevronUp className="w-5 h-5 text-gray-500" />
+                <ChevronUp className="w-5 h-5 text-gray-500" aria-hidden="true" />
               ) : (
-                <ChevronDown className="w-5 h-5 text-gray-500" />
+                <ChevronDown className="w-5 h-5 text-gray-500" aria-hidden="true" />
               )}
             </button>
 

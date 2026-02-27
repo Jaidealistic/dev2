@@ -5,26 +5,26 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#faf9f7]">
       {/* Header */}
-      <header className="border-b border-[#e8e5e0] bg-white">
+      <header role="banner" className="border-b border-[#e8e5e0] bg-white">
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">
+          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]" aria-label="LexFix home">
             LexFix
           </Link>
-          <div className="flex items-center gap-3">
+          <nav aria-label="Main navigation" className="flex items-center gap-3">
             <Link href="/login" className="px-5 py-2 rounded-lg text-sm font-medium text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d] transition-colors">
               Sign in
             </Link>
             <Link href="/signup" className="px-5 py-2 rounded-lg bg-[#7a9b7e] text-white text-sm font-medium hover:bg-[#6b8c6f] transition-colors">
               Sign up
             </Link>
-          </div>
+          </nav>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="max-w-5xl mx-auto px-6 pt-12 pb-14 text-center">
+      <section aria-label="Hero" className="max-w-5xl mx-auto px-6 pt-12 pb-14 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#f0f4f0] text-[#5d7e61] rounded-full text-sm font-medium mb-5">
-          <Globe className="w-4 h-4" /> English &amp; Tamil — Accessible for everyone
+          <Globe className="w-4 h-4" aria-hidden="true" /> English &amp; Tamil — Accessible for everyone
         </div>
         <h1 className="text-3xl md:text-4xl font-semibold text-[#2d2d2d] mb-4 max-w-2xl mx-auto" style={{ lineHeight: '1.25' }}>
           Language learning{' '}
@@ -44,15 +44,15 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="max-w-5xl mx-auto px-6 py-10">
-        <h2 className="text-xl font-semibold text-center text-[#2d2d2d] mb-1.5">Why LexFix works</h2>
+      <section aria-labelledby="features-heading" className="max-w-5xl mx-auto px-6 py-10">
+        <h2 id="features-heading" className="text-xl font-semibold text-center text-[#2d2d2d] mb-1.5">Why LexFix works</h2>
         <p className="text-center text-[#8a8a8a] mb-7 max-w-md mx-auto text-sm" style={{ lineHeight: '1.7' }}>
           Built from the ground up to be accessible, engaging, and effective.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl p-5 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="w-10 h-10 bg-[#f0f4f0] rounded-lg flex items-center justify-center mb-4">
-              <Mic className="w-5 h-5 text-[#7a9b7e]" />
+              <Mic className="w-5 h-5 text-[#7a9b7e]" aria-hidden="true" />
             </div>
             <h3 className="text-base font-semibold text-[#2d2d2d] mb-2">Text-to-Speech</h3>
             <p className="text-sm text-[#6b6b6b]" style={{ lineHeight: '1.7' }}>
@@ -61,7 +61,7 @@ export default function LandingPage() {
           </div>
           <div className="bg-white rounded-xl p-5 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="w-10 h-10 bg-[#edf2f7] rounded-lg flex items-center justify-center mb-4">
-              <Gamepad2 className="w-5 h-5 text-[#7a97b0]" />
+              <Gamepad2 className="w-5 h-5 text-[#7a97b0]" aria-hidden="true" />
             </div>
             <h3 className="text-base font-semibold text-[#2d2d2d] mb-2">Pattern Login</h3>
             <p className="text-sm text-[#6b6b6b]" style={{ lineHeight: '1.7' }}>
@@ -70,7 +70,7 @@ export default function LandingPage() {
           </div>
           <div className="bg-white rounded-xl p-5 border border-[#f0ede8]" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="w-10 h-10 bg-[#f0f4f0] rounded-lg flex items-center justify-center mb-4">
-              <Settings className="w-5 h-5 text-[#7a9b7e]" />
+              <Settings className="w-5 h-5 text-[#7a9b7e]" aria-hidden="true" />
             </div>
             <h3 className="text-base font-semibold text-[#2d2d2d] mb-2">Personalised Settings</h3>
             <p className="text-sm text-[#6b6b6b]" style={{ lineHeight: '1.7' }}>
@@ -81,25 +81,25 @@ export default function LandingPage() {
       </section>
 
       {/* For Everyone */}
-      <section className="max-w-5xl mx-auto px-6 py-10">
-        <h2 className="text-xl font-semibold text-center text-[#2d2d2d] mb-7">Built for everyone</h2>
+      <section aria-labelledby="everyone-heading" className="max-w-5xl mx-auto px-6 py-10">
+        <h2 id="everyone-heading" className="text-xl font-semibold text-center text-[#2d2d2d] mb-7">Built for everyone</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-[#f0f4f0] rounded-xl p-5 border border-[#d4dcd5]">
-            <GraduationCap className="w-6 h-6 text-[#5d7e61] mb-3" />
+            <GraduationCap className="w-6 h-6 text-[#5d7e61] mb-3" aria-hidden="true" />
             <h3 className="text-base font-semibold text-[#2d2d2d] mb-2">Students</h3>
             <p className="text-sm text-[#6b6b6b]" style={{ lineHeight: '1.7' }}>
               Pattern-based login. Personalised English and Tamil lessons. Track your progress at your own pace.
             </p>
           </div>
           <div className="bg-[#f0f4f0] rounded-xl p-5 border border-[#d4dcd5]">
-            <Users className="w-6 h-6 text-[#7a9b7e] mb-3" />
+            <Users className="w-6 h-6 text-[#7a9b7e] mb-3" aria-hidden="true" />
             <h3 className="text-base font-semibold text-[#2d2d2d] mb-2">Parents</h3>
             <p className="text-sm text-[#6b6b6b]" style={{ lineHeight: '1.7' }}>
               Link to your child using their Student ID. Monitor progress, view activity, and stay connected.
             </p>
           </div>
           <div className="bg-[#f0f4f0] rounded-xl p-5 border border-[#d4dcd5]">
-            <Shield className="w-6 h-6 text-[#7a97b0] mb-3" />
+            <Shield className="w-6 h-6 text-[#7a97b0] mb-3" aria-hidden="true" />
             <h3 className="text-base font-semibold text-[#2d2d2d] mb-2">Safe and Accessible</h3>
             <p className="text-sm text-[#6b6b6b]" style={{ lineHeight: '1.7' }}>
               WCAG-compliant, autism-friendly design. High contrast mode, reduced motion, adjustable text settings.
@@ -109,28 +109,28 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="max-w-5xl mx-auto px-6 py-10">
+      <section aria-labelledby="cta-heading" className="max-w-5xl mx-auto px-6 py-10">
         <div className="bg-[#7a9b7e] rounded-xl p-8 text-center text-white">
-          <h2 className="text-xl font-semibold mb-2">Ready to start learning?</h2>
+          <h2 id="cta-heading" className="text-xl font-semibold mb-2">Ready to start learning?</h2>
           <p className="text-white/80 mb-6 max-w-md mx-auto text-sm" style={{ lineHeight: '1.7' }}>
             Join LexFix today and experience language learning that truly adapts to you.
           </p>
           <Link href="/signup" className="inline-flex items-center gap-2 px-7 py-3 bg-white text-[#5d7e61] font-medium rounded-xl hover:bg-[#f0f4f0] transition-colors text-sm">
-            Get started free <ArrowRight className="w-4 h-4" />
+            Get started free <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#e8e5e0]">
+      <footer role="contentinfo" className="border-t border-[#e8e5e0]">
         <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <span className="text-sm font-semibold text-[#2d2d2d]">LexFix</span>
+          <span className="text-sm font-semibold text-[#2d2d2d]" aria-hidden="true">LexFix</span>
           <p className="text-xs text-[#8a8a8a]">&copy; 2026 LexFix. Inclusive language learning for everyone.</p>
-          <div className="flex gap-5 text-xs text-[#6b6b6b]">
-            <span className="hover:text-[#2d2d2d] cursor-pointer transition-colors">Privacy</span>
-            <span className="hover:text-[#2d2d2d] cursor-pointer transition-colors">Terms</span>
-            <span className="hover:text-[#2d2d2d] cursor-pointer transition-colors">Contact</span>
-          </div>
+          <nav aria-label="Footer navigation" className="flex gap-5 text-xs text-[#6b6b6b]">
+            <Link href="/privacy" className="hover:text-[#2d2d2d] transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-[#2d2d2d] transition-colors">Terms</Link>
+            <Link href="/contact" className="hover:text-[#2d2d2d] transition-colors">Contact</Link>
+          </nav>
         </div>
       </footer>
     </div>

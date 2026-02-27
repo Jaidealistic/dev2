@@ -95,7 +95,7 @@ export default function AchievementsPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#f5f1eb]">
         <div className="text-center">
-          <Loader2 className="w-16 h-16 animate-spin text-[#9db4a0] mx-auto mb-4" />
+          <Loader2 className="w-16 h-16 animate-spin text-[#9db4a0] mx-auto mb-4" aria-hidden="true" />
           <p className="text-lg text-gray-600">Loading achievements...</p>
         </div>
       </div>
@@ -122,11 +122,11 @@ export default function AchievementsPage() {
         {/* Page Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href="/learner/dashboard" className="p-2 rounded-full hover:bg-gray-200" aria-label="Back to dashboard">
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
+            <ArrowLeft className="w-6 h-6 text-gray-600" aria-hidden="true" />
           </Link>
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <Trophy className="w-8 h-8 text-yellow-500" />
+              <Trophy className="w-8 h-8 text-yellow-500" aria-hidden="true" />
               Achievements
             </h1>
             <p className="text-gray-600 mt-1">
@@ -136,7 +136,7 @@ export default function AchievementsPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 mb-8 text-center">
+          <div role="alert" className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 mb-8 text-center">
             <p className="text-red-700 text-lg">{error}</p>
           </div>
         )}
@@ -145,7 +145,7 @@ export default function AchievementsPage() {
         <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-3xl p-8 mb-8 border-2 border-yellow-200">
           <div className="flex items-center gap-6">
             <div className="bg-white rounded-full p-6">
-              <Trophy className="w-12 h-12 text-yellow-500" />
+              <Trophy className="w-12 h-12 text-yellow-500" aria-hidden="true" />
             </div>
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -175,7 +175,7 @@ export default function AchievementsPage() {
         {earnedAchievements.length > 0 && (
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Star className="w-6 h-6 text-yellow-500" />
+              <Star className="w-6 h-6 text-yellow-500" aria-hidden="true" />
               Earned Badges
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -205,7 +205,7 @@ export default function AchievementsPage() {
         {/* Locked Achievements */}
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Lock className="w-6 h-6 text-gray-400" />
+            <Lock className="w-6 h-6 text-gray-400" aria-hidden="true" />
             Badges to Unlock
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -219,7 +219,7 @@ export default function AchievementsPage() {
                 <h3 className="font-bold text-gray-700 text-sm mb-1">{badge.badgeName}</h3>
                 <p className="text-xs text-gray-500">{badge.description}</p>
                 <p className="text-xs text-gray-400 mt-2 flex items-center justify-center gap-1">
-                  <Lock className="w-3 h-3" />
+                  <Lock className="w-3 h-3" aria-hidden="true" />
                   {badge.requirement}
                 </p>
               </div>

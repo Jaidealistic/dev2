@@ -76,7 +76,7 @@ export default function TeacherDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-2">
-              <Users className="w-8 h-8 text-[#9db4a0]" />
+              <Users className="w-8 h-8 text-[#9db4a0]" aria-hidden="true" />
               <span className="text-3xl font-bold text-gray-900">{totalStudents}</span>
             </div>
             <p className="text-gray-600 font-medium">Total Students</p>
@@ -84,7 +84,7 @@ export default function TeacherDashboard() {
 
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-2">
-              <BookOpen className="w-8 h-8 text-blue-500" />
+              <BookOpen className="w-8 h-8 text-blue-500" aria-hidden="true" />
               <span className="text-3xl font-bold text-gray-900">{activeClasses}</span>
             </div>
             <p className="text-gray-600 font-medium">Active Classes</p>
@@ -92,7 +92,7 @@ export default function TeacherDashboard() {
 
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-2">
-              <CheckCircle className="w-8 h-8 text-green-500" />
+              <CheckCircle className="w-8 h-8 text-green-500" aria-hidden="true" />
               <span className="text-3xl font-bold text-gray-900">{pendingAssignments}</span>
             </div>
             <p className="text-gray-600 font-medium">Pending Reviews</p>
@@ -100,7 +100,7 @@ export default function TeacherDashboard() {
 
           <div className="bg-white rounded-3xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-2">
-              <TrendingUp className="w-8 h-8 text-orange-500" />
+              <TrendingUp className="w-8 h-8 text-orange-500" aria-hidden="true" />
               <span className="text-3xl font-bold text-gray-900">87%</span>
             </div>
             <p className="text-gray-600 font-medium">Avg Progress</p>
@@ -123,10 +123,10 @@ export default function TeacherDashboard() {
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">{classItem.name}</h3>
                         <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                          <Users className="w-4 h-4" />
+                          <Users className="w-4 h-4" aria-hidden="true" />
                           {classItem.students} students
                           <span className="mx-1">•</span>
-                          <Calendar className="w-4 h-4" />
+                          <Calendar className="w-4 h-4" aria-hidden="true" />
                           {classItem.nextSession}
                         </p>
                       </div>
@@ -172,7 +172,7 @@ export default function TeacherDashboard() {
                         <span className="text-gray-600"> {activity.action}</span>
                       </p>
                       <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
-                        <Clock className="w-3 h-3" />
+                        <Clock className="w-3 h-3" aria-hidden="true" />
                         {activity.time}
                       </p>
                     </div>
@@ -189,15 +189,15 @@ export default function TeacherDashboard() {
               <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
               <div className="space-y-3">
                 <button className="w-full py-3 px-4 bg-[#9db4a0] text-white rounded-full font-medium hover:bg-[#8ca394] transition-colors flex items-center justify-center gap-2">
-                  <BookOpen className="w-5 h-5" />
+                  <BookOpen className="w-5 h-5" aria-hidden="true" />
                   Create Assignment
                 </button>
                 <button className="w-full py-3 px-4 border-2 border-gray-300 text-gray-700 rounded-full font-medium hover:border-[#9db4a0] hover:text-[#9db4a0] transition-colors flex items-center justify-center gap-2">
-                  <MessageSquare className="w-5 h-5" />
+                  <MessageSquare className="w-5 h-5" aria-hidden="true" />
                   Message Students
                 </button>
                 <button className="w-full py-3 px-4 border-2 border-gray-300 text-gray-700 rounded-full font-medium hover:border-[#9db4a0] hover:text-[#9db4a0] transition-colors flex items-center justify-center gap-2">
-                  <Award className="w-5 h-5" />
+                  <Award className="w-5 h-5" aria-hidden="true" />
                   View Reports
                 </button>
               </div>
@@ -210,14 +210,14 @@ export default function TeacherDashboard() {
                 <div className="bg-white rounded-xl p-4">
                   <p className="font-semibold text-gray-900">Spanish 101</p>
                   <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
-                    <Clock className="w-4 h-4" />
+                    <Clock className="w-4 h-4" aria-hidden="true" />
                     2:00 PM - 3:30 PM
                   </p>
                 </div>
                 <div className="bg-white rounded-xl p-4">
                   <p className="font-semibold text-gray-900">Office Hours</p>
                   <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
-                    <Clock className="w-4 h-4" />
+                    <Clock className="w-4 h-4" aria-hidden="true" />
                     4:00 PM - 5:00 PM
                   </p>
                 </div>
