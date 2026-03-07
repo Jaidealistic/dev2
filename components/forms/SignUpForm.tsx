@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { signUpSchema, SignUpFormData } from '@/lib/validations/auth';
 import { signup, setToken } from '@/lib/api';
+import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface SignUpFormProps {
@@ -39,6 +40,10 @@ export function SignUpForm({ role, onSuccess }: SignUpFormProps) {
         agreeToPrivacy: data.agreeToPrivacy,
       });
       if ('error' in result) { setApiError(result.error || 'Signup failed'); return; }
+      
+      // Clear any existing session/preferences before logging in new user
+      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
       if ((result as any).token) setToken((result as any).token);
       if (onSuccess) { onSuccess(); return; }
 
@@ -99,12 +104,12 @@ export function SignUpForm({ role, onSuccess }: SignUpFormProps) {
       <div className="space-y-3 pt-2" role="group" aria-label="Agreement checkboxes">
         <label className="flex items-start gap-3 cursor-pointer">
           <input {...register('agreeToTerms')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" aria-invalid={!!errors.agreeToTerms} />
-          <span className="text-sm text-slate-600">I agree to the <span className="text-[#5a8c5c] font-medium">Terms of Service</span></span>
+          <span className="text-sm text-slate-600">I agree to the <Link href="/terms" className="text-[#5a8c5c] font-medium hover:underline">Terms of Service</Link></span>
         </label>
         {errors.agreeToTerms && <p role="alert" className="text-red-500 text-xs ml-7">{errors.agreeToTerms.message}</p>}
         <label className="flex items-start gap-3 cursor-pointer">
           <input {...register('agreeToPrivacy')} type="checkbox" className="mt-0.5 w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" aria-invalid={!!errors.agreeToPrivacy} />
-          <span className="text-sm text-slate-600">I agree to the <span className="text-[#5a8c5c] font-medium">Privacy Policy</span></span>
+          <span className="text-sm text-slate-600">I agree to the <Link href="/privacy" className="text-[#5a8c5c] font-medium hover:underline">Privacy Policy</Link></span>
         </label>
         {errors.agreeToPrivacy && <p role="alert" className="text-red-500 text-xs ml-7">{errors.agreeToPrivacy.message}</p>}
       </div>

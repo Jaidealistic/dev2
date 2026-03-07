@@ -26,7 +26,7 @@ export default function HomeschoolNav() {
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <BookOpen className="h-5 w-5 text-white" aria-hidden="true" />
               </div>
-              <span className="font-bold text-lg">LinguaAccess</span>
+              <span className="font-bold text-lg">LexFix</span>
             </Link>
             
             <div className="flex gap-1">

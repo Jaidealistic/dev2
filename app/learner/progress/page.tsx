@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { useToast } from '@/components/providers/ToastProvider';
-import {
+import { 
   TrendingUp,
   Clock,
   Target,
@@ -29,7 +29,7 @@ import {
   Calendar,
   Flame,
   ChevronRight,
-} from 'lucide-react';
+, Sparkles } from 'lucide-react';
 
 interface ProgressData {
   competencies: any[];
@@ -189,7 +189,12 @@ export default function ProgressPage() {
               <ArrowLeft className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium hidden sm:inline">{t('common.back')}</span>
             </Link>
-            <span className="text-base font-semibold text-[#2d2d2d]">Lexfix</span>
+            <span className="text-base font-semibold text-[#2d2d2d]">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </span>
           </div>
 
           {/* Nav */}

@@ -7,7 +7,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { SignUpForm } from '@/components/forms/SignUpForm';
-import { BookOpen } from 'lucide-react';
+import {  BookOpen , Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Teacher Sign Up - Lexfix',
@@ -20,8 +20,11 @@ export default function TeacherSignUpPage() {
       {/* Header */}
       <header role="banner" className="container mx-auto px-6 py-6">
         <Link href="/" className="text-3xl font-bold text-gray-900" aria-label="Lexfix home">
-          Lexfix
-        </Link>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
       </header>
 
       {/* Main Content */}

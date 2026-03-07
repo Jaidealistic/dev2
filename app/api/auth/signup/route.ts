@@ -13,11 +13,11 @@ const signupSchema = z.object({
   role: z.enum(['LEARNER', 'PARENT', 'EDUCATOR', 'PARENT_EDUCATOR']),
 }).refine(data => {
   if (data.role === 'LEARNER') {
-    return !!data.pattern && data.pattern.length >= 4;
+    return (!!data.pattern && data.pattern.length >= 4) || !!data.password;
   }
   return !!data.password;
 }, {
-  message: "Password is required for parents/educators, Pattern is required for learners",
+  message: "Password is required for parents/educators, Pattern or Password is required for learners",
   path: ["password"]
 });
 
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     // Hash password or pattern
     let passwordHash = '';
 
-    if (role === 'LEARNER' && pattern) {
+    if (role === 'LEARNER' && pattern && pattern.length > 0) {
       // For learners, we treat the pattern as the password
       // Convert pattern array to string for hashing
       const patternString = pattern.join('-');
@@ -55,6 +55,7 @@ export async function POST(req: Request) {
       data: {
         email,
         password: passwordHash,
+        pattern: (role === 'LEARNER' && pattern && pattern.length > 0) ? 'true' : null,
         firstName,
         lastName,
         role,
@@ -76,6 +77,9 @@ export async function POST(req: Request) {
           }
         } : undefined,
       },
+      include: {
+        learnerProfile: true,
+      },
     });
 
     return NextResponse.json({
@@ -84,6 +88,7 @@ export async function POST(req: Request) {
         email: user.email,
         role: user.role,
       },
+      studentId: user.learnerProfile?.studentId,
     });
   } catch (error) {
     console.error('Signup error:', error);

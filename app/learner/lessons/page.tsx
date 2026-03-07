@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import {
+import { 
   BookOpen,
   Search,
   Clock,
@@ -20,7 +20,7 @@ import {
   ArrowRight,
   Globe,
   ChevronDown,
-} from 'lucide-react';
+  Sparkles } from 'lucide-react';
 
 interface Lesson {
   id: string;
@@ -142,12 +142,18 @@ export default function LessonsListPage() {
       {/* ── Header ── */}
       <header role="banner" className="bg-white border-b border-[#e8e5e0] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex justify-between items-center">
-          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">Lexfix</Link>
+          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
 
           <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1">
             {[
               { href: '/learner/dashboard', key: 'dashboard', active: false },
               { href: '/learner/lessons', key: 'lessons', active: true },
+              { href: '/learner/practice/writing', key: 'practice', active: false },
               { href: '/learner/progress', key: 'progress', active: false },
               { href: '/learner/profile', key: 'profile', active: false },
               { href: '/learner/settings', key: 'settings', active: false },

@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { learnerSignUpSchema, type LearnerSignUpFormData } from '@/lib/validations/auth';
 import { signup, setToken } from '@/lib/api';
 import PatternLock from '@/components/PatternLock';
-import { GraduationCap, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
+import {  GraduationCap, ArrowLeft, ArrowRight, CheckCircle2 , Sparkles } from 'lucide-react';
 
 type Step = 'details' | 'pattern' | 'confirm';
 
@@ -77,8 +77,11 @@ export default function StudentSignUpPage() {
           <ArrowLeft className="w-5 h-5" aria-hidden="true" />
         </Link>
         <Link href="/" className="text-2xl font-bold text-[#5a8c5c]" aria-label="Lexfix home">
-          Lexfix
-        </Link>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
       </header>
 
       <div className="flex-1 flex items-center justify-center px-6 py-8">

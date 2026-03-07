@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
-import {
+import { 
   Trophy,
   ArrowLeft,
   Loader2,
@@ -27,7 +27,7 @@ import {
   Zap,
   Award,
   Mic,
-} from 'lucide-react';
+, Sparkles } from 'lucide-react';
 
 interface Achievement {
   id: string;
@@ -107,7 +107,12 @@ export default function AchievementsPage() {
       {/* Header */}
       <header role="banner" className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-gray-900">Lexfix</Link>
+          <Link href="/" className="text-2xl font-bold text-gray-900">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
           <nav role="navigation" aria-label="Main navigation" className="flex gap-6">
             <Link href="/learner/dashboard" className="text-gray-700 hover:text-gray-900 font-medium">Dashboard</Link>
             <Link href="/learner/lessons" className="text-gray-700 hover:text-gray-900 font-medium">My Lessons</Link>

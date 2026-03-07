@@ -7,7 +7,7 @@
 'use client';
 
 import Link from 'next/link';
-import { 
+import {  
   Users, 
   BookOpen, 
   TrendingUp, 
@@ -16,7 +16,7 @@ import {
   Award,
   Clock,
   CheckCircle
-} from 'lucide-react';
+, Sparkles } from 'lucide-react';
 
 export default function TeacherDashboard() {
   const teacherName = 'Ms. Johnson';
@@ -42,7 +42,10 @@ export default function TeacherDashboard() {
       <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold text-gray-900">
-            Lexfix
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
           </Link>
           <nav className="flex gap-6">
             <Link href="/teacher/dashboard" className="text-[#9db4a0] hover:text-[#8ca394] font-medium">

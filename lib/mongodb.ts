@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/linguaaccess';
+const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27018/lexfix';
 
 if (!MONGODB_URL) {
   throw new Error('Please define MONGODB_URL environment variable');

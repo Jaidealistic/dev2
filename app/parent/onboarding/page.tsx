@@ -4,12 +4,19 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { linkChild, completeParentOnboarding } from '@/lib/api';
-import { Users, UserPlus, CheckCircle2, ArrowRight, X, BookOpen, AlertCircle } from 'lucide-react';
+import {  Users, UserPlus, CheckCircle2, ArrowRight, X, BookOpen, AlertCircle , Sparkles } from 'lucide-react';
 
 interface LinkedChild {
   studentId: string;
   firstName: string;
   lastName: string;
+  gradeLevel: string;
+}
+
+interface NewChildData {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
   gradeLevel: string;
 }
 
@@ -21,6 +28,9 @@ export default function ParentOnboardingPage() {
   const [linkError, setLinkError] = useState('');
   const [linkLoading, setLinkLoading] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const [createMode, setCreateMode] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [newChild, setNewChild] = useState<NewChildData>({ firstName: '', lastName: '', dateOfBirth: '', gradeLevel: '' });
 
   const handleLinkChild = async () => {
     if (!studentIdInput.trim()) { setLinkError('Please enter a Student ID'); return; }
@@ -38,6 +48,42 @@ export default function ParentOnboardingPage() {
     if (result.child) {
       setLinkedChildren(prev => [...prev, result.child]);
       setStudentIdInput('');
+    }
+  };
+
+  const handleCreateChild = async () => {
+    setCreateLoading(true);
+    setLinkError('');
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: newChild.firstName,
+          lastName: newChild.lastName,
+          email: `${newChild.firstName.toLowerCase()}.${newChild.lastName.toLowerCase()}.${Date.now()}@child.lexfix.local`,
+          password: `Child${Date.now()}!`,
+          role: 'LEARNER',
+          gradeLevel: newChild.gradeLevel,
+          dateOfBirth: newChild.dateOfBirth,
+        }),
+      });
+      const data = await res.json();
+      if (data.studentId) {
+        // Auto-link the newly created child
+        const linkResult = await linkChild(data.studentId);
+        if (linkResult.child) {
+          setLinkedChildren(prev => [...prev, linkResult.child]);
+          setNewChild({ firstName: '', lastName: '', dateOfBirth: '', gradeLevel: '' });
+          setCreateMode(false);
+        }
+      } else {
+        setLinkError(data.error || 'Failed to create child account');
+      }
+    } catch {
+      setLinkError('Failed to create child account. Please try again.');
+    } finally {
+      setCreateLoading(false);
     }
   };
 
@@ -59,8 +105,11 @@ export default function ParentOnboardingPage() {
           <BookOpen className="w-5 h-5 text-white" aria-hidden="true" />
         </div>
         <Link href="/" className="text-2xl font-bold text-[#5a8c5c]">
-          Lexfix
-        </Link>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
       </header>
 
       <div className="flex-1 flex items-center justify-center px-6 py-8">
@@ -107,36 +156,113 @@ export default function ParentOnboardingPage() {
             </div>
           )}
 
-          {/* Step 2: Link Children */}
+          {/* Step 2: Link Children OR Create New Child */}
           {step === 2 && (
             <div className="bg-white/80 rounded-2xl p-8 shadow-sm border border-[#d6ddd7]">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-14 h-14 bg-[#f0f7f0] rounded-2xl mb-3">
                   <UserPlus className="w-7 h-7 text-[#5a8c5c]" aria-hidden="true" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">Link Your Children</h2>
-                <p className="text-slate-500 text-sm mt-1">Enter each child&apos;s Student ID to connect</p>
+                <h2 className="text-2xl font-bold text-slate-900">Add Your Children</h2>
+                <p className="text-slate-500 text-sm mt-1">Link an existing account or create a new one</p>
               </div>
 
-              {/* Input */}
-              <div className="flex gap-2 mb-4">
-                <input
-                  type="text"
-                  value={studentIdInput}
-                  onChange={(e) => setStudentIdInput(e.target.value.toUpperCase())}
-                  onKeyDown={(e) => e.key === 'Enter' && handleLinkChild()}
-                  className="flex-1 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900 font-mono text-lg tracking-wider"
-                  placeholder="LXF-XXXXX"
-                  maxLength={9}
-                />
+              {/* Tabs */}
+              <div className="flex mb-6 bg-slate-100 rounded-xl p-1">
                 <button
-                  onClick={handleLinkChild}
-                  disabled={linkLoading}
-                  className="px-5 py-3 bg-[#7da47f] hover:bg-[#6b946d] disabled:bg-slate-300 text-white font-semibold rounded-xl transition-all"
+                  onClick={() => setCreateMode(false)}
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${!createMode ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
                 >
-                  {linkLoading ? '...' : 'Link'}
+                  Link by Student ID
+                </button>
+                <button
+                  onClick={() => setCreateMode(true)}
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${createMode ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+                >
+                  Create New Child
                 </button>
               </div>
+
+              {!createMode ? (
+                <>
+                  {/* Link by Student ID */}
+                  <div className="flex gap-2 mb-4">
+                    <input
+                      type="text"
+                      value={studentIdInput}
+                      onChange={(e) => setStudentIdInput(e.target.value.toUpperCase())}
+                      onKeyDown={(e) => e.key === 'Enter' && handleLinkChild()}
+                      className="flex-1 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900 font-mono text-lg tracking-wider"
+                      placeholder="LXF-XXXXX"
+                      maxLength={9}
+                    />
+                    <button
+                      onClick={handleLinkChild}
+                      disabled={linkLoading}
+                      className="px-5 py-3 bg-[#7da47f] hover:bg-[#6b946d] disabled:bg-slate-300 text-white font-semibold rounded-xl transition-all"
+                    >
+                      {linkLoading ? '...' : 'Link'}
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Create New Child Account */}
+                  <div className="space-y-3 mb-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-slate-500 mb-1">First Name</label>
+                        <input
+                          type="text"
+                          value={newChild.firstName}
+                          onChange={(e) => setNewChild(p => ({ ...p, firstName: e.target.value }))}
+                          className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] outline-none text-sm"
+                          placeholder="First name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-500 mb-1">Last Name</label>
+                        <input
+                          type="text"
+                          value={newChild.lastName}
+                          onChange={(e) => setNewChild(p => ({ ...p, lastName: e.target.value }))}
+                          className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] outline-none text-sm"
+                          placeholder="Last name"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-500 mb-1">Date of Birth</label>
+                      <input
+                        type="date"
+                        value={newChild.dateOfBirth}
+                        onChange={(e) => setNewChild(p => ({ ...p, dateOfBirth: e.target.value }))}
+                        className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] outline-none text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-500 mb-1">Grade Level</label>
+                      <select
+                        value={newChild.gradeLevel}
+                        onChange={(e) => setNewChild(p => ({ ...p, gradeLevel: e.target.value }))}
+                        className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] outline-none text-sm"
+                      >
+                        <option value="">Select grade</option>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <option key={i + 1} value={String(i + 1)}>{i + 1}{['st', 'nd', 'rd'][i] || 'th'} Grade</option>
+                        ))}
+                      </select>
+                    </div>
+                    <button
+                      onClick={handleCreateChild}
+                      disabled={createLoading || !newChild.firstName.trim() || !newChild.lastName.trim()}
+                      className="w-full py-3 bg-[#7da47f] hover:bg-[#6b946d] disabled:bg-slate-300 text-white font-semibold rounded-xl transition-all"
+                    >
+                      {createLoading ? 'Creating...' : 'Create & Link Child'}
+                    </button>
+                  </div>
+                </>
+              )}
 
               {linkError && (
                 <div role="alert" className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm mb-4">
@@ -170,7 +296,7 @@ export default function ParentOnboardingPage() {
                 <div className="text-center py-8 text-slate-400">
                   <Users className="w-12 h-12 mx-auto mb-2 opacity-40" aria-hidden="true" />
                   <p className="text-sm">No children linked yet</p>
-                  <p className="text-xs mt-1">Enter a Student ID above to get started</p>
+                  <p className="text-xs mt-1">{createMode ? 'Fill in the details above' : 'Enter a Student ID above to get started'}</p>
                 </div>
               )}
 

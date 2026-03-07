@@ -22,6 +22,7 @@ import {
   generateLearningPath as apiGenerateLearningPath,
   updateAccessibilityPrefs,
 } from '@/lib/api';
+import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -147,6 +148,7 @@ const languageCards = [
 
 export default function EnhancedOnboardingPage() {
   const router = useRouter();
+  const { setPreferences } = useAccessibility();
   const [currentStep, setCurrentStep] = useState<Step>(1);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -249,6 +251,17 @@ export default function EnhancedOnboardingPage() {
         reducedMotion: formData.reducedMotion,
       });
 
+      // Update global accessibility context for immediate reflection without reload
+      setPreferences({
+        fontFamily: formData.fontFamily,
+        fontSize: formData.textSize,
+        lineSpacing: formData.lineSpacing,
+        colorScheme: formData.colorScheme,
+        speechShowSubtitles: formData.captionsEnabled,
+        enableSpeechRec: formData.speechRecognitionEnabled,
+        reducedMotion: formData.reducedMotion,
+      });
+
       // Save onboarding data (profile, languages, disabilities) and mark complete
       const onbRes = await saveLearnerOnboarding({
         nativeLanguage: formData.nativeLanguage,
@@ -268,8 +281,19 @@ export default function EnhancedOnboardingPage() {
       });
 
       if (onbRes.success && onbRes.data?.studentId) {
-        // Show studentId briefly before redirect
-        alert(`Your Student ID is: ${onbRes.data.studentId}\n\nSave this! Your parent will need it to link their account.`);
+        // Age-aware: adults don't need parent linkage
+        const isAdult = formData.gradeLevel === 'adult' || formData.gradeLevel === 'college' || (() => {
+          if (!formData.dateOfBirth) return false;
+          const dob = new Date(formData.dateOfBirth);
+          const age = Math.floor((Date.now() - dob.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+          return age >= 18;
+        })();
+
+        if (isAdult) {
+          alert('🎉 You\'re all set! Your personalised learning path is ready.');
+        } else {
+          alert(`Your Student ID is: ${onbRes.data.studentId}\n\nSave this! Your parent will need it to link their account.`);
+        }
       }
 
       router.push('/learner/dashboard');
@@ -311,7 +335,10 @@ export default function EnhancedOnboardingPage() {
             <BookOpen className="w-5 h-5 text-white" aria-hidden="true" />
           </div>
           <span className={`text-2xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            Lexfix
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
           </span>
         </Link>
         <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -776,13 +803,20 @@ export default function EnhancedOnboardingPage() {
                   <div className="grid grid-cols-2 gap-2.5">
                     {[
                       { value: 'default', label: 'Default', desc: 'Lexend', style: 'font-sans' },
-                      { value: 'atkinson', label: 'Dyslexia-Friendly', desc: 'Atkinson', style: 'font-serif' },
+                      { value: 'opendyslexic', label: 'Dyslexia-Friendly', desc: 'OpenDyslexic', style: 'font-opendyslexic' },
                       { value: 'arial', label: 'Simple', desc: 'Arial', style: 'font-sans' },
                       { value: 'georgia', label: 'Classic', desc: 'Georgia', style: 'font-serif' },
                     ].map((font) => (
                       <button
                         key={font.value}
-                        onClick={() => updateFormData('fontFamily', font.value)}
+                        onClick={() => {
+                          updateFormData('fontFamily', font.value);
+                          if (typeof document !== 'undefined') {
+                            const fontStack = font.value === 'opendyslexic' ? '"OpenDyslexic", system-ui, sans-serif' : font.value === 'arial' ? 'Arial, sans-serif' : font.value === 'georgia' ? 'Georgia, serif' : '"Lexend", system-ui, sans-serif';
+                            document.documentElement.style.setProperty('--font-family', fontStack);
+                            document.body.style.fontFamily = fontStack;
+                          }
+                        }}
                         className={`relative p-3 border-2 rounded-xl text-left transition-all duration-200 ${formData.fontFamily === font.value
                           ? (isDark ? 'border-[#7da47f] bg-[#7da47f]/20 ring-2 ring-[#7da47f]/40' : 'border-[#7da47f] bg-[#e8f5e9] shadow-md ring-2 ring-[#7da47f]/30')
                           : (isDark ? 'border-gray-700 bg-gray-800/30 hover:border-gray-600' : 'border-gray-200 hover:border-[#7da47f]/50 hover:shadow-sm')
@@ -906,34 +940,6 @@ export default function EnhancedOnboardingPage() {
                       </button>
                     ))}
                   </div>
-                </div>
-
-                {/* Toggles */}
-                <div className={`space-y-3 pt-4 border-t ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-                  {[
-                    { field: 'captionsEnabled', label: 'Captions', desc: 'Show text for all audio content', icon: '💬' },
-                    { field: 'speechRecognitionEnabled', label: 'Speech Recognition', desc: 'Use voice commands to navigate', icon: '🎤' },
-                    { field: 'reducedMotion', label: 'Reduced Motion', desc: 'Minimise animations and transitions', icon: '🖐️' },
-                  ].map((toggle) => (
-                    <label key={toggle.field} className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-colors ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-50'
-                      }`}>
-                      <span className="text-lg">{toggle.icon}</span>
-                      <div className="flex-1 min-w-0">
-                        <div className={`font-medium text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>{toggle.label}</div>
-                        <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{toggle.desc}</div>
-                      </div>
-                      <div className="relative">
-                        <input
-                          type="checkbox"
-                          checked={(formData as any)[toggle.field]}
-                          onChange={(e) => updateFormData(toggle.field, e.target.checked)}
-                          className="sr-only peer"
-                        />
-                        <div className={`w-10 h-6 rounded-full transition-colors peer-checked:bg-[#7da47f] ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`} />
-                        <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4" />
-                      </div>
-                    </label>
-                  ))}
                 </div>
               </div>
             )}

@@ -16,7 +16,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
-import {
+import { 
   Mic,
   MicOff,
   RotateCcw,
@@ -26,7 +26,7 @@ import {
   CheckCircle,
   Star,
   AlertCircle,
-} from 'lucide-react';
+, Sparkles } from 'lucide-react';
 
 interface PracticeWord {
   id: string;
@@ -54,8 +54,24 @@ const PRACTICE_WORDS: PracticeWord[] = [
   { id: '12', word: 'Enthusiasm', phonetic: '/ɪnˈθjuːziæzəm/', difficulty: 'hard', category: 'Emotions' },
 ];
 
+const TAMIL_WORDS: PracticeWord[] = [
+  { id: 't1', word: 'வணக்கம்', phonetic: '/vaṇakkam/', difficulty: 'easy', category: 'Greetings' },
+  { id: 't2', word: 'நன்றி', phonetic: '/naṉṟi/', difficulty: 'easy', category: 'Greetings' },
+  { id: 't3', word: 'அம்மா', phonetic: '/ammā/', difficulty: 'easy', category: 'Family' },
+  { id: 't4', word: 'அப்பா', phonetic: '/appā/', difficulty: 'easy', category: 'Family' },
+  { id: 't5', word: 'தண்ணீர்', phonetic: '/taṇṇīr/', difficulty: 'easy', category: 'Daily Life' },
+  { id: 't6', word: 'உணவு', phonetic: '/uṇavu/', difficulty: 'easy', category: 'Daily Life' },
+  { id: 't7', word: 'புத்தகம்', phonetic: '/puttakam/', difficulty: 'medium', category: 'School' },
+  { id: 't8', word: 'குடும்பம்', phonetic: '/kuṭumpam/', difficulty: 'medium', category: 'Family' },
+  { id: 't9', word: 'நண்பன்', phonetic: '/naṇpaṉ/', difficulty: 'medium', category: 'Relationships' },
+  { id: 't10', word: 'பள்ளி', phonetic: '/paḷḷi/', difficulty: 'easy', category: 'School' },
+  { id: 't11', word: 'மகிழ்ச்சி', phonetic: '/makiḻcci/', difficulty: 'hard', category: 'Emotions' },
+  { id: 't12', word: 'அழகான', phonetic: '/aḻakāṉa/', difficulty: 'hard', category: 'Adjectives' },
+];
+
 type PracticeMode = 'words' | 'sentences' | 'phonemes';
 type Difficulty = 'easy' | 'medium' | 'hard' | 'all';
+type PracticeLang = 'en' | 'ta';
 
 export default function PronunciationPracticePage() {
   const [isSupported] = useState(true);
@@ -65,19 +81,21 @@ export default function PronunciationPracticePage() {
   const [feedback, setFeedback] = useState<string>('');
   const [feedbackType, setFeedbackType] = useState<'success' | 'close' | 'tryagain' | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
+  const [practiceLang, setPracticeLang] = useState<PracticeLang>('en');
   const [totalAttempts, setTotalAttempts] = useState(0);
   const [correctAttempts, setCorrectAttempts] = useState(0);
   const [practiceHistory, setPracticeHistory] = useState<Array<{ word: string; score: number; correct: boolean }>>([]);
 
   const [isRecording, setIsRecording] = useState(false);
-  const recognitionRef = useRef<any>(null); // Added ref to store recognition instance
+  const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
   // Filter words by difficulty
+  const baseWords = practiceLang === 'ta' ? TAMIL_WORDS : PRACTICE_WORDS;
   const filteredWords = difficulty === 'all'
-    ? PRACTICE_WORDS
-    : PRACTICE_WORDS.filter(w => w.difficulty === difficulty);
+    ? baseWords
+    : baseWords.filter(w => w.difficulty === difficulty);
 
   const currentWord = filteredWords[currentWordIndex] || filteredWords[0];
 
@@ -101,7 +119,7 @@ export default function PronunciationPracticePage() {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
+    recognition.lang = practiceLang === 'ta' ? 'ta-IN' : 'en-US';
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
@@ -281,7 +299,7 @@ export default function PronunciationPracticePage() {
 
   function speakWord() {
     const utterance = new SpeechSynthesisUtterance(currentWord.word);
-    utterance.lang = 'en-US';
+    utterance.lang = practiceLang === 'ta' ? 'ta-IN' : 'en-US';
     utterance.rate = 0.8;
     speechSynthesis.speak(utterance);
   }
@@ -304,7 +322,12 @@ export default function PronunciationPracticePage() {
       {/* Header */}
       <header role="banner" className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-gray-900">Lexfix</Link>
+          <Link href="/" className="text-2xl font-bold text-gray-900">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
           <nav role="navigation" aria-label="Main navigation" className="flex gap-6">
             <Link href="/learner/dashboard" className="text-gray-700 hover:text-gray-900 font-medium">Dashboard</Link>
             <Link href="/learner/lessons" className="text-gray-700 hover:text-gray-900 font-medium">My Lessons</Link>
@@ -350,6 +373,10 @@ export default function PronunciationPracticePage() {
           <div className="flex flex-wrap gap-4 items-center justify-between">
             {/* Difficulty Selection */}
             <div className="flex items-center gap-3">
+              <span className="text-gray-700 font-medium">Language:</span>
+              <button onClick={() => { setPracticeLang('en'); setCurrentWordIndex(0); setTranscript(''); setScore(null); setFeedback(''); setFeedbackType(null); }} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${practiceLang === 'en' ? 'bg-[#9db4a0] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>English</button>
+              <button onClick={() => { setPracticeLang('ta'); setCurrentWordIndex(0); setTranscript(''); setScore(null); setFeedback(''); setFeedbackType(null); }} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${practiceLang === 'ta' ? 'bg-[#9db4a0] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>தமிழ் (Tamil)</button>
+              <span className="text-gray-400 mx-2">|</span>
               <span className="text-gray-700 font-medium">Difficulty:</span>
               {(['easy', 'medium', 'hard', 'all'] as Difficulty[]).map(d => (
                 <button

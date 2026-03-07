@@ -70,7 +70,11 @@ export function LoginForm() {
       return;
     }
 
-    if ((result as any).token) setToken((result as any).token);
+    if ((result as any).token) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
+      setToken((result as any).token);
+    }
     loadUserPreferences();
     redirectByRole((result as any).user);
   };
@@ -108,6 +112,9 @@ export function LoginForm() {
         break;
       case 'EDUCATOR':
         router.push('/educator/dashboard');
+        break;
+      case 'ADMIN':
+        router.push('/admin/dashboard');
         break;
       case 'LEARNER':
       default:
@@ -159,7 +166,7 @@ export function LoginForm() {
             <p className="text-sm text-slate-500">Welcome back, <span className="font-semibold text-slate-700">{userName}</span></p>
           </div>
 
-          <div className="text-xs text-slate-400 bg-slate-50 px-3 py-2 rounded-lg">{email}</div>
+          <div className="text-xs text-slate-600 bg-slate-100 px-3 py-2 rounded-lg">{email}</div>
 
           <div>
             <label htmlFor="login-password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
@@ -206,7 +213,7 @@ export function LoginForm() {
             <p className="text-sm text-slate-500">Welcome back, <span className="font-semibold text-slate-700">{userName}</span>!</p>
           </div>
 
-          <div className="text-xs text-slate-400 bg-slate-50 px-3 py-2 rounded-lg">{email}</div>
+          <div className="text-xs text-slate-600 bg-slate-100 px-3 py-2 rounded-lg">{email}</div>
 
           <PatternLock mode="verify" onPatternComplete={handlePatternSubmit} error={patternError} disabled={loading} />
 

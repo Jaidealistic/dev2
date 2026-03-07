@@ -56,28 +56,27 @@ export async function GET(req: Request) {
     const scores = (lessonProgress as unknown as LessonProgress[]).map((p: LessonProgress) => p.score).filter((s: number | null): s is number => s !== null);
     const avgScore = scores.length > 0 ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length) : 0;
 
-    // Mock total time for now as it might be stored in ProgressRecord or aggregated
-    // In a real app we'd sum up `timeSpentSec` from ProgressRecord
-    const totalTime = 120; // minutes (mock)
+    // Aggregate real total time from ProgressRecord
+    const timeAgg = await prisma.progressRecord.aggregate({
+      where: { learnerId },
+      _sum: { timeSpentSec: true },
+    });
+    const totalTime = Math.floor((timeAgg._sum.timeSpentSec || 0) / 60); // minutes
 
-    // Fetch competencies (mock/placeholder if empty)
+    // Fetch real competencies
     const competencies = await prisma.nIOSCompetency.findMany({
       where: { studentId: learnerId }
     });
 
     return NextResponse.json({
-      competencies: competencies.length > 0 ? competencies : [
-        // Mock data if empty
-        { id: 'c1', competencyName: 'Vocabulary', masteryLevel: 'DEVELOPING', score: 65 },
-        { id: 'c2', competencyName: 'Grammar', masteryLevel: 'BEGINNER', score: 40 },
-        { id: 'c3', competencyName: 'Pronunciation', masteryLevel: 'PROFICIENT', score: 85 }
-      ],
+      competencies,
       lessonProgress: lessonProgress.length > 0 ? lessonProgress : [],
       analytics: {
         totalTime,
         avgScore,
         totalLessons,
         masteredLessons,
+        completedLessons,
       }
     });
 

@@ -19,7 +19,8 @@ import {
 } from '@/lib/api';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { useToast } from '@/components/providers/ToastProvider';
-import {
+import { useAccessibility } from '@/components/providers/AccessibilityProvider';
+import { 
   BookOpen,
   ChevronRight,
   Target,
@@ -33,13 +34,14 @@ import {
   X,
   Flame,
   Award,
-} from 'lucide-react';
+  Sparkles } from 'lucide-react';
 
 export default function LearnerDashboard() {
   const mainRef = useRef<HTMLElement>(null);
   const router = useRouter();
   const { language, setLanguage, t } = useLanguage();
   const { success, error: toastError, info } = useToast();
+  const { preferences } = useAccessibility();
 
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -218,7 +220,12 @@ export default function LearnerDashboard() {
       <div className="min-h-screen bg-[#faf9f7]">
         <header className="border-b border-[#e8e5e0]">
           <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
-            <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">Lexfix</Link>
+            <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setFocusMode(false)}
@@ -332,11 +339,17 @@ export default function LearnerDashboard() {
       {/* Header */}
       <header role="banner" className="bg-white border-b border-[#e8e5e0] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex justify-between items-center">
-          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">Lexfix</Link>
+          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
           <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1">
             {[
               { href: '/learner/dashboard', key: 'dashboard', active: true },
               { href: '/learner/lessons', key: 'lessons', active: false },
+              { href: '/learner/practice/writing', key: 'practice', active: false },
               { href: '/learner/progress', key: 'progress', active: false },
               { href: '/learner/profile', key: 'profile', active: false },
               { href: '/learner/settings', key: 'settings', active: false },
@@ -724,6 +737,16 @@ export default function LearnerDashboard() {
                   <div className="flex items-center gap-3">
                     <BookOpen className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
                     <span className="text-sm text-[#2d2d2d]">{activeLanguage} {t('dashboard.lessons')}</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/learner/practice/writing"
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f5f3ef] transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <BookOpen className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
+                    <span className="text-sm text-[#2d2d2d]">{t('dashboard.practice')}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" aria-hidden="true" />
                 </Link>

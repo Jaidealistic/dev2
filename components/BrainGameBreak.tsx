@@ -82,21 +82,10 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
         return () => { if (timerRef.current) clearInterval(timerRef.current); };
     }, [isOpen]);
 
-    /* ── countdown ── */
-    useEffect(() => {
-        if (phase !== 'playing') return;
-        timerRef.current = setInterval(() => {
-            setTimeLeft(t => {
-                if (t <= 1) {
-                    clearInterval(timerRef.current!);
-                    setPhase('done');
-                    return 0;
-                }
-                return t - 1;
-            });
-        }, 1000);
-        return () => { if (timerRef.current) clearInterval(timerRef.current); };
-    }, [phase]);
+    // manual end of game
+    const handleEndGame = () => {
+        setPhase('done');
+    };
 
     function startGame(type: GameType) {
         setGameType(type);
@@ -176,17 +165,12 @@ export function BrainGameBreak({ isOpen, onClose }: BrainGameBreakProps) {
                 {/* ─── PLAYING SCREEN ─── */}
                 {phase === 'playing' && (
                     <div className="p-6">
-                        {/* Timer bar */}
-                        <div className="flex items-center gap-3 mb-5">
-                            <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                <div
-                                    className="h-full bg-gradient-to-r from-[#7da47f] to-[#5a8c5c] rounded-full transition-all duration-1000 ease-linear"
-                                    style={{ width: `${100 - progress}%` }}
-                                />
-                            </div>
-                            <span className="text-sm font-bold text-gray-700 tabular-nums w-6 text-right">
-                                {timeLeft}
-                            </span>
+                        {/* End Break Button */}
+                        <div className="flex justify-between items-center mb-5">
+                            <h3 className="font-bold text-gray-700">Take your time!</h3>
+                            <button onClick={handleEndGame} className="text-sm font-bold text-[#5a8c5c] hover:bg-[#f0f7f0] px-3 py-1.5 rounded-full transition-colors">
+                                End Break
+                            </button>
                         </div>
 
                         {/* Score */}

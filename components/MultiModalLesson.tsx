@@ -86,6 +86,7 @@ interface LessonData {
   duration: number; // minutes
   competencies: string[];
   disabilityTypes?: string[];
+  language?: 'en' | 'ta';
   sections: LessonSection[];
 }
 
@@ -430,7 +431,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
       const formData = new FormData();
       formData.append('audio', audioBlob, 'recording.wav');
       formData.append('expectedText', currentSection.content.exercise.correctAnswer || '');
-      formData.append('language', preferences.speechRecLang || 'es-ES');
+      formData.append('language', lesson?.language === 'ta' ? 'ta-IN' : 'en-US');
 
       const response = await fetch('/api/ml/pronunciation/evaluate', {
         method: 'POST',

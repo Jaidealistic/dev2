@@ -104,7 +104,7 @@ export function AccessibilityToolbar() {
 
   return (
     <div 
-      className="fixed bottom-6 right-6 z-50"
+      className="fixed bottom-6 left-24 z-50"
       role="region"
       aria-label="Accessibility controls"
     >

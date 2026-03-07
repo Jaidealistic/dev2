@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminHeader from '@/components/admin/AdminHeader';
 
 export const metadata = {
-  title: 'Admin Dashboard | LinguaAccess',
+  title: 'Admin Dashboard | LexFix',
   description: 'Platform administration and monitoring',
 };
 

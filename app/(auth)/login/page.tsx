@@ -2,15 +2,18 @@
 
 import Link from 'next/link';
 import { LoginForm } from '@/components/forms/LoginForm';
-import { LogIn } from 'lucide-react';
+import {  LogIn , Sparkles } from 'lucide-react';
 
 export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f6f2] via-[#f0ede6] to-[#e8e4db] flex flex-col">
       <header role="banner" className="container mx-auto px-6 py-6">
         <Link href="/" className="text-2xl font-bold text-[#5a8c5c]" aria-label="Lexfix home">
-          Lexfix
-        </Link>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
+          </Link>
       </header>
 
       <div className="flex-1 flex items-center justify-center px-6 py-8">

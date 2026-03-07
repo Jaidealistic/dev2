@@ -18,7 +18,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
+import { 
   BookOpen,
   User,
   Mail,
@@ -31,7 +31,7 @@ import {
   Clock,
   ArrowRight,
   Settings,
-} from 'lucide-react';
+, Sparkles } from 'lucide-react';
 
 export default function LearnerProfile() {
   const mainRef = useRef<HTMLElement>(null);
@@ -140,7 +140,10 @@ export default function LearnerProfile() {
       <header role="banner" className="bg-white border-b border-[#e8e5e0] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex justify-between items-center">
           <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">
-            Lexfix
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span>LexFix</span>
+            </div>
           </Link>
           <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1">
             {[

@@ -1,7 +1,7 @@
 /**
  * NEXTAUTH CONFIGURATION
  * 
- * Handles authentication for LinguaAccess
+ * Handles authentication for LexFix
  * - Email/password authentication
  * - Learner and Parent user roles
  * - Session management with JWT
