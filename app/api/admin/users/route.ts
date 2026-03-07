@@ -1,9 +1,38 @@
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/db';
 
 export async function GET() {
-  return NextResponse.json({ message: 'API endpoint coming soon' });
-}
+  try {
+    const session = await getServerSession(authOptions);
 
-export async function POST() {
-  return NextResponse.json({ message: 'API endpoint coming soon' });
+    if (!session || (session.user as any).role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        isActive: true,
+        lastLogin: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error('Fetch users error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch users' },
+      { status: 500 }
+    );
+  }
 }

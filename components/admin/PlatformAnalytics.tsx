@@ -48,8 +48,12 @@ export default function PlatformAnalytics() {
     return <div className="animate-pulse">Loading analytics...</div>;
   }
 
-  if (!data) {
-    return <div>Failed to load analytics</div>;
+  if (!data || !data.overview) {
+    return (
+      <Card className="p-8 text-center bg-yellow-50 border-yellow-200">
+        <p className="text-yellow-700">Analytics data is partially unavailable. Please check back later.</p>
+      </Card>
+    );
   }
 
   return (

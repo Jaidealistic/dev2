@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login, checkAuthMethod, setToken } from '@/lib/api';
+import { signIn } from 'next-auth/react';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import PatternLock from '@/components/PatternLock';
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react';
@@ -48,6 +49,19 @@ export function LoginForm() {
     setLoading(true);
     setError('');
 
+    // Sign in with NextAuth to establish session for protected routes
+    const nextAuthResult = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (nextAuthResult?.error) {
+      setLoading(false);
+      setError('Invalid email or password');
+      return;
+    }
+
     const result = await login({ email, password, rememberMe });
     setLoading(false);
 
@@ -86,22 +100,25 @@ export function LoginForm() {
     if (!user) { router.push('/learner/dashboard'); return; }
     const onb = user.onboardingComplete;
     switch (user.role) {
-      case 'PARENT': 
+      case 'ADMIN':
+        router.push('/admin/dashboard');
+        break;
+      case 'PARENT':
         // If standard parent, go to parent dashboard (if exists) or homeschool hub if mapped
-        router.push(onb ? '/parent/dashboard' : '/parent/onboarding'); 
+        router.push(onb ? '/parent/dashboard' : '/parent/onboarding');
         break;
       case 'PARENT_EDUCATOR':
         router.push(onb ? '/homeschool/hub' : '/homeschool/onboarding');
         break;
-      case 'EDUCATOR': 
-        router.push('/educator/dashboard'); 
+      case 'EDUCATOR':
+        router.push('/educator/dashboard');
         break;
       case 'ADMIN':
         router.push('/admin/dashboard');
         break;
       case 'LEARNER':
-      default: 
-        router.push(onb ? '/learner/dashboard' : '/onboarding'); 
+      default:
+        router.push(onb ? '/learner/dashboard' : '/onboarding');
         break;
     }
   };

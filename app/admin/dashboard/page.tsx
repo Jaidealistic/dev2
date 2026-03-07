@@ -1,11 +1,16 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Upload } from 'lucide-react';
+import Link from 'next/link';
 import PlatformAnalytics from '@/components/admin/PlatformAnalytics';
 import UserManagement from '@/components/admin/UserManagement';
 import SystemHealth from '@/components/admin/SystemHealth';
 import ContentModeration from '@/components/admin/ContentModeration';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+import AdminHeader from '@/components/admin/AdminHeader';
 
 export const metadata = {
   title: 'Admin Dashboard | LexFix',
@@ -21,17 +26,7 @@ export default async function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-card border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-3xl font-bold text-foreground">
-            Admin Dashboard
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Platform administration and monitoring
-          </p>
-        </div>
-      </header>
+      <AdminHeader />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
