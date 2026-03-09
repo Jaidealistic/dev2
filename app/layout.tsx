@@ -5,6 +5,7 @@ import { AccessibilityProvider } from '@/components/providers/AccessibilityProvi
 import TalkBackToggle from '@/components/TalkBackToggle';
 import { VoiceNavigatorProvider } from '@/components/VoiceNavigator';
 import { Providers } from './providers';
+import VoiceAssistant from '@/components/VoiceAssistant';
 
 /**
  * Import dyslexia-friendly fonts
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'LexFix Team' }],
   creator: 'LexFix',
   publisher: 'LexFix',
-  
+
   // Accessibility metadata
   openGraph: {
     type: 'website',
@@ -60,13 +61,13 @@ export const metadata: Metadata = {
       },
     ],
   },
-  
+
   // Accessibility metadata
   robots: {
     index: true,
     follow: true,
   },
-  
+
   // Viewport for responsive design
   viewport: {
     width: 'device-width',
@@ -85,13 +86,6 @@ export const metadata: Metadata = {
  * - Accessibility context provider
  * - Global styles
  * - HTML structure with proper semantic markup
- * 
- * WCAG AAA Compliance:
- * - Proper HTML structure with roles and landmarks
- * - Font loading strategy for dyslexia support
- * - Skip to main content link for keyboard navigation
- * - Language attribute set to English (can be changed based on user preference)
- * - Focus management
  */
 export default function RootLayout({
   children,
@@ -108,11 +102,11 @@ export default function RootLayout({
         {/* Font preload for better performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* Accessibility-focused meta tags */}
         <meta name="color-scheme" content="light dark" />
         <meta name="supported-color-schemes" content="light dark" />
-        
+
         {/* Manifest for PWA */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0369a1" />
@@ -133,29 +127,32 @@ export default function RootLayout({
           {/* Accessibility Provider - makes preferences available to all components */}
           <AccessibilityProvider>
             <VoiceNavigatorProvider>
-            {/* Main content */}
-            <main id="main-content" className="min-h-screen">
-              {children}
-            </main>
+              {/* Main content */}
+              <main id="main-content" className="min-h-screen">
+                {children}
+              </main>
 
-            {/* Global live region for screen reader announcements */}
-            <div
-              id="aria-live-region"
-              role="status"
-              aria-live="polite"
-              aria-atomic="true"
-              className="sr-only"
-            />
-            <div
-              id="aria-alert-region"
-              role="alert"
-              aria-live="assertive"
-              aria-atomic="true"
-              className="sr-only"
-            />
+              {/* Global live region for screen reader announcements */}
+              <div
+                id="aria-live-region"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="sr-only"
+              />
+              <div
+                id="aria-alert-region"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                className="sr-only"
+              />
 
-            {/* TalkBack mode: in-app screen reader with single-tap-to-read, double-tap-to-activate */}
-            <TalkBackToggle />
+              {/* TalkBack mode: in-app screen reader with single-tap-to-read, double-tap-to-activate */}
+              <TalkBackToggle />
+
+              {/* Voice Assistant: navigation and input filling via speech */}
+              <VoiceAssistant />
             </VoiceNavigatorProvider>
           </AccessibilityProvider>
         </Providers>
