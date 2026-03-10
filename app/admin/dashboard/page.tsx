@@ -25,17 +25,17 @@ export default async function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
       <AdminHeader />
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-5xl mx-auto px-6 py-8">
         <Tabs defaultValue="analytics" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="system">System</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 bg-white p-1.5 rounded-xl border border-[#f0ede8] shadow-sm mb-6 h-auto">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">Analytics</TabsTrigger>
+            <TabsTrigger value="users" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">Users</TabsTrigger>
+            <TabsTrigger value="content" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">Content</TabsTrigger>
+            <TabsTrigger value="system" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">System</TabsTrigger>
           </TabsList>
 
           <TabsContent value="analytics" className="mt-6">

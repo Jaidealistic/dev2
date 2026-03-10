@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { LogOut, Upload, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { logout as legacyLogout } from '@/lib/api';
+import Logo from '@/components/ui/Logo';
 
 interface AdminHeaderProps {
     title?: string;
@@ -26,20 +27,21 @@ export default function AdminHeader({
     };
 
     return (
-        <header className="bg-card border-b">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
-                <div>
-                    <div className="flex items-center gap-4">
-                        <Link href="/admin/dashboard" className="text-[#5a8c5c] hover:text-[#4a7c4c] transition-colors">
-                            <LayoutDashboard className="w-6 h-6" />
-                        </Link>
-                        <h1 className="text-3xl font-bold text-foreground">
+        <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
+            <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                    <Link href="/" aria-label="LexFix home">
+                        <Logo />
+                    </Link>
+                    <div className="w-px h-5 bg-[#e8e5e0] mx-1" />
+                    <div>
+                        <h1 className="text-lg font-semibold text-[#2d2d2d] leading-none">
                             {title}
                         </h1>
+                        <p className="text-xs text-[#8a8a8a] mt-1">
+                            {description}
+                        </p>
                     </div>
-                    <p className="mt-1 text-sm text-muted-foreground ml-10">
-                        {description}
-                    </p>
                 </div>
 
                 <div className="flex items-center gap-3">
