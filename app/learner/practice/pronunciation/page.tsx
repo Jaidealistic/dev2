@@ -15,6 +15,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '@/components/ThemeToggle';
 import {
   Mic,
   MicOff,
@@ -350,7 +351,9 @@ export default function PronunciationPracticePage() {
             ))}
 
             <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
-            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0">
+            <ThemeToggle />
+              <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+              <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0">
               Sign out
             </Link>
           </nav>

@@ -32,6 +32,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
 
 interface ProgressData {
   competencies: any[];
@@ -239,7 +240,9 @@ export default function ProgressPage() {
             </div>
 
             <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
-            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0">
+            <ThemeToggle />
+              <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+              <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0">
               Sign out
             </Link>
           </nav>
