@@ -24,8 +24,7 @@ jobs:
       # Deploy Frontend
       # -----------------------------
       - name: Deploy Frontend
-        working-directory: .
-        run: railway up --detach
+        run: railway up --service frontend --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
@@ -34,7 +33,7 @@ jobs:
       # -----------------------------
       - name: Deploy ML Service
         working-directory: services/ml-service
-        run: railway up --detach
+        run: railway up --service ml-service --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
@@ -43,6 +42,6 @@ jobs:
       # -----------------------------
       - name: Deploy Collaboration Service
         working-directory: services/collaboration-service
-        run: railway up --detach
+        run: railway up --service collaboration-service --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
