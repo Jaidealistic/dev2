@@ -10,12 +10,14 @@
  *  - Structured turn-taking cues for autism mode
  */
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ArrowLeft, Send, Pencil, Eraser, Users as UsersIcon,
   MessageCircle, Palette, Circle, Hand, Mic, MicOff, ChevronRight
 } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
 
 interface ChatMessage {
   id: string;
@@ -35,10 +37,10 @@ interface Participant {
 
 const COLORS = ['#2d2d2d', '#e74c3c', '#3498db', '#27ae60', '#f39c12', '#9b59b6'];
 
-export default function CollaborationRoom() {
+function RoomContent() {
   const router = useRouter();
   const params = useSearchParams();
-  const roomName = params.get('name') || 'Collaboration Room';
+  const roomName = params?.get('name') || 'Collaboration Room';
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: '1', user: 'System', text: `Welcome to ${roomName}! Be respectful and have fun learning together.`, time: 'now', isSystem: true },
@@ -248,5 +250,13 @@ export default function CollaborationRoom() {
         </aside>
       </div>
     </div>
+  );
+}
+
+export default function CollaborationRoom() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading Room...</div>}>
+      <RoomContent />
+    </Suspense>
   );
 }
