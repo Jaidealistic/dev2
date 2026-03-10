@@ -50,6 +50,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.3.1",
     "framer-motion": "^12.34.0",
+    "glob": "^13.0.6",
     "howler": "^2.2.4",
     "ioredis": "^5.9.2",
     "ioredis-mock": "^8.13.1",

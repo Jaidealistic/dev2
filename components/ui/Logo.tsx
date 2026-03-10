@@ -16,8 +16,17 @@ interface LogoProps {
  */
 export default function Logo({ className = '' }: LogoProps) {
     return (
-        <span className={`text-lg font-semibold text-[#2d2d2d] tracking-tight ${className}`}>
-            LexFix
-        </span>
+        <div className={`flex items-center gap-2 ${className}`}>
+            <img
+                src="/image.png"
+                alt="LexFix Icon"
+                className="h-8 w-auto object-contain"
+            />
+            <img
+                src="/LexFix-Logo.png"
+                alt="LexFix"
+                className="h-8 w-auto object-contain"
+            />
+        </div>
     );
 }

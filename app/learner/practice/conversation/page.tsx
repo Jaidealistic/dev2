@@ -12,6 +12,7 @@ import { ArrowLeft, Sparkles, AlertCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { AITutorDialogue } from '@/components/AITutorDialogue';
 import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function ConversationPracticePage() {
   const [isSupported, setIsSupported] = useState(true);
@@ -42,7 +43,9 @@ export default function ConversationPracticePage() {
             <Link href="/learner/lessons" className="text-gray-700 hover:text-[#7a9b7e] font-medium transition-colors">My Lessons</Link>
             <Link href="/learner/progress" className="text-gray-700 hover:text-[#7a9b7e] font-medium transition-colors">Progress</Link>
             <Link href="/learner/settings" className="text-gray-700 hover:text-[#7a9b7e] font-medium transition-colors">Settings</Link>
-            <Link href="/logout" className="text-gray-700 hover:text-red-500 font-medium transition-colors">Logout</Link>
+            <ThemeToggle />
+              <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+              <Link href="/logout" className="text-gray-700 hover:text-red-500 font-medium transition-colors">Logout</Link>
           </nav>
         </div>
       </header>
