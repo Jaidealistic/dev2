@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     let isValid = false;
 
     // Determine if the user is using a pattern or a password
-    const usesPattern = user.role === 'LEARNER' && user.pattern === 'true';
+    const usesPattern = user.role === 'LEARNER';
 
     if (usesPattern) {
       if (!pattern || !Array.isArray(pattern)) {
@@ -60,8 +60,8 @@ export async function POST(req: Request) {
 
     // Update last login
     await prisma.user.update({
-        where: { id: user.id },
-        data: { lastLogin: new Date() }
+      where: { id: user.id },
+      data: { lastLogin: new Date() }
     });
 
     return NextResponse.json({

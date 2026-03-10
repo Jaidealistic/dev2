@@ -61,10 +61,11 @@ export function FocusMode({
   breakMinutes = 5,
   taskLabel,
 }: FocusModeProps) {
-  const { preferences } = useAccessibility();
+  const { preferences, updatePreference } = useAccessibility();
 
   // Focus mode state
-  const [isFocused, setIsFocused] = useState(false);
+  const isFocused = preferences.focusMode;
+  const setIsFocused = (val: boolean) => updatePreference('focusMode', val);
 
   // Timer state
   const [phase, setPhase] = useState<TimerPhase>('idle');
@@ -164,11 +165,10 @@ export function FocusMode({
 
         <button
           onClick={() => setIsFocused(!isFocused)}
-          className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-            isFocused
-              ? 'bg-[#7da47f] text-white hover:bg-[#6b946d]'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-[#9db4a0]'
-          }`}
+          className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${isFocused
+            ? 'bg-[#7da47f] text-white hover:bg-[#6b946d]'
+            : 'bg-white text-gray-700 border border-gray-300 hover:border-[#9db4a0]'
+            }`}
           aria-pressed={isFocused}
         >
           {isFocused ? 'Exit Focus' : 'Enter Focus'}
@@ -178,11 +178,10 @@ export function FocusMode({
       {/* Break Timer */}
       {showBreakTimer && isFocused && (
         <div
-          className={`mb-4 p-4 rounded-xl border transition-colors ${
-            phase === 'break'
-              ? 'bg-amber-50 border-amber-200'
-              : 'bg-white border-[#d6ddd7]'
-          }`}
+          className={`mb-4 p-4 rounded-xl border transition-colors ${phase === 'break'
+            ? 'bg-amber-50 border-amber-200'
+            : 'bg-white border-[#d6ddd7]'
+            }`}
         >
           {/* Timer display */}
           <div className="flex items-center justify-between mb-3">
@@ -213,9 +212,8 @@ export function FocusMode({
           {phase !== 'idle' && (
             <div className="h-2 bg-gray-200 rounded-full mb-3 overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-1000 ${
-                  phase === 'break' ? 'bg-amber-400' : 'bg-[#7da47f]'
-                }`}
+                className={`h-full rounded-full transition-all duration-1000 ${phase === 'break' ? 'bg-amber-400' : 'bg-[#7da47f]'
+                  }`}
                 style={{ width: `${progressPercent}%` }}
               />
             </div>

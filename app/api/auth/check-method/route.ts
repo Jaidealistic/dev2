@@ -28,8 +28,8 @@ export async function POST(req: Request) {
       );
     }
 
-    // Determine auth method based on whether a pattern was set
-    const authMethod = (user.role === 'LEARNER' && user.pattern === 'true') ? 'pattern' : 'password';
+    // Determine auth method based on role: learners always use pattern
+    const authMethod = user.role === 'LEARNER' ? 'pattern' : 'password';
 
     return NextResponse.json({
       role: user.role,

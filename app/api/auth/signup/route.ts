@@ -13,11 +13,11 @@ const signupSchema = z.object({
   role: z.enum(['LEARNER', 'PARENT', 'EDUCATOR', 'PARENT_EDUCATOR']),
 }).refine(data => {
   if (data.role === 'LEARNER') {
-    return (!!data.pattern && data.pattern.length >= 4) || !!data.password;
+    return !!data.pattern && data.pattern.length >= 4;
   }
   return !!data.password;
 }, {
-  message: "Password is required for parents/educators, Pattern or Password is required for learners",
+  message: "Password is required for parents/educators, Pattern is required for learners",
   path: ["password"]
 });
 
@@ -41,9 +41,10 @@ export async function POST(req: Request) {
     // Hash password or pattern
     let passwordHash = '';
 
-    if (role === 'LEARNER' && pattern && pattern.length > 0) {
-      // For learners, we treat the pattern as the password
-      // Convert pattern array to string for hashing
+    if (role === 'LEARNER') {
+      if (!pattern || pattern.length === 0) {
+        return NextResponse.json({ error: 'Pattern is required for learners' }, { status: 400 });
+      }
       const patternString = pattern.join('-');
       passwordHash = await bcrypt.hash(patternString, 10);
     } else if (password) {
@@ -55,7 +56,7 @@ export async function POST(req: Request) {
       data: {
         email,
         password: passwordHash,
-        pattern: (role === 'LEARNER' && pattern && pattern.length > 0) ? 'true' : null,
+        pattern: 'true',
         firstName,
         lastName,
         role,

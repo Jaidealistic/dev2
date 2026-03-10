@@ -1,0 +1,16 @@
+{
+    "name": "LexFix",
+    "short_name": "LexFix",
+    "description": "Accessible Language Learning Platform",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0369a1",
+    "icons": [
+        {
+            "src": "/og-image.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}

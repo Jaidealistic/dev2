@@ -3,7 +3,6 @@ import { Lexend, Atkinson_Hyperlegible } from 'next/font/google';
 import './globals.css';
 import { AccessibilityProvider } from '@/components/providers/AccessibilityProvider';
 import TalkBackToggle from '@/components/TalkBackToggle';
-import { VoiceNavigatorProvider } from '@/components/VoiceNavigator';
 import { Providers } from './providers';
 import VoiceAssistant from '@/components/VoiceAssistant';
 
@@ -63,18 +62,19 @@ export const metadata: Metadata = {
   },
 
   // Accessibility metadata
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   robots: {
     index: true,
     follow: true,
   },
+};
 
-  // Viewport for responsive design
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#0369a1',
 };
 
 /**
@@ -126,34 +126,32 @@ export default function RootLayout({
         <Providers>
           {/* Accessibility Provider - makes preferences available to all components */}
           <AccessibilityProvider>
-            <VoiceNavigatorProvider>
-              {/* Main content */}
-              <main id="main-content" className="min-h-screen">
-                {children}
-              </main>
+            {/* Main content */}
+            <main id="main-content" className="min-h-screen">
+              {children}
+            </main>
 
-              {/* Global live region for screen reader announcements */}
-              <div
-                id="aria-live-region"
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
-                className="sr-only"
-              />
-              <div
-                id="aria-alert-region"
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true"
-                className="sr-only"
-              />
+            {/* Global live region for screen reader announcements */}
+            <div
+              id="aria-live-region"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              className="sr-only"
+            />
+            <div
+              id="aria-alert-region"
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+              className="sr-only"
+            />
 
-              {/* TalkBack mode: in-app screen reader with single-tap-to-read, double-tap-to-activate */}
-              <TalkBackToggle />
+            {/* TalkBack mode: in-app screen reader with single-tap-to-read, double-tap-to-activate */}
+            <TalkBackToggle />
 
-              {/* Voice Assistant: navigation and input filling via speech */}
-              <VoiceAssistant />
-            </VoiceNavigatorProvider>
+            {/* Voice Assistant: navigation and input filling via speech */}
+            <VoiceAssistant />
           </AccessibilityProvider>
         </Providers>
       </body>

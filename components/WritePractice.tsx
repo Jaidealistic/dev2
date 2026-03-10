@@ -13,7 +13,7 @@
  */
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Check, X, RotateCcw, Volume2, ChevronRight, Pencil, Sparkles, Trash2 } from 'lucide-react';
+import { Check, X, RotateCcw, Volume2, ChevronRight, Pencil, Sparkles, Trash2, Eraser, Undo2 } from 'lucide-react';
 
 /* ─── Types ─── */
 export interface WritePracticeWord {
@@ -62,21 +62,41 @@ function accuracy(target: string, input: string): number {
 }
 
 /* ─── ScribbleCanvas Component ─── */
-function ScribbleCanvas({ onRecognized, targetWord }: { onRecognized: (text: string) => void; targetWord: string }) {
+function ScribbleCanvas({ onRecognized, targetWord, language }: { onRecognized: (text: string) => void; targetWord: string; language: 'en' | 'ta' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [strokes, setStrokes] = useState<{ x: number[]; y: number[]; t: number[] }[]>([]);
+  const [lastRecognized, setLastRecognized] = useState<string>('');
+  const [drawMode, setDrawMode] = useState<'pen' | 'eraser'>('pen');
+  const currentStroke = useRef<{ x: number[]; y: number[]; t: number[] }>({ x: [], y: [], t: [] });
 
-  useEffect(() => {
+  const redraw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Set style for pen
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 5;
     ctx.strokeStyle = '#2d2d2d';
-  }, []);
+
+    strokes.forEach(stroke => {
+      ctx.beginPath();
+      ctx.moveTo(stroke.x[0], stroke.y[0]);
+      for (let i = 1; i < stroke.x.length; i++) {
+        ctx.lineTo(stroke.x[i], stroke.y[i]);
+      }
+      ctx.stroke();
+    });
+  }, [strokes]);
+
+  useEffect(() => {
+    redraw();
+  }, [redraw]);
 
   const getPos = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
     const rect = canvas.getBoundingClientRect();
@@ -95,6 +115,8 @@ function ScribbleCanvas({ onRecognized, targetWord }: { onRecognized: (text: str
     const { x, y } = getPos(e, canvas);
     ctx.beginPath();
     ctx.moveTo(x, y);
+
+    currentStroke.current = { x: [Math.round(x)], y: [Math.round(y)], t: [Date.now()] };
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
@@ -105,12 +127,44 @@ function ScribbleCanvas({ onRecognized, targetWord }: { onRecognized: (text: str
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const { x, y } = getPos(e, canvas);
-    ctx.lineTo(x, y);
-    ctx.stroke();
+
+    if (drawMode === 'pen') {
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      currentStroke.current.x.push(Math.round(x));
+      currentStroke.current.y.push(Math.round(y));
+      currentStroke.current.t.push(Date.now());
+    } else {
+      // Eraser Mode: Remove strokes near current point
+      const eraserRadius = 15;
+      const strokesToRemove = new Set<number>();
+
+      strokes.forEach((stroke, idx) => {
+        for (let i = 0; i < stroke.x.length; i++) {
+          const dx = stroke.x[i] - x;
+          const dy = stroke.y[i] - y;
+          if (dx * dx + dy * dy < eraserRadius * eraserRadius) {
+            strokesToRemove.add(idx);
+            break;
+          }
+        }
+      });
+
+      if (strokesToRemove.size > 0) {
+        setStrokes(prev => prev.filter((_, idx) => !strokesToRemove.has(idx)));
+      }
+    }
   };
 
   const endDraw = () => {
+    if (isDrawing && drawMode === 'pen' && currentStroke.current.x.length > 0) {
+      setStrokes(prev => [...prev, { ...currentStroke.current }]);
+    }
     setIsDrawing(false);
+  };
+
+  const handleUndo = () => {
+    setStrokes(prev => prev.slice(0, -1));
   };
 
   const handleClear = () => {
@@ -119,31 +173,51 @@ function ScribbleCanvas({ onRecognized, targetWord }: { onRecognized: (text: str
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Track that it's empty
+    setStrokes([]);
     canvas.dataset.empty = 'true';
   };
 
-  const isCanvasEmpty = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return true;
-    if (canvas.dataset.empty === 'true') return true;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return true;
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    return !imageData.data.some(channel => channel !== 0);
-  };
-
-  const handleRecognize = () => {
-    if (isCanvasEmpty()) {
+  const handleRecognize = async () => {
+    if (strokes.length === 0) {
       alert('Please draw something first!');
       return;
     }
+    console.log('Starting handwriting recognition. Strokes:', strokes.length);
     setAnalyzing(true);
-    // Mocking an ML scribble-to-text delay
-    setTimeout(() => {
+
+    try {
+      // Format strokes for Google Input Tools API
+      const ink = strokes.map(s => [s.x, s.y, s.t]);
+      console.log('Formatted ink data:', JSON.stringify(ink).substring(0, 100) + '...');
+
+      const response = await fetch('/api/recognize-handwriting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ink: ink,
+          language: language
+        })
+      });
+
+      const data = await response.json();
+      console.log('Recognition Response:', data);
+      if (data[0] === 'SUCCESS') {
+        const topCandidate = data[1][0][1][0];
+        console.log('Top Candidate:', topCandidate);
+        setLastRecognized(topCandidate || '');
+        onRecognized(topCandidate || '');
+        // Clear strokes after successful recognition to show it "took"
+        handleClear();
+      } else {
+        console.warn('Recognition failed with status:', data[0]);
+        throw new Error('Recognition failed');
+      }
+    } catch (error) {
+      console.error('Handwriting API error:', error);
+      alert('Handwriting recognition failed. Please try again.');
+    } finally {
       setAnalyzing(false);
-      onRecognized(targetWord);
-    }, 1200);
+    }
   };
 
   return (
@@ -163,11 +237,37 @@ function ScribbleCanvas({ onRecognized, targetWord }: { onRecognized: (text: str
           onTouchEnd={endDraw}
         />
         <div className="absolute inset-x-0 bottom-4 flex justify-between px-4 pointer-events-none">
-          <span className="text-xs text-gray-400 font-medium tracking-widest uppercase">Draw Here</span>
-          <button 
-            type="button" 
-            onClick={handleClear} 
-            className="text-xs text-gray-400 hover:text-red-500 pointer-events-auto flex items-center gap-1 transition-colors"
+          <div className="flex gap-2 pointer-events-auto">
+            <button
+              type="button"
+              onClick={() => setDrawMode('pen')}
+              className={`p-1.5 rounded-lg transition-colors ${drawMode === 'pen' ? 'bg-[#7a9b7e] text-white shadow-sm' : 'bg-white/80 text-gray-500 hover:text-gray-700'}`}
+              title="Pen Tool"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setDrawMode('eraser')}
+              className={`p-1.5 rounded-lg transition-colors ${drawMode === 'eraser' ? 'bg-[#7a9b7e] text-white shadow-sm' : 'bg-white/80 text-gray-500 hover:text-gray-700'}`}
+              title="Eraser Tool"
+            >
+              <Eraser className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={handleUndo}
+              className="p-1.5 rounded-lg bg-white/80 text-gray-500 hover:text-gray-700 transition-colors"
+              title="Undo"
+              disabled={strokes.length === 0}
+            >
+              <Undo2 className="w-4 h-4" />
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={handleClear}
+            className="text-xs text-gray-400 hover:text-red-500 pointer-events-auto flex items-center gap-1 transition-colors bg-white/80 px-2 py-1 rounded-lg"
           >
             Clear <Trash2 className="w-3 h-3" />
           </button>
@@ -184,6 +284,32 @@ function ScribbleCanvas({ onRecognized, targetWord }: { onRecognized: (text: str
           <><Sparkles className="w-4 h-4" /> Analyze Handwriting</>
         )}
       </button>
+
+      {lastRecognized && (
+        <div className={`p-3 rounded-xl border mt-1 transition-colors ${lastRecognized.toLowerCase().trim() === targetWord.toLowerCase().trim()
+          ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800/30'
+          : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700'
+          }`}>
+          <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Last Recognized</p>
+          <div className="flex items-center justify-between">
+            <span className={`text-lg font-bold ${lastRecognized.toLowerCase().trim() === targetWord.toLowerCase().trim()
+              ? 'text-green-700 dark:text-green-400'
+              : 'text-slate-700 dark:text-slate-200'
+              }`}>
+              {lastRecognized}
+            </span>
+            {lastRecognized.toLowerCase().trim() === targetWord.toLowerCase().trim() ? (
+              <span className="flex items-center gap-1 text-[10px] bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400 px-2 py-0.5 rounded-full font-bold">
+                <Check className="w-3 h-3" /> Match
+              </span>
+            ) : (
+              <span className="text-[10px] bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400 px-2 py-0.5 rounded-full font-bold">
+                No Match
+              </span>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -318,13 +444,13 @@ export default function WritePractice({ words, language, onComplete, className =
         {!submitted ? (
           <div className="space-y-4">
             <div className="flex gap-4 mb-4 justify-center border-b border-gray-200 dark:border-gray-700 pb-2">
-              <button 
+              <button
                 className={`text-sm font-medium pb-1 ${inputMode === 'type' ? 'text-[#7a9b7e] border-b-2 border-[#7a9b7e]' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
                 onClick={() => setInputMode('type')}
               >
                 Keyboard
               </button>
-              <button 
+              <button
                 className={`text-sm font-medium pb-1 ${inputMode === 'draw' ? 'text-[#7a9b7e] border-b-2 border-[#7a9b7e]' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
                 onClick={() => setInputMode('draw')}
               >
@@ -346,15 +472,15 @@ export default function WritePractice({ words, language, onComplete, className =
                 spellCheck={false}
               />
             ) : (
-              <ScribbleCanvas 
+              <ScribbleCanvas
                 onRecognized={(text) => {
                   setUserInput(text);
-                  handleSubmit();
-                }} 
-                targetWord={current.target} 
+                }}
+                targetWord={current.target}
+                language={language}
               />
             )}
-            
+
             {inputMode === 'type' && (
               <button
                 onClick={handleSubmit}
@@ -372,13 +498,12 @@ export default function WritePractice({ words, language, onComplete, className =
               {diff.map((d, i) => (
                 <span
                   key={i}
-                  className={`px-1.5 py-1 rounded ${
-                    d.status === 'correct'
-                      ? 'bg-green-100 text-green-700'
-                      : d.status === 'wrong'
+                  className={`px-1.5 py-1 rounded ${d.status === 'correct'
+                    ? 'bg-green-100 text-green-700'
+                    : d.status === 'wrong'
                       ? 'bg-red-100 text-red-600'
                       : 'bg-yellow-100 text-yellow-600'
-                  }`}
+                    }`}
                 >
                   {d.char === ' ' ? '\u00A0' : d.char}
                 </span>

@@ -30,45 +30,52 @@ export default function VoiceAssistant() {
         setTranscript(text);
 
         // 1. Navigation Commands
-        if (input.includes('go to') || input.includes('open')) {
-            if (input.includes('login') || input.includes('sign in')) {
-                setLastAction('Navigating to Login');
-                router.push('/login');
-                return true;
-            }
-            if (input.includes('signup') || input.includes('sign up') || input.includes('register')) {
-                setLastAction('Navigating to Signup');
-                router.push('/signup');
-                return true;
-            }
-            if (input.includes('dashboard')) {
-                setLastAction('Navigating to Dashboard');
-                router.push('/learner/dashboard');
-                return true;
-            }
-            if (input.includes('settings')) {
-                setLastAction('Navigating to Settings');
-                router.push('/learner/settings');
-                return true;
-            }
-            if (input.includes('student')) {
-                setLastAction('Navigating to Students');
-                router.push('/educator/students');
-                return true;
-            }
-            if (input.includes('analytic') || input.includes('stat')) {
-                setLastAction('Navigating to Analytics');
-                router.push('/admin/analytics');
-                return true;
-            }
-            if (input.includes('lesson')) {
-                setLastAction('Navigating to Lessons');
-                router.push('/learner/lessons');
+        // General Route Keywords
+        const KEYWORD_ROUTES: [string[], string, string][] = [
+            [['writing', 'write practice', 'write'], '/learner/practice/writing', 'Writing Practice'],
+            [['pronunciation', 'pronounce'], '/learner/practice/pronunciation', 'Pronunciation Practice'],
+            [['practice'], '/learner/practice', 'Practice'],
+            [['achievement', 'achievements', 'badges'], '/learner/achievements', 'Achievements'],
+            [['profile', 'my profile'], '/learner/profile', 'Profile'],
+            [['progress', 'my progress'], '/learner/progress', 'Progress'],
+            [['lesson', 'lessons', 'my lessons'], '/learner/lessons', 'Lessons'],
+            [['setting', 'settings', 'preferences'], '/learner/settings', 'Settings'],
+            [['dashboard', 'home page', 'main page'], '/learner/dashboard', 'Dashboard'],
+            [['collaboration', 'collab', 'chat room', 'room'], '/collaboration', 'Collaboration'],
+            [['parent dashboard', 'parent'], '/parent/dashboard', 'Parent Dashboard'],
+            [['educator', 'teacher'], '/educator/dashboard', 'Educator Dashboard'],
+            [['admin'], '/admin/dashboard', 'Admin Dashboard'],
+            [['log in', 'login', 'sign in'], '/login', 'Login'],
+            [['sign up', 'signup', 'register'], '/signup', 'Sign Up'],
+            [['home'], '/', 'Home'],
+        ];
+
+        for (const [keywords, route, label] of KEYWORD_ROUTES) {
+            if (keywords.some(kw => input.includes(kw))) {
+                setLastAction(`Navigating to ${label}`);
+                router.push(route);
                 return true;
             }
         }
 
-        // 2. Input Filling Commands
+        // 2. Utility Commands
+        if (input.includes('scroll down') || input.includes('go down')) {
+            window.scrollBy({ top: 400, behavior: 'smooth' });
+            setLastAction('Scrolling down');
+            return true;
+        }
+        if (input.includes('scroll up') || input.includes('go up')) {
+            window.scrollBy({ top: -400, behavior: 'smooth' });
+            setLastAction('Scrolling up');
+            return true;
+        }
+        if (input.includes('go back') || input === 'back') {
+            setLastAction('Going back');
+            router.back();
+            return true;
+        }
+
+        // 3. Input Filling Commands
         if (input.includes('my email is') || input.includes('email is')) {
             const email = input.split('is').pop()?.trim();
             if (email) {
@@ -92,6 +99,51 @@ export default function VoiceAssistant() {
                     setLastAction(`Filled name: ${name}`);
                     return true;
                 }
+            }
+        }
+
+        // 4. Action Commands
+        if (input.includes('focus mode')) {
+            const current = (preferences as any).focusMode;
+            (updatePreference as any)('focusMode', !current);
+            setLastAction(`${!current ? 'Enabling' : 'Disabling'} Focus Mode`);
+            return true;
+        }
+
+        if (input.includes('continue') || input.includes('next') || input.includes('finish')) {
+            const nextButton = Array.from(document.querySelectorAll('button')).find(b => {
+                const text = b.innerText.toLowerCase();
+                return text.includes('next') || text.includes('continue') || text.includes('finish');
+            });
+            if (nextButton) {
+                setLastAction('Clicking Next/Continue');
+                (nextButton as HTMLElement).click();
+                return true;
+            }
+        }
+
+        if (input.includes('analyze') || input.includes('recognition')) {
+            const analyzeBtn = Array.from(document.querySelectorAll('button')).find(b => {
+                const text = b.innerText.toLowerCase();
+                return text.includes('analyze') || text.includes('handwriting');
+            });
+            if (analyzeBtn) {
+                setLastAction('Triggering Analysis');
+                (analyzeBtn as HTMLElement).click();
+                return true;
+            }
+        }
+
+        if (input.includes('tamil') || input.includes('english')) {
+            const lang = input.includes('tamil') ? 'tamil' : 'english';
+            const langBtn = Array.from(document.querySelectorAll('button')).find(b => {
+                const text = b.innerText.toLowerCase();
+                return text.includes(lang);
+            });
+            if (langBtn) {
+                setLastAction(`Switching to ${lang}`);
+                (langBtn as HTMLElement).click();
+                return true;
             }
         }
 
@@ -131,6 +183,11 @@ export default function VoiceAssistant() {
         };
 
         recognition.onerror = (event: any) => {
+            if (event.error === 'no-speech' || event.error === 'aborted') {
+                // Handle timeout or manual abort silently
+                setIsListening(false);
+                return;
+            }
             console.error('Speech recognition error', event.error);
             setIsListening(false);
         };
@@ -140,7 +197,14 @@ export default function VoiceAssistant() {
         };
 
         recognitionRef.current = recognition;
-        recognition.start();
+        try {
+            console.log('VoiceAssistant: Starting Web Speech API...');
+            recognition.start();
+        } catch (err) {
+            console.error('VoiceAssistant: Failed to start recognition:', err);
+            setIsListening(false);
+            alert('Could not start voice assistant. Please check microphone permissions.');
+        }
     }, [processCommand]);
 
     const stopListening = useCallback(() => {
