@@ -20,8 +20,11 @@ import {
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { useToast } from '@/components/providers/ToastProvider';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
+import { MapDashboard } from '@/components/MapDashboard';
 import { 
   BookOpen,
+  Map,
+  LayoutGrid,
   ChevronRight,
   Target,
   Clock,
@@ -34,7 +37,9 @@ import {
   X,
   Flame,
   Award,
-  Sparkles } from 'lucide-react';
+  Sparkles,
+  MessageCircle 
+} from 'lucide-react';
 
 export default function LearnerDashboard() {
   const mainRef = useRef<HTMLElement>(null);
@@ -48,6 +53,7 @@ export default function LearnerDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [activeLanguage, setActiveLanguage] = useState<string>('');
   const [focusMode, setFocusMode] = useState(false);
+  const [mapMode, setMapMode] = useState(true);
   const [showAddLang, setShowAddLang] = useState(false);
   const [addingLang, setAddingLang] = useState(false);
 
@@ -350,6 +356,7 @@ export default function LearnerDashboard() {
               { href: '/learner/dashboard', key: 'dashboard', active: true },
               { href: '/learner/lessons', key: 'lessons', active: false },
               { href: '/learner/practice/writing', key: 'practice', active: false },
+              { href: '/learner/practice/conversation', key: 'conversation', active: false },
               { href: '/learner/progress', key: 'progress', active: false },
               { href: '/learner/profile', key: 'profile', active: false },
               { href: '/learner/settings', key: 'settings', active: false },
@@ -461,14 +468,34 @@ export default function LearnerDashboard() {
               </div>
             )}
           </div>
-          <button
-            onClick={() => setFocusMode(true)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-[#6b6b6b] hover:bg-[#f0ede8] border border-[#e8e5e0]"
-            aria-label="Enter focus mode"
-          >
-            <Eye className="w-3.5 h-3.5" aria-hidden="true" />
-            {t('dashboard.focusMode')}
-          </button>
+          <div className="flex gap-2">
+            <div className="flex bg-[#f0ede8] rounded-lg p-0.5">
+              <button
+                onClick={() => setMapMode(false)}
+                className={`p-1.5 rounded-md text-xs font-medium flex items-center gap-1.5 transition-colors ${!mapMode ? 'bg-white text-[#2d2d2d] shadow-sm' : 'text-[#8a8a8a] hover:text-[#2d2d2d]'}`}
+                aria-label="List View"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span className="sr-only sm:not-sr-only">List</span>
+              </button>
+              <button
+                onClick={() => setMapMode(true)}
+                className={`p-1.5 rounded-md text-xs font-medium flex items-center gap-1.5 transition-colors ${mapMode ? 'bg-white text-[#2d2d2d] shadow-sm' : 'text-[#8a8a8a] hover:text-[#2d2d2d]'}`}
+                aria-label="Map View"
+              >
+                <Map className="w-3.5 h-3.5" />
+                <span className="sr-only sm:not-sr-only">Map</span>
+              </button>
+            </div>
+            <button
+              onClick={() => setFocusMode(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-[#6b6b6b] hover:bg-[#f0ede8] border border-[#e8e5e0]"
+              aria-label="Enter focus mode"
+            >
+              <Eye className="w-3.5 h-3.5" aria-hidden="true" />
+              {t('dashboard.focusMode')}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -582,6 +609,13 @@ export default function LearnerDashboard() {
         </section>
 
         {/* ═══ Two-column layout — BALANCED ═══ */}
+        {mapMode ? (
+          <MapDashboard 
+            language={activeLanguage} 
+            lessons={recentLessons} 
+            onStartLesson={(id) => router.push(`/learner/lessons/${id}`)} 
+          />
+        ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {/* ─── LEFT COLUMN ─── */}
@@ -751,6 +785,16 @@ export default function LearnerDashboard() {
                   <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" aria-hidden="true" />
                 </Link>
                 <Link
+                  href="/learner/practice/conversation"
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f5f3ef] transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <MessageCircle className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
+                    <span className="text-sm text-[#2d2d2d]">{t('dashboard.conversation')}</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" aria-hidden="true" />
+                </Link>
+                <Link
                   href="/learner/progress"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f5f3ef] transition-colors group"
                 >
@@ -774,6 +818,7 @@ export default function LearnerDashboard() {
             </section>
           </div>
         </div>
+        )}
       </main>
     </div>
   );

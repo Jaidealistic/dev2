@@ -1,13 +1,14 @@
+import dotenv from 'dotenv';
+
+// Load environment variables at the very beginning
+dotenv.config();
+
 import express from 'express';
 import { createServer } from 'http';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { initializeSocketIO } from './socket';
 import redis from './utils/redis';
 import logger from './utils/logger';
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);

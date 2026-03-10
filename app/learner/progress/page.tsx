@@ -29,7 +29,7 @@ import {
   Calendar,
   Flame,
   ChevronRight,
-, Sparkles } from 'lucide-react';
+  Sparkles } from 'lucide-react';
 
 interface ProgressData {
   competencies: any[];
