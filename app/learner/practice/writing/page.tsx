@@ -51,7 +51,7 @@ export default function WritingPracticePage() {
     <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
       {/* Header */}
       <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" aria-label="LexFix home">
             <Logo />
           </Link>
