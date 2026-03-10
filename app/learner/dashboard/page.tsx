@@ -223,8 +223,8 @@ export default function LearnerDashboard() {
   if (focusMode) {
     const focusLesson = nextLesson || recommendedLesson;
     return (
-      <div className="min-h-screen bg-[#faf9f7]">
-        <header role="banner" className="bg-white border-b border-[#e8e5e0] sticky top-0 z-10">
+      <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
+        <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <Link href="/" aria-label="LexFix home">
               <Logo />
@@ -343,7 +343,7 @@ export default function LearnerDashboard() {
   return (
     <div className="min-h-screen bg-[#faf9f7]">
       {/* Header */}
-      <header role="banner" className="bg-white border-b border-[#e8e5e0] sticky top-0 z-10">
+      <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" aria-label="LexFix home">
             <Logo />
