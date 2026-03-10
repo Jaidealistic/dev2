@@ -35,6 +35,7 @@ import {
   Award,
 } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function LearnerDashboard() {
   const mainRef = useRef<HTMLElement>(null);
@@ -229,7 +230,9 @@ export default function LearnerDashboard() {
                 <EyeOff className="w-4 h-4" />
                 <span>{t('dashboard.focusMode')}</span>
               </button>
-              <Link href="/logout" className="text-sm text-[#8a8a8a] hover:text-[#6b6b6b]">{t('nav.signOut')}</Link>
+              <ThemeToggle />
+              <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+              <Link href="/logout" className="text-sm text-[#8a8a8a] hover:text-[#6b6b6b] flex items-center h-full">{t('nav.signOut')}</Link>
             </div>
           </div>
         </header>
@@ -390,7 +393,7 @@ export default function LearnerDashboard() {
             </div>
 
             <div className="w-px h-5 bg-[#e8e5e0]" />
-            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50">
+            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex items-center h-full">
               {t('nav.signOut')}
             </Link>
           </nav>

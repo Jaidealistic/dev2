@@ -63,6 +63,11 @@ export const metadata: Metadata = {
 
   // Accessibility metadata
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  icons: {
+    icon: '/image.png',
+    shortcut: '/image.png',
+    apple: '/image.png',
+  },
   robots: {
     index: true,
     follow: true,
