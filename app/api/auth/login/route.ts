@@ -27,7 +27,10 @@ export async function POST(req: Request) {
 
     let isValid = false;
 
-    if (user.role === 'LEARNER') {
+    // Determine if the user is using a pattern or a password
+    const usesPattern = user.role === 'LEARNER';
+
+    if (usesPattern) {
       if (!pattern || !Array.isArray(pattern)) {
         return NextResponse.json({ error: 'Pattern is required for learners' }, { status: 400 });
       }
@@ -57,8 +60,8 @@ export async function POST(req: Request) {
 
     // Update last login
     await prisma.user.update({
-        where: { id: user.id },
-        data: { lastLogin: new Date() }
+      where: { id: user.id },
+      data: { lastLogin: new Date() }
     });
 
     return NextResponse.json({

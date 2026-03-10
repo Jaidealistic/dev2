@@ -146,7 +146,7 @@ services:
 
   # MongoDB (Content storage)
   mongo:
-    image: mongo:7
+    image: mongo
     container_name: linguaaccess-mongo
     ports:
       - "27018:27017"

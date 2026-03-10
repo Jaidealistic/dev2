@@ -3,6 +3,8 @@ import { Lexend, Atkinson_Hyperlegible } from 'next/font/google';
 import './globals.css';
 import { AccessibilityProvider } from '@/components/providers/AccessibilityProvider';
 import TalkBackToggle from '@/components/TalkBackToggle';
+import { Providers } from './providers';
+import VoiceAssistant from '@/components/VoiceAssistant';
 
 /**
  * Import dyslexia-friendly fonts
@@ -26,7 +28,7 @@ const atkinsonHyperlegible = Atkinson_Hyperlegible({
  * Implements Open Graph and Schema.org markup for better discoverability
  */
 export const metadata: Metadata = {
-  title: 'LinguaAccess - Accessible Language Learning Platform',
+  title: 'LexFix - Accessible Language Learning Platform',
   description:
     'Revolutionary cloud-based language learning platform engineered for learners with cognitive, linguistic, and sensory disabilities. Multi-modal content with WCAG AAA accessibility.',
   keywords: [
@@ -39,39 +41,40 @@ export const metadata: Metadata = {
     'learning disability',
     'inclusive education',
   ],
-  authors: [{ name: 'LinguaAccess Team' }],
-  creator: 'LinguaAccess',
-  publisher: 'LinguaAccess',
-  
+  authors: [{ name: 'LexFix Team' }],
+  creator: 'LexFix',
+  publisher: 'LexFix',
+
   // Accessibility metadata
   openGraph: {
     type: 'website',
-    url: 'https://linguaaccess.com',
-    title: 'LinguaAccess - Accessible Language Learning',
+    url: 'https://lexfix.com',
+    title: 'LexFix - Accessible Language Learning',
     description: 'Language learning platform designed for learners with disabilities',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'LinguaAccess Platform',
+        alt: 'LexFix Platform',
       },
     ],
   },
-  
+
   // Accessibility metadata
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   robots: {
     index: true,
     follow: true,
   },
-  
-  // Viewport for responsive design
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#0369a1',
 };
 
 /**
@@ -83,13 +86,6 @@ export const metadata: Metadata = {
  * - Accessibility context provider
  * - Global styles
  * - HTML structure with proper semantic markup
- * 
- * WCAG AAA Compliance:
- * - Proper HTML structure with roles and landmarks
- * - Font loading strategy for dyslexia support
- * - Skip to main content link for keyboard navigation
- * - Language attribute set to English (can be changed based on user preference)
- * - Focus management
  */
 export default function RootLayout({
   children,
@@ -106,11 +102,11 @@ export default function RootLayout({
         {/* Font preload for better performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* Accessibility-focused meta tags */}
         <meta name="color-scheme" content="light dark" />
         <meta name="supported-color-schemes" content="light dark" />
-        
+
         {/* Manifest for PWA */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0369a1" />
@@ -127,32 +123,37 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        {/* Accessibility Provider - makes preferences available to all components */}
-        <AccessibilityProvider>
-          {/* Main content */}
-          <main id="main-content" className="min-h-screen">
-            {children}
-          </main>
+        <Providers>
+          {/* Accessibility Provider - makes preferences available to all components */}
+          <AccessibilityProvider>
+            {/* Main content */}
+            <main id="main-content" className="min-h-screen">
+              {children}
+            </main>
 
-          {/* Global live region for screen reader announcements */}
-          <div
-            id="aria-live-region"
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-            className="sr-only"
-          />
-          <div
-            id="aria-alert-region"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-            className="sr-only"
-          />
+            {/* Global live region for screen reader announcements */}
+            <div
+              id="aria-live-region"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              className="sr-only"
+            />
+            <div
+              id="aria-alert-region"
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+              className="sr-only"
+            />
 
-          {/* TalkBack mode: in-app screen reader with single-tap-to-read, double-tap-to-activate */}
-          <TalkBackToggle />
-        </AccessibilityProvider>
+            {/* TalkBack mode: in-app screen reader with single-tap-to-read, double-tap-to-activate */}
+            <TalkBackToggle />
+
+            {/* Voice Assistant: navigation and input filling via speech */}
+            <VoiceAssistant />
+          </AccessibilityProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -9,6 +9,7 @@ import { learnerSignUpSchema, type LearnerSignUpFormData } from '@/lib/validatio
 import { signup, setToken } from '@/lib/api';
 import PatternLock from '@/components/PatternLock';
 import { GraduationCap, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 type Step = 'details' | 'pattern' | 'confirm';
 
@@ -76,8 +77,8 @@ export default function StudentSignUpPage() {
         <Link href="/signup" className="text-slate-400 hover:text-slate-600 transition-colors" aria-label="Back to signup options">
           <ArrowLeft className="w-5 h-5" aria-hidden="true" />
         </Link>
-        <Link href="/" className="text-2xl font-bold text-[#5a8c5c]" aria-label="Lexfix home">
-          Lexfix
+        <Link href="/" aria-label="LexFix home">
+          <Logo />
         </Link>
       </header>
 
@@ -101,8 +102,8 @@ export default function StudentSignUpPage() {
             {['details', 'pattern', 'confirm'].map((s, i) => (
               <div key={s} className="flex items-center gap-2">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${step === s ? 'bg-[#7da47f] text-white shadow-lg shadow-[#9db4a0]/30' :
-                    ['details', 'pattern', 'confirm'].indexOf(step) > i ? 'bg-green-500 text-white' :
-                      'bg-slate-200 text-slate-400'
+                  ['details', 'pattern', 'confirm'].indexOf(step) > i ? 'bg-green-500 text-white' :
+                    'bg-slate-200 text-slate-400'
                   }`}>
                   {['details', 'pattern', 'confirm'].indexOf(step) > i ? <CheckCircle2 className="w-4 h-4" aria-hidden="true" /> : i + 1}
                 </div>

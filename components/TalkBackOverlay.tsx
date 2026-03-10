@@ -198,8 +198,8 @@ function findReadableElement(target: HTMLElement): HTMLElement | null {
   let current: HTMLElement | null = el;
   for (let i = 0; i < 5 && current; i++) {
     if (meaningfulTags.includes(current.tagName) ||
-        meaningfulRoles.includes(current.getAttribute('role') || '') ||
-        current.getAttribute('aria-label')) {
+      meaningfulRoles.includes(current.getAttribute('role') || '') ||
+      current.getAttribute('aria-label')) {
       return current;
     }
     current = current.parentElement;
@@ -231,7 +231,27 @@ export default function TalkBackOverlay({ enabled }: TalkBackOverlayProps) {
     utterance.rate = 0.9;
     utterance.pitch = 1;
     utterance.volume = 1;
-    utterance.lang = document.documentElement.lang || 'en';
+
+    // Automatic Language Detection:
+    // Check if the text contains Tamil characters (\u0B80-\u0BFF)
+    const hasTamil = /[\u0B80-\u0BFF]/.test(text);
+
+    if (hasTamil) {
+      utterance.lang = 'ta-IN';
+    } else {
+      // Map basic lang codes to full BCP-47 for better voice matching
+      const currentLang = document.documentElement.lang || 'en-US';
+      utterance.lang = currentLang === 'ta' ? 'ta-IN' : currentLang;
+    }
+
+    // Force voice selection for the current language
+    const voices = window.speechSynthesis.getVoices();
+    const langPrefix = utterance.lang.split('-')[0];
+    const matchingVoice = voices.find(v => v.lang.startsWith(langPrefix));
+    if (matchingVoice) {
+      utterance.voice = matchingVoice;
+    }
+
     speechRef.current = utterance;
     window.speechSynthesis.speak(utterance);
   }, []);

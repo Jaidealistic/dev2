@@ -467,6 +467,1082 @@ const professionalLessons = [
   },
 ];
 
+const extraLessons = [
+  {
+    lessonId: 'lesson_extra_1',
+    title: {
+      en: 'Vocabulary Building Part 1',
+      ta: 'சொற்களஞ்சியம் பகுதி 1'
+    },
+    level: 'beginner',
+    language: 'en',
+    estimatedDuration: 15,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 1.',
+          ta: 'பகுதி 1 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_001',
+          title: {
+            en: 'Key Words 1',
+            ta: 'முக்கிய வார்த்தைகள் 1'
+          },
+          items: [
+            {
+              word: 'Word 1A',
+              translation: 'வார்த்தை 1A',
+              phoneticEn: 'wɜːrd 1eɪ',
+              phoneticTa: 'vārttai 1A',
+              audioUrl: '/audio/vocab/word_1A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 1A.',
+                ta: 'இது வார்த்தை 1A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 1B',
+              translation: 'வார்த்தை 1B',
+              phoneticEn: 'wɜːrd 1biː',
+              phoneticTa: 'vārttai 1B',
+              audioUrl: '/audio/vocab/word_1B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 1B.',
+                ta: 'இது வார்த்தை 1B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_001',
+          title: {
+            en: 'Knowledge Check 1',
+            ta: 'அறிவு சரிபார்ப்பு 1'
+          },
+          items: [
+            {
+              questionId: 'exq1',
+              text: {
+                en: 'What is Word 1A?',
+                ta: 'வார்த்தை 1A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 1A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_2',
+    title: {
+      en: 'Vocabulary Building Part 2',
+      ta: 'சொற்களஞ்சியம் பகுதி 2'
+    },
+    level: 'beginner',
+    language: 'en',
+    estimatedDuration: 20,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 2.',
+          ta: 'பகுதி 2 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_002',
+          title: {
+            en: 'Key Words 2',
+            ta: 'முக்கிய வார்த்தைகள் 2'
+          },
+          items: [
+            {
+              word: 'Word 2A',
+              translation: 'வார்த்தை 2A',
+              phoneticEn: 'wɜːrd 2eɪ',
+              phoneticTa: 'vārttai 2A',
+              audioUrl: '/audio/vocab/word_2A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 2A.',
+                ta: 'இது வார்த்தை 2A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 2B',
+              translation: 'வார்த்தை 2B',
+              phoneticEn: 'wɜːrd 2biː',
+              phoneticTa: 'vārttai 2B',
+              audioUrl: '/audio/vocab/word_2B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 2B.',
+                ta: 'இது வார்த்தை 2B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_002',
+          title: {
+            en: 'Knowledge Check 2',
+            ta: 'அறிவு சரிபார்ப்பு 2'
+          },
+          items: [
+            {
+              questionId: 'exq2',
+              text: {
+                en: 'What is Word 2A?',
+                ta: 'வார்த்தை 2A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 2A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_3',
+    title: {
+      en: 'Vocabulary Building Part 3',
+      ta: 'சொற்களஞ்சியம் பகுதி 3'
+    },
+    level: 'beginner',
+    language: 'en',
+    estimatedDuration: 25,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 3.',
+          ta: 'பகுதி 3 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_003',
+          title: {
+            en: 'Key Words 3',
+            ta: 'முக்கிய வார்த்தைகள் 3'
+          },
+          items: [
+            {
+              word: 'Word 3A',
+              translation: 'வார்த்தை 3A',
+              phoneticEn: 'wɜːrd 3eɪ',
+              phoneticTa: 'vārttai 3A',
+              audioUrl: '/audio/vocab/word_3A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 3A.',
+                ta: 'இது வார்த்தை 3A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 3B',
+              translation: 'வார்த்தை 3B',
+              phoneticEn: 'wɜːrd 3biː',
+              phoneticTa: 'vārttai 3B',
+              audioUrl: '/audio/vocab/word_3B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 3B.',
+                ta: 'இது வார்த்தை 3B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_003',
+          title: {
+            en: 'Knowledge Check 3',
+            ta: 'அறிவு சரிபார்ப்பு 3'
+          },
+          items: [
+            {
+              questionId: 'exq3',
+              text: {
+                en: 'What is Word 3A?',
+                ta: 'வார்த்தை 3A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 3A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_4',
+    title: {
+      en: 'Vocabulary Building Part 4',
+      ta: 'சொற்களஞ்சியம் பகுதி 4'
+    },
+    level: 'intermediate',
+    language: 'en',
+    estimatedDuration: 30,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 4.',
+          ta: 'பகுதி 4 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_004',
+          title: {
+            en: 'Key Words 4',
+            ta: 'முக்கிய வார்த்தைகள் 4'
+          },
+          items: [
+            {
+              word: 'Word 4A',
+              translation: 'வார்த்தை 4A',
+              phoneticEn: 'wɜːrd 4eɪ',
+              phoneticTa: 'vārttai 4A',
+              audioUrl: '/audio/vocab/word_4A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 4A.',
+                ta: 'இது வார்த்தை 4A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 4B',
+              translation: 'வார்த்தை 4B',
+              phoneticEn: 'wɜːrd 4biː',
+              phoneticTa: 'vārttai 4B',
+              audioUrl: '/audio/vocab/word_4B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 4B.',
+                ta: 'இது வார்த்தை 4B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_004',
+          title: {
+            en: 'Knowledge Check 4',
+            ta: 'அறிவு சரிபார்ப்பு 4'
+          },
+          items: [
+            {
+              questionId: 'exq4',
+              text: {
+                en: 'What is Word 4A?',
+                ta: 'வார்த்தை 4A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 4A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_5',
+    title: {
+      en: 'Vocabulary Building Part 5',
+      ta: 'சொற்களஞ்சியம் பகுதி 5'
+    },
+    level: 'intermediate',
+    language: 'en',
+    estimatedDuration: 35,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 5.',
+          ta: 'பகுதி 5 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_005',
+          title: {
+            en: 'Key Words 5',
+            ta: 'முக்கிய வார்த்தைகள் 5'
+          },
+          items: [
+            {
+              word: 'Word 5A',
+              translation: 'வார்த்தை 5A',
+              phoneticEn: 'wɜːrd 5eɪ',
+              phoneticTa: 'vārttai 5A',
+              audioUrl: '/audio/vocab/word_5A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 5A.',
+                ta: 'இது வார்த்தை 5A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 5B',
+              translation: 'வார்த்தை 5B',
+              phoneticEn: 'wɜːrd 5biː',
+              phoneticTa: 'vārttai 5B',
+              audioUrl: '/audio/vocab/word_5B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 5B.',
+                ta: 'இது வார்த்தை 5B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_005',
+          title: {
+            en: 'Knowledge Check 5',
+            ta: 'அறிவு சரிபார்ப்பு 5'
+          },
+          items: [
+            {
+              questionId: 'exq5',
+              text: {
+                en: 'What is Word 5A?',
+                ta: 'வார்த்தை 5A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 5A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_6',
+    title: {
+      en: 'Vocabulary Building Part 6',
+      ta: 'சொற்களஞ்சியம் பகுதி 6'
+    },
+    level: 'intermediate',
+    language: 'en',
+    estimatedDuration: 40,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 6.',
+          ta: 'பகுதி 6 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_006',
+          title: {
+            en: 'Key Words 6',
+            ta: 'முக்கிய வார்த்தைகள் 6'
+          },
+          items: [
+            {
+              word: 'Word 6A',
+              translation: 'வார்த்தை 6A',
+              phoneticEn: 'wɜːrd 6eɪ',
+              phoneticTa: 'vārttai 6A',
+              audioUrl: '/audio/vocab/word_6A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 6A.',
+                ta: 'இது வார்த்தை 6A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 6B',
+              translation: 'வார்த்தை 6B',
+              phoneticEn: 'wɜːrd 6biː',
+              phoneticTa: 'vārttai 6B',
+              audioUrl: '/audio/vocab/word_6B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 6B.',
+                ta: 'இது வார்த்தை 6B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_006',
+          title: {
+            en: 'Knowledge Check 6',
+            ta: 'அறிவு சரிபார்ப்பு 6'
+          },
+          items: [
+            {
+              questionId: 'exq6',
+              text: {
+                en: 'What is Word 6A?',
+                ta: 'வார்த்தை 6A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 6A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_7',
+    title: {
+      en: 'Vocabulary Building Part 7',
+      ta: 'சொற்களஞ்சியம் பகுதி 7'
+    },
+    level: 'advanced',
+    language: 'en',
+    estimatedDuration: 45,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 7.',
+          ta: 'பகுதி 7 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_007',
+          title: {
+            en: 'Key Words 7',
+            ta: 'முக்கிய வார்த்தைகள் 7'
+          },
+          items: [
+            {
+              word: 'Word 7A',
+              translation: 'வார்த்தை 7A',
+              phoneticEn: 'wɜːrd 7eɪ',
+              phoneticTa: 'vārttai 7A',
+              audioUrl: '/audio/vocab/word_7A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 7A.',
+                ta: 'இது வார்த்தை 7A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 7B',
+              translation: 'வார்த்தை 7B',
+              phoneticEn: 'wɜːrd 7biː',
+              phoneticTa: 'vārttai 7B',
+              audioUrl: '/audio/vocab/word_7B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 7B.',
+                ta: 'இது வார்த்தை 7B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_007',
+          title: {
+            en: 'Knowledge Check 7',
+            ta: 'அறிவு சரிபார்ப்பு 7'
+          },
+          items: [
+            {
+              questionId: 'exq7',
+              text: {
+                en: 'What is Word 7A?',
+                ta: 'வார்த்தை 7A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 7A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_8',
+    title: {
+      en: 'Vocabulary Building Part 8',
+      ta: 'சொற்களஞ்சியம் பகுதி 8'
+    },
+    level: 'advanced',
+    language: 'en',
+    estimatedDuration: 50,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 8.',
+          ta: 'பகுதி 8 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_008',
+          title: {
+            en: 'Key Words 8',
+            ta: 'முக்கிய வார்த்தைகள் 8'
+          },
+          items: [
+            {
+              word: 'Word 8A',
+              translation: 'வார்த்தை 8A',
+              phoneticEn: 'wɜːrd 8eɪ',
+              phoneticTa: 'vārttai 8A',
+              audioUrl: '/audio/vocab/word_8A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 8A.',
+                ta: 'இது வார்த்தை 8A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 8B',
+              translation: 'வார்த்தை 8B',
+              phoneticEn: 'wɜːrd 8biː',
+              phoneticTa: 'vārttai 8B',
+              audioUrl: '/audio/vocab/word_8B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 8B.',
+                ta: 'இது வார்த்தை 8B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_008',
+          title: {
+            en: 'Knowledge Check 8',
+            ta: 'அறிவு சரிபார்ப்பு 8'
+          },
+          items: [
+            {
+              questionId: 'exq8',
+              text: {
+                en: 'What is Word 8A?',
+                ta: 'வார்த்தை 8A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 8A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  },
+  {
+    lessonId: 'lesson_extra_9',
+    title: {
+      en: 'Vocabulary Building Part 9',
+      ta: 'சொற்களஞ்சியம் பகுதி 9'
+    },
+    level: 'advanced',
+    language: 'en',
+    estimatedDuration: 55,
+    prepTimeMinutes: 5,
+    content: {
+      introduction: {
+        text: {
+          en: 'Expand your English vocabulary with Part 9.',
+          ta: 'பகுதி 9 உடன் உங்கள் ஆங்கில சொற்களஞ்சியத்தை விரிவாக்குங்கள்.'
+        },
+        audioUrl: {
+          en: '/audio/lessons/extra/intro_en.mp3',
+          ta: '/audio/lessons/extra/intro_ta.mp3'
+        },
+        imageUrl: '/images/lessons/extra_banner.jpg'
+      },
+      sections: [
+        {
+          type: 'vocabulary',
+          sectionId: 'extra_vocab_009',
+          title: {
+            en: 'Key Words 9',
+            ta: 'முக்கிய வார்த்தைகள் 9'
+          },
+          items: [
+            {
+              word: 'Word 9A',
+              translation: 'வார்த்தை 9A',
+              phoneticEn: 'wɜːrd 9eɪ',
+              phoneticTa: 'vārttai 9A',
+              audioUrl: '/audio/vocab/word_9A.mp3',
+              exampleSentence: {
+                en: 'This is example for word 9A.',
+                ta: 'இது வார்த்தை 9A க்கான உதாரணம்.'
+              }
+            },
+            {
+              word: 'Word 9B',
+              translation: 'வார்த்தை 9B',
+              phoneticEn: 'wɜːrd 9biː',
+              phoneticTa: 'vārttai 9B',
+              audioUrl: '/audio/vocab/word_9B.mp3',
+              exampleSentence: {
+                en: 'This is example for word 9B.',
+                ta: 'இது வார்த்தை 9B க்கான உதாரணம்.'
+              }
+            }
+          ]
+        },
+        {
+          type: 'practice',
+          sectionId: 'extra_quiz_009',
+          title: {
+            en: 'Knowledge Check 9',
+            ta: 'அறிவு சரிபார்ப்பு 9'
+          },
+          items: [
+            {
+              questionId: 'exq9',
+              text: {
+                en: 'What is Word 9A?',
+                ta: 'வார்த்தை 9A என்றால் என்ன?'
+              },
+              options: [
+                {
+                  optionId: 'a',
+                  text: 'Option 1',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'b',
+                  text: 'Word 9A',
+                  isCorrect: true
+                },
+                {
+                  optionId: 'c',
+                  text: 'Option 3',
+                  isCorrect: false
+                },
+                {
+                  optionId: 'd',
+                  text: 'Option 4',
+                  isCorrect: false
+                }
+              ],
+              feedback: {
+                correct: 'Correct!',
+                incorrect: 'Try again.'
+              }
+            }
+          ]
+        }
+      ]
+    },
+    teachingGuide: {
+      overview: {
+        en: 'Vocabulary building.',
+        ta: 'சொற்களஞ்சியம் கட்டிடம்.'
+      },
+      learningObjectives: {
+        en: [
+          'Learn new words'
+        ],
+        ta: [
+          'புதிய வார்த்தைகளை கற்றுக்கொள்ளுங்கள்'
+        ]
+      },
+      steps: []
+    },
+    createdBy: 'system',
+    createdAt: '2026-03-05T05:49:04.361Z',
+    updatedAt: '2026-03-05T05:49:04.361Z'
+  }
+] as any;
+
+professionalLessons.push(...extraLessons);
+
 async function main() {
   try {
     console.log('🔌 Connecting to MongoDB...');

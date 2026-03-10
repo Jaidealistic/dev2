@@ -1,0 +1,108 @@
+﻿npx : ΓÜá `eslint` configuration in 
+next.config.mjs is no longer supported. See more 
+info here: https://nextjs.org/docs/app/api-referenc
+e/cli/next#next-lint-options
+At line:1 char:23
++ npx prisma generate ; npx next build 2>&1 | 
+Out-File -FilePath local_ ...
++                       ~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ΓÜá ` 
+   eslint` co...xt-lint-options:String) [], Remot  
+  eException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ΓÜá Invalid next.config.mjs options detected: 
+ΓÜá     Unrecognized key(s) in object: 'eslint'
+ΓÜá See more info here: https://nextjs.org/docs/mes
+sages/invalid-next-config
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+ΓÜá The "middleware" file convention is 
+deprecated. Please use "proxy" instead. Learn 
+more: https://nextjs.org/docs/messages/middleware-t
+o-proxy
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 78s
+  Skipping validation of types
+  Collecting page data using 11 workers ...
+(node:11688) [MONGOOSE] Warning: Duplicate schema 
+index on {"lessonId":1} found. This is often due 
+to declaring an index using both "index: true" and 
+"schema.index()". Please remove the duplicate 
+index definition.
+(Use `node --trace-warnings ...` to show where the 
+warning was created)
+(node:27068) [MONGOOSE] Warning: Duplicate schema 
+index on {"lessonId":1} found. This is often due 
+to declaring an index using both "index: true" and 
+"schema.index()". Please remove the duplicate 
+index definition.
+(Use `node --trace-warnings ...` to show where the 
+warning was created)
+(node:4520) [MONGOOSE] Warning: Duplicate schema 
+index on {"lessonId":1} found. This is often due 
+to declaring an index using both "index: true" and 
+"schema.index()". Please remove the duplicate 
+index definition.
+(Use `node --trace-warnings ...` to show where the 
+warning was created)
+(node:32252) [MONGOOSE] Warning: Duplicate schema 
+index on {"lessonId":1} found. This is often due 
+to declaring an index using both "index: true" and 
+"schema.index()". Please remove the duplicate 
+index definition.
+(Use `node --trace-warnings ...` to show where the 
+warning was created)
+(node:33360) [MONGOOSE] Warning: Duplicate schema 
+index on {"lessonId":1} found. This is often due 
+to declaring an index using both "index: true" and 
+"schema.index()". Please remove the duplicate 
+index definition.
+(Use `node --trace-warnings ...` to show where the 
+warning was created)
+  Generating static pages using 11 workers (0/112) ...
+  Generating static pages using 11 workers (28/112) 
+≡ƒöº API_URL configured as: http://localhost:3000/api
+≡ƒöº API_URL configured as: http://localhost:3000/api
+≡ƒöº API_URL configured as: http://localhost:3000/api
+≡ƒöº API_URL configured as: http://localhost:3000/api
+Γ¿» useSearchParams() should be wrapped in a 
+suspense boundary at page "/collaboration/room". 
+Read more: https://nextjs.org/docs/messages/missing
+-suspense-with-csr-bailout
+    at Q (D:\sem6\software eng\dev2\.next\server\ch
+unks\ssr\node_modules_next_920e7746._.js:2:2111)
+    at o (D:\sem6\software eng\dev2\.next\server\ch
+unks\ssr\node_modules_next_920e7746._.js:4:5314)
+    at o (D:\sem6\software eng\dev2\.next\server\ch
+unks\ssr\_706cad17._.js:1:2140)
+    at an (D:\sem6\software eng\dev2\node_modules\n
+ext\dist\compiled\next-server\app-page-turbo.runtim
+e.prod.js:2:84360)
+    at ai (D:\sem6\software eng\dev2\node_modules\n
+ext\dist\compiled\next-server\app-page-turbo.runtim
+e.prod.js:2:86179)
+    at al (D:\sem6\software eng\dev2\node_modules\n
+ext\dist\compiled\next-server\app-page-turbo.runtim
+e.prod.js:2:107953)
+    at as (D:\sem6\software eng\dev2\node_modules\n
+ext\dist\compiled\next-server\app-page-turbo.runtim
+e.prod.js:2:105368)
+    at aa (D:\sem6\software eng\dev2\node_modules\n
+ext\dist\compiled\next-server\app-page-turbo.runtim
+e.prod.js:2:84712)
+    at ai (D:\sem6\software eng\dev2\node_modules\n
+ext\dist\compiled\next-server\app-page-turbo.runtim
+e.prod.js:2:86228)
+    at ai (D:\sem6\software eng\dev2\node_modules\n
+ext\dist\compiled\next-server\app-page-turbo.runtim
+e.prod.js:2:104708)
+Error occurred prerendering page 
+"/collaboration/room". Read more: 
+https://nextjs.org/docs/messages/prerender-error
+Export encountered an error on 
+/collaboration/room/page: /collaboration/room, 
+exiting the build.
+Γ¿» Next.js build worker exited with code: 1 and 
+signal: null

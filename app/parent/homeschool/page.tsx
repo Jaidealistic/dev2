@@ -14,8 +14,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
 import {
+  ArrowLeft,
   Calendar,
   Clock,
   BookOpen,
@@ -299,7 +299,6 @@ export default function HomeschoolHub() {
       </main>
 
       {/* Accessibility Toolbar */}
-      <AccessibilityToolbar />
     </div>
   );
 }

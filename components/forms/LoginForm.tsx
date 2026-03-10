@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login, checkAuthMethod, setToken } from '@/lib/api';
+import { signIn } from 'next-auth/react';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import PatternLock from '@/components/PatternLock';
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react';
@@ -48,6 +49,19 @@ export function LoginForm() {
     setLoading(true);
     setError('');
 
+    // Sign in with NextAuth to establish session for protected routes
+    const nextAuthResult = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (nextAuthResult?.error) {
+      setLoading(false);
+      setError('Invalid email or password');
+      return;
+    }
+
     const result = await login({ email, password, rememberMe });
     setLoading(false);
 
@@ -56,7 +70,11 @@ export function LoginForm() {
       return;
     }
 
-    if ((result as any).token) setToken((result as any).token);
+    if ((result as any).token) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
+      setToken((result as any).token);
+    }
     loadUserPreferences();
     redirectByRole((result as any).user);
   };
@@ -82,19 +100,25 @@ export function LoginForm() {
     if (!user) { router.push('/learner/dashboard'); return; }
     const onb = user.onboardingComplete;
     switch (user.role) {
-      case 'PARENT': 
+      case 'ADMIN':
+        router.push('/admin/dashboard');
+        break;
+      case 'PARENT':
         // If standard parent, go to parent dashboard (if exists) or homeschool hub if mapped
-        router.push(onb ? '/parent/dashboard' : '/parent/onboarding'); 
+        router.push(onb ? '/parent/dashboard' : '/parent/onboarding');
         break;
       case 'PARENT_EDUCATOR':
         router.push(onb ? '/homeschool/hub' : '/homeschool/onboarding');
         break;
-      case 'EDUCATOR': 
-        router.push('/educator/dashboard'); 
+      case 'EDUCATOR':
+        router.push('/educator/dashboard');
+        break;
+      case 'ADMIN':
+        router.push('/admin/dashboard');
         break;
       case 'LEARNER':
-      default: 
-        router.push(onb ? '/learner/dashboard' : '/onboarding'); 
+      default:
+        router.push(onb ? '/learner/dashboard' : '/onboarding');
         break;
     }
   };
@@ -117,7 +141,8 @@ export function LoginForm() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#7da47f]/15 focus:border-[#7da47f] outline-none transition-all text-slate-900 placeholder:text-slate-400"
+                placeholder="Enter your registered email"
                 autoComplete="email"
               />
             </div>
@@ -135,14 +160,25 @@ export function LoginForm() {
       {/* STEP 2a: Password (Parent/Educator) */}
       {step === 'password' && (
         <form onSubmit={handlePasswordSubmit} className="space-y-4" aria-label="Password step">
-          <div className="flex items-center gap-2 mb-2">
-            <button type="button" onClick={() => { setStep('email'); setError(''); }} className="text-slate-400 hover:text-slate-600" aria-label="Go back to email step">
-              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+          <div className="flex items-center gap-3 mb-2">
+            <button
+              type="button"
+              onClick={() => { setStep('email'); setError(''); }}
+              className="p-2 -ml-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+              aria-label="Go back to email step"
+            >
+              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             </button>
-            <p className="text-sm text-slate-500">Welcome back, <span className="font-semibold text-slate-700">{userName}</span></p>
+            <div>
+              <p className="text-sm text-slate-500">Welcome back,</p>
+              <p className="font-bold text-slate-900 leading-tight">{userName}</p>
+            </div>
           </div>
 
-          <div className="text-xs text-slate-400 bg-slate-50 px-3 py-2 rounded-lg">{email}</div>
+          <div className="text-xs text-slate-500 bg-slate-50 border border-slate-100 px-3 py-2 rounded-lg flex items-center gap-2">
+            <Mail className="w-3.5 h-3.5 opacity-50" />
+            {email}
+          </div>
 
           <div>
             <label htmlFor="login-password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
@@ -153,21 +189,47 @@ export function LoginForm() {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-12 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#7da47f] focus:border-[#7da47f] outline-none transition-all text-slate-900"
+                className="w-full pl-11 pr-12 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#7da47f]/15 focus:border-[#7da47f] outline-none transition-all text-slate-900"
                 placeholder="Enter your password"
                 autoComplete="current-password"
                 autoFocus
               />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" aria-label={showPassword ? 'Hide password' : 'Show password'}>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-slate-400 hover:text-[#7da47f] hover:bg-[#7da47f]/5 transition-all"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
                 {showPassword ? <EyeOff className="w-5 h-5" aria-hidden="true" /> : <Eye className="w-5 h-5" aria-hidden="true" />}
               </button>
             </div>
           </div>
 
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="w-4 h-4 text-[#7da47f] border-slate-300 rounded focus:ring-[#7da47f]" />
-            <span className="text-sm text-slate-600">Remember me</span>
-          </label>
+          <div className="flex items-center">
+            <label className="group flex items-center gap-3 cursor-pointer select-none py-1">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded checked:bg-[#7da47f] checked:border-[#7da47f] focus:outline-none focus:ring-4 focus:ring-[#7da47f]/20 transition-all cursor-pointer"
+                />
+                <svg
+                  className="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Remember me</span>
+            </label>
+          </div>
 
           <button
             type="submit"
@@ -189,7 +251,7 @@ export function LoginForm() {
             <p className="text-sm text-slate-500">Welcome back, <span className="font-semibold text-slate-700">{userName}</span>!</p>
           </div>
 
-          <div className="text-xs text-slate-400 bg-slate-50 px-3 py-2 rounded-lg">{email}</div>
+          <div className="text-xs text-slate-600 bg-slate-100 px-3 py-2 rounded-lg">{email}</div>
 
           <PatternLock mode="verify" onPatternComplete={handlePatternSubmit} error={patternError} disabled={loading} />
 

@@ -21,6 +21,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import { useToast } from '@/components/providers/ToastProvider';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 import { TextToSpeech, InlineTextToSpeech } from '@/components/TextToSpeech';
 import { GuidedPractice, MultipleChoice, FillInBlank } from '@/components/PracticeComponents';
 import { BrainGameBreak } from '@/components/BrainGameBreak';
@@ -44,6 +45,7 @@ import {
   Gamepad2,
   Trophy,
   Zap,
+  Star,
 } from 'lucide-react';
 
 interface LessonSection {
@@ -86,6 +88,7 @@ interface LessonData {
   duration: number; // minutes
   competencies: string[];
   disabilityTypes?: string[];
+  language?: 'en' | 'ta';
   sections: LessonSection[];
 }
 
@@ -97,11 +100,13 @@ interface MultiModalLessonProps {
 export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps) {
   const { preferences } = useAccessibility();
   const { info } = useToast();
+  const { t } = useLanguage();
   const router = useRouter();
 
   // Lesson state
   const [lesson, setLesson] = useState<LessonData | null>(null);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  const [health, setHealth] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [isSavingProgress, setIsSavingProgress] = useState(false);
 
@@ -131,8 +136,47 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
   // ADHD single-sentence mode (OpenProject #12620)
   const [activeSentenceIdx, setActiveSentenceIdx] = useState(0);
 
-  // Reset sentence index when section changes
-  useEffect(() => { setActiveSentenceIdx(0); }, [currentSectionIndex]);
+  // Attention Adaptation tracking
+  const [idleTime, setIdleTime] = useState(0);
+  const [errorCount, setErrorCount] = useState(0);
+  const [showGentleNudge, setShowGentleNudge] = useState(false);
+
+  // Reset sentence and error count index when section changes
+  useEffect(() => { 
+    setActiveSentenceIdx(0); 
+    setErrorCount(0);
+  }, [currentSectionIndex]);
+
+  // Track idle time
+  useEffect(() => {
+    const handleActivity = () => {
+      setIdleTime(0);
+      setShowGentleNudge(false);
+    };
+    window.addEventListener('mousemove', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+    window.addEventListener('touchstart', handleActivity);
+    
+    const interval = setInterval(() => {
+      setIdleTime(prev => prev + 1);
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('mousemove', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      window.removeEventListener('touchstart', handleActivity);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Check idle time threshold
+  useEffect(() => {
+    const threshold = preferences.adhdMode ? 30 : 60;
+    if (idleTime > threshold && !showGentleNudge && !showBrainGame && currentSectionIndex < (lesson?.sections.length || 0)) {
+      setShowGentleNudge(true);
+      info('Still there? 🌟', 'Take your time! We go at your pace. No rush at all.');
+    }
+  }, [idleTime, preferences.adhdMode, showGentleNudge, showBrainGame, currentSectionIndex, lesson, info]);
 
   // Audio/Video refs
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -430,7 +474,7 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
       const formData = new FormData();
       formData.append('audio', audioBlob, 'recording.wav');
       formData.append('expectedText', currentSection.content.exercise.correctAnswer || '');
-      formData.append('language', preferences.speechRecLang || 'es-ES');
+      formData.append('language', lesson?.language === 'ta' ? 'ta-IN' : 'en-US');
 
       const response = await fetch('/api/ml/pronunciation/evaluate', {
         method: 'POST',
@@ -515,6 +559,15 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
           <div className="flex justify-between items-center mb-3">
             <h1 className="text-2xl font-bold text-gray-900">{lesson.title}</h1>
             <div className="flex items-center gap-4">
+              {/* Health Stars */}
+              <div className="flex items-center gap-1 bg-white px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className={`w-5 h-5 transition-colors ${i < health ? 'text-[#fbbf24] drop-shadow-sm' : 'text-gray-200'}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              
               <div className="flex items-center gap-2 text-gray-600">
                 <Clock className="w-5 h-5" aria-hidden="true" />
                 <span>{Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}</span>
@@ -664,21 +717,72 @@ export function MultiModalLesson({ lessonId, onComplete }: MultiModalLessonProps
           {/* SUMMARY SECTION */}
           {currentSection.type === 'summary' && (
             <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-[#f4f7f4] mb-6 border-2 border-[#7da47f]/20 shadow-sm relative">
-                <Trophy className="w-10 h-10 text-[#5a8c5c]" aria-hidden="true" />
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#fbbf24] rounded-full flex items-center justify-center text-white shadow-md">
-                  <Zap className="w-5 h-5 fill-current" aria-hidden="true" />
+              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-[#7a9b7e] to-[#5a8c5c] mb-6 shadow-xl relative animate-in zoom-in duration-500">
+                <Trophy className="w-12 h-12 text-white" aria-hidden="true" />
+                <div className="absolute -top-2 -right-2 w-10 h-10 bg-[#fbbf24] rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white">
+                  <Star className="w-6 h-6 fill-current" aria-hidden="true" />
                 </div>
               </div>
-              <h2 className="text-3xl font-black text-[#3a6d3c] mb-6">Lesson Complete!</h2>
-              <div className="bg-[#fcfdfc] border border-[#7da47f]/10 rounded-3xl p-8 text-left max-w-lg mx-auto shadow-sm">
-                <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
-                  {currentSection.content.text?.split('\n').map((line: string, i: number) => (
-                    <p key={i} className={line.startsWith('#') ? 'text-xl font-bold text-[#3a6d3c] mt-4 mb-2' : 'mb-2'}>
-                      {line.replace(/^#+/, '').replace(/\*\*/g, '')}
-                    </p>
-                  ))}
+              <h2 className="text-4xl font-black text-[#2d2d2d] mb-2 font-display">{t('lesson.complete') || 'Lesson Complete!'}</h2>
+              <p className="text-[#8a8a8a] mb-8 font-medium tracking-wide w-full flex justify-center items-center gap-2">
+                 You finished with {health} <Star className="w-5 h-5 text-[#fbbf24] fill-[#fbbf24] drop-shadow-sm" /> remaining!
+              </p>
+              
+              <div className="bg-white border-2 border-[#e8e5e0] rounded-[2rem] p-6 sm:p-8 text-left max-w-2xl mx-auto shadow-sm">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-[#2d2d2d] flex items-center gap-3">
+                    <div className="p-2 bg-[#f0f4f0] rounded-xl"><BookOpen className="w-5 h-5 text-[#5a8c5c]" /></div>
+                    Vocabulary Learned
+                  </h3>
+                  <button 
+                    className="flex items-center gap-2 px-4 py-2 bg-[#f0f4f0] text-[#5a8c5c] font-bold rounded-xl hover:bg-[#e0ece0] transition-colors shadow-sm active:scale-95"
+                    onClick={() => {
+                        const wordsToPlay = currentSection.content.words?.map(w => w.word).join('. ') || '';
+                        if (!preferences.apdMode && wordsToPlay) {
+                          const utterance = new SpeechSynthesisUtterance(wordsToPlay);
+                          window.speechSynthesis.speak(utterance);
+                        }
+                    }}
+                  >
+                    <Volume2 className="w-4 h-4" /> Play All
+                  </button>
                 </div>
+                
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {currentSection.content.words?.map((item: any, idx: number) => (
+                    <div key={idx} className="bg-[#faf9f7] rounded-2xl p-4 border border-[#e8e5e0] flex justify-between items-center hover:shadow-sm transition-shadow group">
+                      <div>
+                        <p className="font-bold text-lg text-[#2d2d2d] group-hover:text-[#5a8c5c] transition-colors">{item.word}</p>
+                        <p className="text-sm text-[#8a8a8a] font-medium">{item.translation}</p>
+                      </div>
+                      <button 
+                        onClick={() => {
+                          if (!preferences.apdMode) {
+                            const utterance = new SpeechSynthesisUtterance(item.word);
+                            window.speechSynthesis.speak(utterance);
+                          }
+                        }}
+                        className="p-2.5 rounded-full bg-white text-[#8a8a8a] border border-[#e8e5e0] hover:text-[#5a8c5c] hover:border-[#5a8c5c] hover:bg-[#f0f4f0] transition-all shadow-sm"
+                        aria-label={`Listen to ${item.word}`}
+                      >
+                        <Volume2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                  {(!currentSection.content.words || currentSection.content.words.length === 0) && (
+                     <div className="col-span-2 text-center text-[#8a8a8a] italic py-8 bg-[#faf9f7] rounded-2xl border border-dashed border-[#d4dcd5]">No vocabulary listed for this lesson.</div>
+                  )}
+                </div>
+                
+                {currentSection.content.text && (
+                  <div className="mt-8 pt-6 border-t border-[#e8e5e0] prose prose-sm max-w-none text-[#6b6b6b] leading-relaxed">
+                    {currentSection.content.text?.split('\n').map((line: string, i: number) => (
+                      <p key={i} className={line.startsWith('#') ? 'text-xl font-bold text-[#3a6d3c] mb-3 mt-6' : 'mb-3 text-base'}>
+                        {line.replace(/^#+/, '').replace(/\*\*/g, '')}
+                      </p>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           )}

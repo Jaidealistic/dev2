@@ -1,5 +1,5 @@
 /**
- * LINGUAACCESS GLOBAL STYLES
+ * LEXFIX GLOBAL STYLES
  * 
  * This stylesheet implements WCAG AAA accessibility standards:
  * - 7:1 contrast ratio for all text
@@ -12,41 +12,41 @@
  * Based on Tailwind CSS configuration in tailwind.config.ts
  */
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 /* ============================================
    OPENDYSLEXIC FONT FACE
    ============================================ */
 
 @font-face {
-  font-family: 'OpenDyslexic';
-  src: url('/fonts/OpenDyslexic-Regular.otf') format('opentype');
+  font-family: "OpenDyslexic";
+  src: url("/fonts/OpenDyslexic-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'OpenDyslexic';
-  src: url('/fonts/OpenDyslexic-Bold.otf') format('opentype');
+  font-family: "OpenDyslexic";
+  src: url("/fonts/OpenDyslexic-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'OpenDyslexic';
-  src: url('/fonts/OpenDyslexic-Italic.otf') format('opentype');
+  font-family: "OpenDyslexic";
+  src: url("/fonts/OpenDyslexic-Italic.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'OpenDyslexic';
-  src: url('/fonts/OpenDyslexic-BoldItalic.otf') format('opentype');
+  font-family: "OpenDyslexic";
+  src: url("/fonts/OpenDyslexic-BoldItalic.otf") format("opentype");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -58,8 +58,9 @@
 
 :root {
   /* Font Configuration — Lexend as primary (dyslexia-friendly) */
-  --font-sans: var(--font-lexend), 'Lexend', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-dyslexia: 'Lexend', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-sans:
+    var(--font-lexend), "Lexend", "Inter", system-ui, -apple-system, sans-serif;
+  --font-dyslexia: "Lexend", "Atkinson Hyperlegible", system-ui, sans-serif;
 
   /* Base sizing — larger for accessibility */
   --font-family: var(--font-sans);
@@ -173,9 +174,21 @@ a:focus-visible {
   box-shadow: none;
 }
 
-/* Remove default link underlines globally */
+/* Remove default link underlines and internal browser password toggles */
 a {
   text-decoration: none;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+}
+
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
 }
 
 /* ============================================
@@ -211,12 +224,6 @@ a {
 .focus-mode {
   --bg-color: #ffffff;
   background: var(--bg-color);
-}
-
-.focus-mode>* {
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* ============================================
@@ -406,7 +413,9 @@ select {
   padding: 0.5rem 0.75rem;
   background: var(--bg-color);
   color: var(--text-color);
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 input:focus,
@@ -437,7 +446,7 @@ label {
    ============================================ */
 
 button,
-[role='button'] {
+[role="button"] {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 4px;
@@ -546,16 +555,24 @@ button:disabled {
    INTERACTIVE ELEMENTS
    ============================================ */
 
-/* Ensure minimum touch target of 44x44px (WCAG AAA) */
+/* Ensure minimum touch target of 44x44px (WCAG AAA) 
+   Excluding radios and checkboxes as they should be scaled via their parent/labels
+   to avoid default rendering distortions. */
 a,
 button,
-[role='button'],
-input[type='checkbox'],
-input[type='radio'],
+[role="button"],
 select,
 textarea {
   min-height: 44px;
   min-width: 44px;
+}
+
+/* Ensure accessible tap area for checkboxes without scaling the box itself */
+input[type="checkbox"],
+input[type="radio"] {
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  cursor: pointer;
 }
 
 /* ============================================
@@ -683,7 +700,7 @@ h6 {
   }
 
   a::after {
-    content: ' (' attr(href) ')';
+    content: " (" attr(href) ")";
   }
 
   h1,

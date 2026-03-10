@@ -41,9 +41,10 @@ export async function POST(req: Request) {
     // Hash password or pattern
     let passwordHash = '';
 
-    if (role === 'LEARNER' && pattern) {
-      // For learners, we treat the pattern as the password
-      // Convert pattern array to string for hashing
+    if (role === 'LEARNER') {
+      if (!pattern || pattern.length === 0) {
+        return NextResponse.json({ error: 'Pattern is required for learners' }, { status: 400 });
+      }
       const patternString = pattern.join('-');
       passwordHash = await bcrypt.hash(patternString, 10);
     } else if (password) {
@@ -55,6 +56,7 @@ export async function POST(req: Request) {
       data: {
         email,
         password: passwordHash,
+        pattern: 'true',
         firstName,
         lastName,
         role,
@@ -76,6 +78,9 @@ export async function POST(req: Request) {
           }
         } : undefined,
       },
+      include: {
+        learnerProfile: true,
+      },
     });
 
     return NextResponse.json({
@@ -84,6 +89,7 @@ export async function POST(req: Request) {
         email: user.email,
         role: user.role,
       },
+      studentId: user.learnerProfile?.studentId,
     });
   } catch (error) {
     console.error('Signup error:', error);

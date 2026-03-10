@@ -115,10 +115,10 @@ export default function LoginPage() {
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <p className="text-xs font-semibold text-gray-700 mb-2">Demo Accounts:</p>
           <div className="space-y-1 text-xs text-gray-600">
-            <p>Educator: educator@linguaaccess.com / educator123</p>
-            <p>Learner: learner@linguaaccess.com / learner123</p>
-            <p>Parent: parent@linguaaccess.com / parent123</p>
-            <p>Homeschool: homeschool@linguaaccess.com / homeschool123</p>
+            <p>Educator: educator@lexfix.com / educator123</p>
+            <p>Learner: learner@lexfix.com / learner123</p>
+            <p>Parent: parent@lexfix.com / parent123</p>
+            <p>Homeschool: homeschool@lexfix.com / homeschool123</p>
           </div>
         </div>
       </CardContent>

@@ -34,6 +34,7 @@ import {
   Flame,
   Award,
 } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 export default function LearnerDashboard() {
   const mainRef = useRef<HTMLElement>(null);
@@ -110,9 +111,9 @@ export default function LearnerDashboard() {
   /* ─── Loading ─── */
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]" role="status" aria-live="polite">
+      <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]">
         <div className="text-center space-y-4">
-          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" aria-hidden="true" />
+          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" />
           <p className="text-[#6b6b6b] text-base" style={{ lineHeight: '1.8' }}>
             {t('status.dataLoading')}
           </p>
@@ -124,7 +125,7 @@ export default function LearnerDashboard() {
   /* ─── Error ─── */
   if (error || !dashboardData) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]" role="alert">
+      <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]">
         <div className="text-center max-w-sm space-y-4">
           <p className="text-[#6b6b6b] text-base" style={{ lineHeight: '1.8' }}>
             {error || 'Something went wrong.'}
@@ -215,17 +216,17 @@ export default function LearnerDashboard() {
   if (focusMode) {
     const focusLesson = nextLesson || recommendedLesson;
     return (
-      <div className="min-h-screen bg-[#faf9f7]">
-        <header className="border-b border-[#e8e5e0]">
-          <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
-            <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">Lexfix</Link>
+      <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
+        <header className="fixed top-0 left-0 w-full z-50 bg-white border-b border-[#e8e5e0]">
+          <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+            <Link href="/" aria-label="LexFix home"><Logo /></Link>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setFocusMode(false)}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[#6b6b6b] hover:bg-[#f0ede8] border border-transparent hover:border-[#e8e5e0]"
                 aria-label="Exit focus mode"
               >
-                <EyeOff className="w-4 h-4" aria-hidden="true" />
+                <EyeOff className="w-4 h-4" />
                 <span>{t('dashboard.focusMode')}</span>
               </button>
               <Link href="/logout" className="text-sm text-[#8a8a8a] hover:text-[#6b6b6b]">{t('nav.signOut')}</Link>
@@ -294,15 +295,15 @@ export default function LearnerDashboard() {
                 <p className="text-[#6b6b6b] mb-6" style={{ lineHeight: '1.8' }}>{focusLesson.description}</p>
               )}
               <div className="flex items-center gap-4 mb-6 text-sm text-[#8a8a8a]">
-                <span className="flex items-center gap-1.5"><Globe className="w-4 h-4" aria-hidden="true" />{focusLesson.language}</span>
-                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" aria-hidden="true" />{focusLesson.duration || '15 min'}</span>
+                <span className="flex items-center gap-1.5"><Globe className="w-4 h-4" />{focusLesson.language}</span>
+                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" />{focusLesson.duration || '15 min'}</span>
               </div>
               <Link
                 href={`/learner/lessons/${focusLesson.lessonId || focusLesson.id}`}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f]"
               >
                 {nextLesson?.status === 'in-progress' ? t('dashboard.continueLesson') : t('dashboard.startLesson')}
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           )}
@@ -328,15 +329,16 @@ export default function LearnerDashboard() {
      FULL DASHBOARD — balanced, per-language
      ══════════════════════════════════════════ */
   return (
-    <div className="min-h-screen bg-[#faf9f7]">
+    <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
       {/* Header */}
-      <header role="banner" className="bg-white border-b border-[#e8e5e0] sticky top-0 z-10">
+      <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex justify-between items-center">
-          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">Lexfix</Link>
+          <Link href="/" aria-label="LexFix home"><Logo /></Link>
           <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1">
             {[
               { href: '/learner/dashboard', key: 'dashboard', active: true },
               { href: '/learner/lessons', key: 'lessons', active: false },
+              { href: '/learner/practice/writing', key: 'practice', active: false },
               { href: '/learner/progress', key: 'progress', active: false },
               { href: '/learner/profile', key: 'profile', active: false },
               { href: '/learner/settings', key: 'settings', active: false },
@@ -422,7 +424,7 @@ export default function LearnerDashboard() {
                   aria-label="Add a language"
                   title="Add a language"
                 >
-                  <Plus className="w-3.5 h-3.5" aria-hidden="true" />
+                  <Plus className="w-3.5 h-3.5" />
                 </button>
 
                 {showAddLang && (
@@ -453,7 +455,7 @@ export default function LearnerDashboard() {
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-[#6b6b6b] hover:bg-[#f0ede8] border border-[#e8e5e0]"
             aria-label="Enter focus mode"
           >
-            <Eye className="w-3.5 h-3.5" aria-hidden="true" />
+            <Eye className="w-3.5 h-3.5" />
             {t('dashboard.focusMode')}
           </button>
         </div>
@@ -538,10 +540,10 @@ export default function LearnerDashboard() {
                 {recommendedLesson.description}
               </p>
               <div className="flex gap-3 text-xs text-[#8a8a8a]">
-                {recommendedLesson.language && <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5" aria-hidden="true" />{recommendedLesson.language}</span>}
-                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" aria-hidden="true" />{recommendedLesson.duration || '15 min'}</span>
+                {recommendedLesson.language && <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5" />{recommendedLesson.language}</span>}
+                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{recommendedLesson.duration || '15 min'}</span>
                 {recommendedLesson.score != null && (
-                  <span className="flex items-center gap-1"><Target className="w-3.5 h-3.5" aria-hidden="true" />{recommendedLesson.score}%</span>
+                  <span className="flex items-center gap-1"><Target className="w-3.5 h-3.5" />{recommendedLesson.score}%</span>
                 )}
               </div>
               {/* Mini progress bar for in-progress lessons */}
@@ -563,7 +565,7 @@ export default function LearnerDashboard() {
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f] flex-shrink-0 transition-colors"
             >
               {inProgressLesson ? t('common.continue') : t('dashboard.startLesson')}
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </section>
@@ -610,7 +612,7 @@ export default function LearnerDashboard() {
                   >
                     <div className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${a.earned ? 'bg-[#7a9b7e] text-white' : 'bg-[#e8e5e0] text-[#8a8a8a]'
                       }`}>
-                      <Award className="w-3.5 h-3.5" aria-hidden="true" />
+                      <Award className="w-3.5 h-3.5" />
                     </div>
                     <div className="min-w-0">
                       <p className={`text-xs font-medium leading-tight ${a.earned ? 'text-[#2d2d2d]' : 'text-[#8a8a8a]'}`}>{a.title}</p>
@@ -631,7 +633,7 @@ export default function LearnerDashboard() {
                 className="inline-flex items-center gap-1.5 text-sm text-[#7a9b7e] hover:text-[#5d7e61] font-medium"
               >
                 {t('common.start')}
-                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </section>
           </div>
@@ -655,7 +657,7 @@ export default function LearnerDashboard() {
 
               {recentLessons.length === 0 ? (
                 <div className="bg-white rounded-xl p-6 border border-[#f0ede8] text-center" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                  <BookOpen className="w-8 h-8 text-[#d4dcd5] mx-auto mb-3" aria-hidden="true" />
+                  <BookOpen className="w-8 h-8 text-[#d4dcd5] mx-auto mb-3" />
                   <p className="text-[#8a8a8a] text-sm mb-4" style={{ lineHeight: '1.8' }}>
                     {t('common.start')} {activeLanguage} {t('dashboard.lessons')}
                   </p>
@@ -664,7 +666,7 @@ export default function LearnerDashboard() {
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7a9b7e] text-white rounded-xl text-sm font-medium hover:bg-[#6b8c6f]"
                   >
                     {activeLanguage} {t('dashboard.lessons')}
-                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               ) : (
@@ -704,7 +706,7 @@ export default function LearnerDashboard() {
                           className="inline-flex items-center gap-1 mt-2 text-xs text-[#7a9b7e] hover:text-[#5d7e61] font-medium"
                         >
                           {lesson.status === 'in-progress' ? t('common.continue') : t('common.start')}
-                          <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                          <ArrowRight className="w-3 h-3" />
                         </Link>
                       )}
                     </article>
@@ -722,30 +724,30 @@ export default function LearnerDashboard() {
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f5f3ef] transition-colors group"
                 >
                   <div className="flex items-center gap-3">
-                    <BookOpen className="w-4 h-4 text-[#7a9b7e]" aria-hidden="true" />
+                    <BookOpen className="w-4 h-4 text-[#7a9b7e]" />
                     <span className="text-sm text-[#2d2d2d]">{activeLanguage} {t('dashboard.lessons')}</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" aria-hidden="true" />
+                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
                 </Link>
                 <Link
                   href="/learner/progress"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f5f3ef] transition-colors group"
                 >
                   <div className="flex items-center gap-3">
-                    <Target className="w-4 h-4 text-[#7a97b0]" aria-hidden="true" />
+                    <Target className="w-4 h-4 text-[#7a97b0]" />
                     <span className="text-sm text-[#2d2d2d]">{t('nav.progress')}</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" aria-hidden="true" />
+                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
                 </Link>
                 <Link
                   href="/learner/settings"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f5f3ef] transition-colors group"
                 >
                   <div className="flex items-center gap-3">
-                    <Globe className="w-4 h-4 text-[#9b8ab0]" aria-hidden="true" />
+                    <Globe className="w-4 h-4 text-[#9b8ab0]" />
                     <span className="text-sm text-[#2d2d2d]">{t('nav.settings')}</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" aria-hidden="true" />
+                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
                 </Link>
               </div>
             </section>

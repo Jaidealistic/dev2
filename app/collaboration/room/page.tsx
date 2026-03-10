@@ -1,16 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Suspense } from 'react';
+import RoomClient from './RoomClient';
 
-export default function PlaceholderPage() {
+export const dynamic = 'force-dynamic';
+
+export default function CollaborationRoomPage() {
   return (
-    <div className="p-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>Coming Soon</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>This feature is currently under development. Stay tuned for updates!</p>
-        </CardContent>
-      </Card>
-    </div>
+    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-[#faf9f7] text-[#6b6b6b]">Loading Room...</div>}>
+      <RoomClient />
+    </Suspense>
   );
 }

@@ -17,6 +17,7 @@ export async function POST(req: Request) {
         role: true,
         firstName: true,
         password: true,
+        pattern: true,
       },
     });
 
@@ -27,8 +28,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Determine auth method based on role
-    // LEARNER uses pattern, others use password
+    // Determine auth method based on role: learners always use pattern
     const authMethod = user.role === 'LEARNER' ? 'pattern' : 'password';
 
     return NextResponse.json({

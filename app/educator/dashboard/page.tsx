@@ -7,7 +7,7 @@ import RecentActivity from '@/components/educator/RecentActivity';
 import QuickActions from '@/components/educator/QuickActions';
 
 export const metadata = {
-  title: 'Educator Dashboard | LinguaAccess',
+  title: 'Educator Dashboard | LexFix',
   description: 'Manage your students and track their progress',
 };
 
