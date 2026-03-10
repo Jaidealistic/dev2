@@ -49,7 +49,8 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# IMPORTANT: Copy the Prisma engines so they are available to the standalone app
+# IMPORTANT: Copy the Prisma schema and engines so they are available to the standalone app
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 
 # Install openssl and libc6-compat in runner for runtime prisma connection
