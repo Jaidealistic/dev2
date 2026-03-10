@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: lexfix-collaboration-service
+    env: node
+    rootDir: services/collaboration-service
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production
+      - key: REDIS_URL
+        sync: false
+      - key: MAIN_APP_URL
+        sync: false
