@@ -10,7 +10,7 @@
  *  - Structured turn-taking cues for autism mode
  */
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ArrowLeft, Send, Pencil, Eraser, Users as UsersIcon,
@@ -35,7 +35,7 @@ interface Participant {
 
 const COLORS = ['#2d2d2d', '#e74c3c', '#3498db', '#27ae60', '#f39c12', '#9b59b6'];
 
-export default function CollaborationRoom() {
+function CollaborationRoomContent() {
   const router = useRouter();
   const params = useSearchParams();
   const roomName = params.get('name') || 'Collaboration Room';
@@ -248,5 +248,13 @@ export default function CollaborationRoom() {
         </aside>
       </div>
     </div>
+  );
+}
+
+export default function CollaborationRoom() {
+  return (
+    <Suspense fallback={<div className="h-screen flex flex-col bg-[#faf9f7] items-center justify-center text-[#8a8a8a] text-sm">Loading room...</div>}>
+      <CollaborationRoomContent />
+    </Suspense>
   );
 }
