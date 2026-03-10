@@ -31,7 +31,8 @@ import {
   Clock,
   ArrowRight,
   Settings,
-, Sparkles } from 'lucide-react';
+  Sparkles 
+} from 'lucide-react';
 
 export default function LearnerProfile() {
   const mainRef = useRef<HTMLElement>(null);

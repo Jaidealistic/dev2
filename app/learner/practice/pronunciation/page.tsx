@@ -26,7 +26,8 @@ import {
   CheckCircle,
   Star,
   AlertCircle,
-, Sparkles } from 'lucide-react';
+  Sparkles 
+} from 'lucide-react';
 
 interface PracticeWord {
   id: string;
