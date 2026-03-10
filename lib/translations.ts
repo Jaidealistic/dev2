@@ -15,6 +15,7 @@ export interface Translations {
         progress: string;
         profile: string;
         practice: string;
+        conversation: string;
         settings: string;
         signOut: string;
     };
@@ -56,6 +57,7 @@ export interface Translations {
         words: string;
         wordsLearned: string;
         practice: string;
+        conversation: string;
         minutesTotal: string;
         currentGoal: string;
         focusMode: string;
@@ -186,6 +188,7 @@ export const translations: Record<Language, Translations> = {
             progress: 'Progress',
             profile: 'Profile',
             practice: 'Practice Writing',
+            conversation: 'Conversation',
             settings: 'Settings',
             signOut: 'Sign out',
         },
@@ -225,6 +228,7 @@ export const translations: Record<Language, Translations> = {
             words: 'Words',
             wordsLearned: 'words learned',
             practice: 'Practice',
+            conversation: 'Conversation Practice',
             minutesTotal: 'minutes total',
             currentGoal: 'Current Goal',
             focusMode: 'Focus Mode',
@@ -348,6 +352,7 @@ export const translations: Record<Language, Translations> = {
             progress: 'முன்னேற்றம்',
             profile: 'சுயவிவரம்',
             practice: 'எழுதுதல் பயிற்சி',
+            conversation: 'உரையாடல்',
             settings: 'அமைப்புகள்',
             signOut: 'வெளியேறு',
         },
@@ -387,6 +392,7 @@ export const translations: Record<Language, Translations> = {
             words: 'சொற்கள்',
             wordsLearned: 'சொற்கள் கற்றது',
             practice: 'பயிற்சி',
+            conversation: 'உரையாடல் பயிற்சி',
             minutesTotal: 'மொத்த நிமிடங்கள்',
             currentGoal: 'தற்போதைய இலக்கு',
             focusMode: 'கவன முறை',

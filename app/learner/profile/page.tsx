@@ -33,6 +33,8 @@ import {
   Settings,
 } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
+  Sparkles 
+} from 'lucide-react';
 
 export default function LearnerProfile() {
   const mainRef = useRef<HTMLElement>(null);
