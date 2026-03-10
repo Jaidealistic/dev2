@@ -409,6 +409,16 @@ function getColorScheme(scheme: string) {
       text: '#f9fafb',
       border: '#4b5563',
     },
+    sepia: {
+      bg: '#f4ecd8',
+      text: '#5b4636',
+      border: '#d3c1a5',
+    },
+    'high-contrast': {
+      bg: '#000000',
+      text: '#ffff00',
+      border: '#ffffff',
+    },
   };
-  return schemes[scheme] || schemes.light;
+  return schemes[scheme as keyof typeof schemes] || schemes.light;
 }

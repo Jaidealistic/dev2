@@ -142,18 +142,18 @@ export default function LearnerProfile() {
     <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
       {/* Header — identical calm nav */}
       <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" aria-label="LexFix home">
+        <div className="w-full pl-6 pr-10 py-4 flex justify-between items-center gap-4">
+          <Link href="/" aria-label="LexFix home" className="flex-shrink-0">
             <Logo />
           </Link>
-          <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1 flex-nowrap">
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-1 md:gap-2">
             {[
-              { href: '/learner/dashboard', label: 'Dashboard', active: false },
-              { href: '/learner/lessons', label: 'Lessons', active: false },
-              { href: '/learner/practice/writing', label: 'Practice Writing', active: false },
-              { href: '/learner/progress', label: 'Progress', active: false },
-              { href: '/learner/profile', label: 'Profile', active: true },
-              { href: '/learner/settings', label: 'Settings', active: false },
+              { href: '/learner/dashboard', key: 'dashboard', active: false },
+              { href: '/learner/lessons', key: 'lessons', active: false },
+              { href: '/learner/practice/writing', key: 'practice', active: false },
+              { href: '/learner/progress', key: 'progress', active: false },
+              { href: '/learner/profile', key: 'profile', active: true },
+              { href: '/learner/settings', key: 'settings', active: false },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -164,10 +164,10 @@ export default function LearnerProfile() {
                   }`}
                 {...(item.active ? { 'aria-current': 'page' as const } : {})}
               >
-                {item.label}
+                {t(`nav.${item.key}`)}
               </Link>
             ))}
-            <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+            <div className="w-px h-5 bg-[#e8e5e0] hidden md:block" />
 
             {/* UI Language Selector */}
             <div
@@ -194,11 +194,11 @@ export default function LearnerProfile() {
               </button>
             </div>
 
-            <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
             <ThemeToggle />
-              <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
-              <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0">
-              Sign out
+              <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+              <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0 whitespace-nowrap">
+              {t('nav.signOut')}
             </Link>
           </nav>
         </div>
@@ -206,10 +206,10 @@ export default function LearnerProfile() {
 
       {/* Main */}
       <main ref={mainRef} tabIndex={-1} className="max-w-5xl mx-auto px-6 py-10">
-        <h1 className="text-2xl font-semibold text-[#2d2d2d] mb-1" style={{ lineHeight: '1.4' }}>
+        <h1 className="text-2xl font-semibold text-[#2d2d2d] mb-1">
           My Profile
         </h1>
-        <p className="text-[#6b6b6b] mb-8" style={{ lineHeight: '1.8' }}>
+        <p className="text-[#6b6b6b] mb-8">
           Your account details and learning preferences.
         </p>
 
