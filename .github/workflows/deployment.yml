@@ -15,27 +15,31 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      - name: Link Railway Project
-        run: railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
+      # -----------------------------
       # Deploy Frontend
+      # -----------------------------
       - name: Deploy Frontend
-        run: railway deploy
+        run: railway up --service frontend --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
+      # -----------------------------
       # Deploy ML Service
+      # -----------------------------
       - name: Deploy ML Service
         working-directory: services/ml-service
-        run: railway deploy
+        run: railway up --service ml-service --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
+      # -----------------------------
       # Deploy Collaboration Service
+      # -----------------------------
       - name: Deploy Collaboration Service
         working-directory: services/collaboration-service
-        run: railway deploy
+        run: railway up --service collaboration-service --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
