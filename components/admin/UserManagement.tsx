@@ -11,8 +11,9 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, UserCheck, UserX, Shield, GraduationCap, Users } from 'lucide-react';
+import { Search, Shield, MoreHorizontal, UserCheck, UserX, GraduationCap, Users } from 'lucide-react';
 import { format } from 'date-fns';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
 interface User {
   id: string;
@@ -26,6 +27,7 @@ interface User {
 }
 
 export default function UserManagement() {
+  const { t } = useLanguage();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -72,20 +74,20 @@ export default function UserManagement() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-foreground">Platform Users</h2>
+      <div className="flex justify-between items-center bg-white p-5 rounded-xl border border-[#f0ede8] shadow-sm">
+        <h2 className="text-lg font-semibold text-[#2d2d2d]">{t('admin.platformUsers')}</h2>
         <div className="relative w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8a8a8a]" />
           <Input
-            placeholder="Search email, name or role..."
+            placeholder={t('admin.searchUsers')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
+            className="pl-9 border-[#e8e5e0] focus-visible:ring-[#7a9b7e] rounded-xl bg-[#faf9f7]"
           />
         </div>
       </div>
 
-      <div className="rounded-md border bg-card">
+      <div className="bg-white rounded-xl border border-[#f0ede8] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>

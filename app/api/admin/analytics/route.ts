@@ -14,10 +14,7 @@ export async function GET() {
       prisma.user.count(),
       prisma.user.count({
         where: {
-          OR: [
-            { lastLogin: { gte: thirtyDaysAgo } },
-            { createdAt: { gte: thirtyDaysAgo } }
-          ]
+          isActive: true
         }
       }),
       (async () => {

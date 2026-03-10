@@ -26,12 +26,12 @@ export default function AdminUsers() {
   return (
     <div className="min-h-screen bg-[#faf9f7]">
       <header className="border-b border-[#e8e5e0] bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center gap-3">
           <Link href="/admin/dashboard" className="text-[#6b6b6b] hover:text-[#2d2d2d]"><ArrowLeft className="w-5 h-5" /></Link>
           <h1 className="text-lg font-semibold text-[#2d2d2d]">User Management</h1>
         </div>
       </header>
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-5xl mx-auto px-6 py-6">
         <div className="flex flex-wrap gap-3 mb-6">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8a8a8a]" />

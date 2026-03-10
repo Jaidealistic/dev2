@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Users, BookOpen, TrendingUp, Activity } from 'lucide-react';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
 interface AnalyticsData {
   overview: {
@@ -28,6 +29,7 @@ interface AnalyticsData {
 }
 
 export default function PlatformAnalytics() {
+  const { t } = useLanguage();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -60,59 +62,59 @@ export default function PlatformAnalytics() {
     <div className="space-y-6">
       {/* Overview Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="bg-white rounded-xl border border-[#f0ede8] shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <CardTitle className="text-sm font-medium text-[#2d2d2d]">{t('admin.totalUsers')}</CardTitle>
+            <Users className="h-4 w-4 text-[#7a9b7e]" aria-hidden="true" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.overview.totalUsers}</div>
-            <p className="text-xs text-muted-foreground">
-              {data.overview.activeUsers} active this month
+            <div className="text-2xl font-bold text-[#2d2d2d]">{data.overview.totalUsers}</div>
+            <p className="text-xs text-[#8a8a8a]">
+              {data.overview.activeUsers} {t('admin.activeUsers')}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white rounded-xl border border-[#f0ede8] shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Lessons</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <CardTitle className="text-sm font-medium text-[#2d2d2d]">{t('admin.totalLessons')}</CardTitle>
+            <BookOpen className="h-4 w-4 text-[#7a9b7e]" aria-hidden="true" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.overview.totalLessons}</div>
-            <p className="text-xs text-muted-foreground">Published content</p>
+            <div className="text-2xl font-bold text-[#2d2d2d]">{data.overview.totalLessons}</div>
+            <p className="text-xs text-[#8a8a8a]">{t('admin.publishedContent')}</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white rounded-xl border border-[#f0ede8] shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Completion Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <CardTitle className="text-sm font-medium text-[#2d2d2d]">{t('admin.completionRate')}</CardTitle>
+            <TrendingUp className="h-4 w-4 text-[#7a9b7e]" aria-hidden="true" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.overview.completionRate}%</div>
-            <p className="text-xs text-muted-foreground">Average across platform</p>
+            <div className="text-2xl font-bold text-[#2d2d2d]">{data.overview.completionRate}%</div>
+            <p className="text-xs text-[#8a8a8a]">{t('admin.averageAcrossPlatform')}</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white rounded-xl border border-[#f0ede8] shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <CardTitle className="text-sm font-medium text-[#2d2d2d]">{t('admin.activeAccounts')}</CardTitle>
+            <Activity className="h-4 w-4 text-[#7a9b7e]" aria-hidden="true" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {Math.floor(data.overview.activeUsers * 0.05)}
+            <div className="text-2xl font-bold text-[#2d2d2d]">
+              {data.overview.activeUsers}
             </div>
-            <p className="text-xs text-muted-foreground">Users online</p>
+            <p className="text-xs text-[#8a8a8a]">{t('admin.unrestrictedUsers')}</p>
           </CardContent>
         </Card>
       </div>
 
       {/* User Growth Chart */}
-      <Card>
+      <Card className="bg-white rounded-xl border border-[#f0ede8] shadow-sm">
         <CardHeader>
-          <CardTitle>User Growth (Last 30 Days)</CardTitle>
+          <CardTitle className="text-lg font-semibold text-[#2d2d2d]">User Growth (Last 30 Days)</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
@@ -135,9 +137,9 @@ export default function PlatformAnalytics() {
       </Card>
 
       {/* Lesson Activity Chart */}
-      <Card>
+      <Card className="bg-white rounded-xl border border-[#f0ede8] shadow-sm">
         <CardHeader>
-          <CardTitle>Lesson Activity (Last 7 Days)</CardTitle>
+          <CardTitle className="text-lg font-semibold text-[#2d2d2d]">Lesson Activity (Last 7 Days)</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
