@@ -119,7 +119,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="bg-background text-text-primary antialiased">
+      <body className="bg-background text-text-primary antialiased" suppressHydrationWarning>
         {/* Skip to main content link for keyboard users */}
         <a
           href="#main-content"

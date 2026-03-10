@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, Shield, MoreHorizontal, UserCheck, UserX } from 'lucide-react';
+import { Search, Shield, MoreHorizontal, UserCheck, UserX, GraduationCap, Users } from 'lucide-react';
 import { format } from 'date-fns';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 
