@@ -2,32 +2,40 @@ name: Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  deploy:
+  deploy-railway:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      - name: Login Railway
-        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+      - name: Link Railway Project
+        run: railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      - name: Link Railway project
-        run: railway link ${{ secrets.RAILWAY_PROJECT_ID }}
-
+      # Deploy Frontend
       - name: Deploy Frontend
         run: railway deploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
+      # Deploy ML Service
       - name: Deploy ML Service
         working-directory: services/ml-service
         run: railway deploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
+      # Deploy Collaboration Service
       - name: Deploy Collaboration Service
         working-directory: services/collaboration-service
         run: railway deploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
