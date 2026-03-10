@@ -1,0 +1,7 @@
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS                          PORTS                                             NAMES
+0bf4f7e39b92   mongo                "docker-entrypoint.s???"   10 minutes ago   Restarting (62) 7 seconds ago                                                     linguaaccess-mongo
+5216e61a7f49   mongo                "docker-entrypoint.s???"   11 minutes ago   Up 11 minutes                   0.0.0.0:27019->27017/tcp, [::]:27019->27017/tcp   test-mongo
+1bcff4d67a66   postgres:16-alpine   "docker-entrypoint.s???"   12 minutes ago   Up 12 minutes (healthy)         0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp       linguaaccess-postgres
+7d7904036ae4   redis:7-alpine       "docker-entrypoint.s???"   12 minutes ago   Up 12 minutes (healthy)         0.0.0.0:6380->6379/tcp, [::]:6380->6379/tcp       linguaaccess-redis
+7714f7af67bb   redis:7              "docker-entrypoint.s???"   4 weeks ago      Exited (255) 3 weeks ago        0.0.0.0:6379->6379/tcp                            admiring_mclean
+1108a9aa3fa5   webgoat/webgoat      "java -Duser.home=/h???"   2 months ago     Exited (143) 2 months ago                                                         vibrant_mccarthy

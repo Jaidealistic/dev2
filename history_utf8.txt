@@ -1,0 +1,30 @@
+﻿ce52a20 fix: collaboration service dockerfile build fixes
+9ee0bf2 fix: correctly install typescript and dev dependencies in collaboration builder
+4095ac7 fix: copy prisma schema into dockerrunner to fix runtime schema missing error
+aa31da8 Merge pull request #13 from Jaidealistic/feature/ui-fixes
+d5dd973 fix: wrap useSearchParams in Suspense boundary for static rendering compatibility
+4f34935 added logo
+338f5ab Added logo
+2bb27d7 fix: remove vercel.json to prevent deployment conflicts
+ea46c1b fix: remove legacy railway.json to fix parser error
+b27ccad Merge branch 'feature/cicd-setup'
+b9f6c71 Add GitHub Actions CI/CD pipelines for monorepo
+d5f8033 Add GitHub Actions CI/CD pipelines for monorepo
+97c77a2 fix: remove render.yaml to prevent Railway parser error
+cf41e32 Merge pull request #12 from Jaidealistic/feature/admin-system
+e06d655 Fix GraduationCap ReferenceError in UserManagement
+e498fbd Merge pull request #11 from Jaidealistic/feature/ui-fixes
+89540c9 Implement full System Health monitoring and localization
+1355dcd Fix missing admin translation keys and localize dashboard tabs
+ced6934 Standardize Admin Users page layout to max-w-5xl
+cb06780 Fix runtime error: Wrap Admin area in LanguageProvider and ToastProvider
+bb4ddf2 Fix Admin Dashboard header overlap and finalize therapeutic UI color alignment
+0220412 Enhance Admin Dashboard UI to strongly align with Learner therapeutic aesthetic
+71d7ce0 Fix Admin Analytics returning randomized active user data instead of retrieving it from the DB
+e78983f build: add render and vercel deployment configs
+f6b8810 Merge pull request #10 from Jaidealistic/feature/ui-fixes
+30ce1f1 Add EN/ta language toggle to Profile and Settings navbars for consistency
+0743bb5 Standardize language toggle pill on progress page to match dashboard and practice writing
+0204bd3 Fix navbar alignment, sync content widths, fix missing Logo import in dashboard, fix stray Sparkles imports
+8466195 Fix navbar alignment by syncing header max-width with main content max-width (max-w-5xl)
+93246ba Fix navbar CSS position to fixed across all learner pages for a professional look

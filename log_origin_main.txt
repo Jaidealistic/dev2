@@ -1,0 +1,15 @@
+﻿207bc05 Merge pull request #18 from Jaidealistic/feature/accessibility-talkback-mode
+ef0574d Merge pull request #17 from Jaidealistic/main
+98ba731 Merge pull request #16 from Jaidealistic/feature/voice-navigation
+88ff78e Merge pull request #15 from Jaidealistic/main
+8346a1c Fix production dependencies and vercel configuration
+c945893 Move jsonwebtoken and bcryptjs to production dependencies
+78cb7d2 Refactor pages with useSearchParams into Server/Client split to fix prerender errors
+01dd830 Fix prerendering error in collaboration room page
+3dd44c4 Update deployment configs (vercel.json, railway.json for services)
+4f47d4c Add buildEnv DATABASE_URL to vercel.json to satisfy Prisma build
+b27ccad Merge branch 'feature/cicd-setup'
+b9f6c71 Add GitHub Actions CI/CD pipelines for monorepo
+d5f8033 Add GitHub Actions CI/CD pipelines for monorepo
+97c77a2 fix: remove render.yaml to prevent Railway parser error
+cf41e32 Merge pull request #12 from Jaidealistic/feature/admin-system

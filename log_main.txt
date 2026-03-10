@@ -1,0 +1,15 @@
+﻿ce52a20 fix: collaboration service dockerfile build fixes
+9ee0bf2 fix: correctly install typescript and dev dependencies in collaboration builder
+4095ac7 fix: copy prisma schema into dockerrunner to fix runtime schema missing error
+aa31da8 Merge pull request #13 from Jaidealistic/feature/ui-fixes
+d5dd973 fix: wrap useSearchParams in Suspense boundary for static rendering compatibility
+4f34935 added logo
+338f5ab Added logo
+2bb27d7 fix: remove vercel.json to prevent deployment conflicts
+ea46c1b fix: remove legacy railway.json to fix parser error
+b27ccad Merge branch 'feature/cicd-setup'
+b9f6c71 Add GitHub Actions CI/CD pipelines for monorepo
+d5f8033 Add GitHub Actions CI/CD pipelines for monorepo
+97c77a2 fix: remove render.yaml to prevent Railway parser error
+cf41e32 Merge pull request #12 from Jaidealistic/feature/admin-system
+e06d655 Fix GraduationCap ReferenceError in UserManagement

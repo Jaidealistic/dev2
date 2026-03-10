@@ -133,16 +133,18 @@ export default function LessonsClient() {
     return (
         <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
             <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
-                <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+                <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center gap-2">
                     <Link href="/" aria-label="LexFix home">
                         <Logo />
                     </Link>
 
-                    <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1 flex-nowrap">
+                    <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-0.5 md:gap-1 flex-nowrap">
                         {[
                             { href: '/learner/dashboard', key: 'dashboard', active: false },
                             { href: '/learner/lessons', key: 'lessons', active: true },
                             { href: '/learner/practice/writing', key: 'practice', active: false },
+                            { href: '/learner/practice/conversation', key: 'conversation', active: false },
+                            { href: '/learner/practice/pronunciation', key: 'pronunciation', active: false },
                             { href: '/learner/progress', key: 'progress', active: false },
                             { href: '/learner/profile', key: 'profile', active: false },
                             { href: '/learner/settings', key: 'settings', active: false },
@@ -150,7 +152,7 @@ export default function LessonsClient() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${item.active
+                                className={`px-2 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${item.active
                                     ? 'bg-[#f0f4f0] text-[#5d7e61]'
                                     : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
                                     }`}
@@ -212,6 +214,7 @@ export default function LessonsClient() {
                                 : 'bg-[#f0ede8] text-[#6b6b6b] hover:bg-[#e8e5e0]'
                                 }`}
                         >
+                            <Globe className="w-3.5 h-3.5 mr-1.5" />
                             {t('common.all')}
                         </button>
                         {(learningLanguages.length > 0 ? learningLanguages : languages).map((lang: string) => (
@@ -223,7 +226,7 @@ export default function LessonsClient() {
                                     : 'bg-[#f0ede8] text-[#6b6b6b] hover:bg-[#e8e5e0]'
                                     }`}
                             >
-                                {lang}
+                                {lang || <Globe className="w-3.5 h-3.5" />}
                             </button>
                         ))}
                     </div>
