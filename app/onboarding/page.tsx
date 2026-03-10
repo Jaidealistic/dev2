@@ -35,7 +35,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
 interface LanguageGoals {
   confidenceLevel: string;
@@ -119,7 +119,6 @@ const stepConfig = [
   { label: 'Profile', icon: User },
   { label: 'Languages', icon: BookOpen },
   { label: 'Needs', icon: Accessibility },
-  { label: 'Preferences', icon: BookOpen },
   { label: 'Assessment', icon: Brain },
   { label: 'Review', icon: ClipboardCheck },
 ];
@@ -172,10 +171,10 @@ export default function EnhancedOnboardingPage() {
     placementLevel: null,
   });
 
-  const totalSteps = 7;
+  const totalSteps = 6;
 
   const handleNext = async () => {
-    if (currentStep === 6) {
+    if (currentStep === 5) {
       await submitAssessment();
     } else if (currentStep < totalSteps) {
       // When moving from step 2 to 3, initialise languageGoals for each chosen language
@@ -220,7 +219,7 @@ export default function EnhancedOnboardingPage() {
       if (!result.assessment) throw new Error(result.error || 'Failed to submit assessment');
 
       setFormData(prev => ({ ...prev, placementLevel: result.assessment.placementLevel }));
-      setCurrentStep(7);
+      setCurrentStep(6);
     } catch (error) {
       console.error('Error submitting assessment:', error);
       alert('Failed to submit assessment. Please try again.');
@@ -254,10 +253,10 @@ export default function EnhancedOnboardingPage() {
 
       // Update global accessibility context for immediate reflection without reload
       setPreferences({
-        fontFamily: formData.fontFamily,
+        fontFamily: formData.fontFamily as 'system' | 'lexend' | 'opendyslexic' | 'atkinson',
         fontSize: formData.textSize,
         lineSpacing: formData.lineSpacing,
-        colorScheme: formData.colorScheme,
+        colorScheme: formData.colorScheme as 'light' | 'dark' | 'high-contrast' | 'sepia',
         speechShowSubtitles: formData.captionsEnabled,
         enableSpeechRec: formData.speechRecognitionEnabled,
         reducedMotion: formData.reducedMotion,
@@ -776,169 +775,8 @@ export default function EnhancedOnboardingPage() {
               </div>
             )}
 
-            {/* ──── Step 4: Accessibility Preferences ──── */}
-            {currentStep === 5 && (
-              <div className="space-y-6">
-                <div>
-                  <h2 className={`text-2xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Customise Your Experience
-                  </h2>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                    Adjust the display to match your comfort. Changes apply live.
-                  </p>
-                </div>
-
-                {/* Font selection */}
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Font Style
-                  </label>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    {[
-                      { value: 'default', label: 'Default', desc: 'Lexend', style: 'font-sans' },
-                      { value: 'opendyslexic', label: 'Dyslexia-Friendly', desc: 'OpenDyslexic', style: 'font-opendyslexic' },
-                      { value: 'arial', label: 'Simple', desc: 'Arial', style: 'font-sans' },
-                      { value: 'georgia', label: 'Classic', desc: 'Georgia', style: 'font-serif' },
-                    ].map((font) => (
-                      <button
-                        key={font.value}
-                        onClick={() => {
-                          updateFormData('fontFamily', font.value);
-                          if (typeof document !== 'undefined') {
-                            const fontStack = font.value === 'opendyslexic' ? '"OpenDyslexic", system-ui, sans-serif' : font.value === 'arial' ? 'Arial, sans-serif' : font.value === 'georgia' ? 'Georgia, serif' : '"Lexend", system-ui, sans-serif';
-                            document.documentElement.style.setProperty('--font-family', fontStack);
-                            document.body.style.fontFamily = fontStack;
-                          }
-                        }}
-                        className={`relative p-3 border-2 rounded-xl text-left transition-all duration-200 ${formData.fontFamily === font.value
-                          ? (isDark ? 'border-[#7da47f] bg-[#7da47f]/20 ring-2 ring-[#7da47f]/40' : 'border-[#7da47f] bg-[#e8f5e9] shadow-md ring-2 ring-[#7da47f]/30')
-                          : (isDark ? 'border-gray-700 bg-gray-800/30 hover:border-gray-600' : 'border-gray-200 hover:border-[#7da47f]/50 hover:shadow-sm')
-                          }`}
-                      >
-                        {formData.fontFamily === font.value && (
-                          <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-                            <Check className="w-3 h-3 text-white" aria-hidden="true" />
-                          </div>
-                        )}
-                        <div className={`${font.style} font-semibold text-sm ${formData.fontFamily === font.value ? (isDark ? 'text-white' : 'text-gray-900') : (isDark ? 'text-gray-300' : 'text-gray-700')}`}>{font.label}</div>
-                        <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{font.desc}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Text size */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                      Text Size
-                    </label>
-                    <span className={`text-xs font-mono px-2 py-0.5 rounded-md ${isDark ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
-                      {formData.textSize}px
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="12"
-                    max="24"
-                    value={formData.textSize}
-                    onChange={(e) => updateFormData('textSize', parseInt(e.target.value))}
-                    className="w-full accent-[#7da47f]"
-                  />
-                  <div className="flex justify-between text-[10px] text-gray-400 mt-1">
-                    <span>Small</span>
-                    <span>Medium</span>
-                    <span>Large</span>
-                  </div>
-                </div>
-
-                {/* Line spacing */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                      Line Spacing
-                    </label>
-                    <span className={`text-xs font-mono px-2 py-0.5 rounded-md ${isDark ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
-                      {formData.lineSpacing}x
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="1"
-                    max="2.5"
-                    step="0.1"
-                    value={formData.lineSpacing}
-                    onChange={(e) => updateFormData('lineSpacing', parseFloat(e.target.value))}
-                    className="w-full accent-[#7da47f]"
-                  />
-                  <div className="flex justify-between text-[10px] text-gray-400 mt-1">
-                    <span>Compact</span>
-                    <span>Normal</span>
-                    <span>Spacious</span>
-                  </div>
-                </div>
-
-                {/* ===== LIVE PREVIEW ===== */}
-                <div className={`rounded-xl p-5 border-2 ${isDark ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'}`}>
-                  <div className={`text-xs font-medium mb-3 flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    <span>👁️</span>
-                    <span>Live Preview</span>
-                  </div>
-                  <div
-                    className={`rounded-lg p-4 transition-all duration-300 ${isDark ? 'bg-gray-800' : 'bg-white'}`}
-                    style={{
-                      fontFamily: fontFamilyMap[formData.fontFamily] || 'system-ui',
-                      fontSize: `${formData.textSize}px`,
-                      lineHeight: formData.lineSpacing
-                    }}
-                  >
-                    <p className={isDark ? 'text-gray-200' : 'text-gray-800'}>
-                      The quick brown fox jumps over the lazy dog.
-                    </p>
-                    <p className={`mt-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                      வானதை நடுத்தகடில் வாழும் விலங்குகள் வேகமாக ஓடுகின்றன.
-                    </p>
-                    <p className={`text-sm mt-3 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
-                      Your text will look like this in lessons!
-                    </p>
-                  </div>
-                </div>
-
-                {/* Color scheme */}
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Colour Scheme
-                  </label>
-                  <div className="grid grid-cols-3 gap-2.5">
-                    {[
-                      { value: 'light', label: 'Light', icon: '☀️', bg: 'bg-white', border: 'border-gray-200' },
-                      { value: 'dark', label: 'Dark', icon: '🌙', bg: 'bg-gray-900', border: 'border-gray-700' },
-                      { value: 'high-contrast', label: 'High Contrast', icon: '🔲', bg: 'bg-black', border: 'border-yellow-400' },
-                    ].map((scheme) => (
-                      <button
-                        key={scheme.value}
-                        onClick={() => updateFormData('colorScheme', scheme.value)}
-                        className={`relative p-3 border-2 rounded-xl transition-all duration-200 text-center ${formData.colorScheme === scheme.value
-                          ? 'border-[#7da47f] bg-[#e8f5e9] ring-2 ring-[#7da47f]/40 shadow-md'
-                          : (isDark ? 'border-gray-700 hover:border-gray-600 bg-gray-800/30' : 'border-gray-200 hover:border-[#7da47f]/50 hover:shadow-sm')
-                          }`}
-                      >
-                        {formData.colorScheme === scheme.value && (
-                          <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-                            <Check className="w-2.5 h-2.5 text-white" aria-hidden="true" />
-                          </div>
-                        )}
-                        <span className="text-xl block mb-1">{scheme.icon}</span>
-                        <div className={`text-xs font-medium ${formData.colorScheme === scheme.value ? 'text-gray-900' : (isDark ? 'text-gray-300' : 'text-gray-700')}`}>{scheme.label}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* ──── Step 5: Quick Assessment ──── */}
-            {currentStep === 6 && (
+            {currentStep === 5 && (
               <div className="space-y-6">
                 <div>
                   <h2 className={`text-2xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -982,7 +820,7 @@ export default function EnhancedOnboardingPage() {
             )}
 
             {/* ──── Step 6: Review & Confirm ──── */}
-            {currentStep === 7 && (
+            {currentStep === 6 && (
               <div className="space-y-6">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] mb-4 shadow-lg shadow-green-200/40">
@@ -1092,7 +930,7 @@ export default function EnhancedOnboardingPage() {
                   </>
                 ) : (
                   <>
-                    {currentStep === 6 ? 'Submit Assessment' : 'Continue'}
+                    {currentStep === 5 ? 'Submit Assessment' : 'Continue'}
                     <ChevronRight className="w-4 h-4" aria-hidden="true" />
                   </>
                 )}
