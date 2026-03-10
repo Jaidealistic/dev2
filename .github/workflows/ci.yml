@@ -7,17 +7,18 @@ on:
     branches: [main, develop]
 
 jobs:
-  # ==============================
-  # Frontend / Next.js CI
-  # ==============================
+
+  # =========================
+  # Frontend (Next.js)
+  # =========================
   frontend-ci:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -35,13 +36,13 @@ jobs:
       - name: Type Check
         run: npx tsc --noEmit
 
-      - name: Run Unit Tests
+      - name: Run Tests
         run: npm run test
 
 
-  # ==============================
+  # =========================
   # ML Service (FastAPI)
-  # ==============================
+  # =========================
   ml-service-ci:
     runs-on: ubuntu-latest
 
@@ -50,7 +51,7 @@ jobs:
         working-directory: services/ml-service
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -69,9 +70,9 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
 
-  # ==============================
-  # Collaboration Service (Node.js)
-  # ==============================
+  # =========================
+  # Collaboration Service
+  # =========================
   collaboration-service-ci:
     runs-on: ubuntu-latest
 
@@ -80,10 +81,10 @@ jobs:
         working-directory: services/collaboration-service
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -94,3 +95,27 @@ jobs:
 
       - name: Type Check
         run: npx tsc --noEmit
+
+
+  # =========================
+  # Deploy ML Service to Railway
+  # =========================
+  deploy-ml-service:
+    needs: ml-service-ci
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: services/ml-service
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        run: railway up --service ml-service --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
