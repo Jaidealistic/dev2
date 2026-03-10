@@ -38,10 +38,10 @@ export default function AdminHeader({
                     <div className="w-px h-5 bg-[#e8e5e0] mx-1" />
                     <div>
                         <h1 className="text-lg font-semibold text-[#2d2d2d] leading-none">
-                            {title}
+                            {t('admin.dashboard')}
                         </h1>
                         <p className="text-xs text-[#8a8a8a] mt-1">
-                            {description}
+                            Platform administration and monitoring
                         </p>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ export default function AdminHeader({
                         onClick={handleSignOut}
                         className="text-sm text-[#8a8a8a] hover:text-[#c27171] transition-colors font-medium px-2 py-1"
                     >
-                        Sign Out
+                        {t('nav.signOut')}
                     </button>
                 </div>
             </div>

@@ -9,6 +9,7 @@ import UserManagement from '@/components/admin/UserManagement';
 import SystemHealth from '@/components/admin/SystemHealth';
 import ContentModeration from '@/components/admin/ContentModeration';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import AdminDashboardTabs from '@/components/admin/AdminDashboardTabs';
 
 import AdminHeader from '@/components/admin/AdminHeader';
 
@@ -31,12 +32,7 @@ export default async function AdminDashboard() {
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-6 py-8">
         <Tabs defaultValue="analytics" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-white p-1.5 rounded-xl border border-[#f0ede8] shadow-sm mb-6 h-auto">
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">Analytics</TabsTrigger>
-            <TabsTrigger value="users" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">Users</TabsTrigger>
-            <TabsTrigger value="content" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">Content</TabsTrigger>
-            <TabsTrigger value="system" className="data-[state=active]:bg-[#e8f0e9] data-[state=active]:text-[#5a8c5c] rounded-lg py-2.5 text-sm font-medium transition-colors">System</TabsTrigger>
-          </TabsList>
+          <AdminDashboardTabs />
 
           <TabsContent value="analytics" className="mt-6">
             <PlatformAnalytics />

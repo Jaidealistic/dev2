@@ -43,6 +43,7 @@ export interface Translations {
         language: string;
         addLanguage: string;
         uiLanguage: string;
+        upload: string;
     };
 
     // Dashboard
@@ -178,6 +179,23 @@ export interface Translations {
         connectionLost: string;
         dataLoading: string;
     };
+    // Admin
+    admin: {
+        dashboard: string;
+        analytics: string;
+        users: string;
+        content: string;
+        system: string;
+        platformUsers: string;
+        searchUsers: string;
+        totalUsers: string;
+        totalLessons: string;
+        activeAccounts: string;
+        publishedContent: string;
+        unrestrictedUsers: string;
+        averageAcrossPlatform: string;
+        activeUsers: string;
+    };
 }
 
 export const translations: Record<Language, Translations> = {
@@ -215,6 +233,7 @@ export const translations: Record<Language, Translations> = {
             language: 'Language',
             addLanguage: 'Add a language',
             uiLanguage: 'Interface Language',
+            upload: 'Upload Lesson',
         },
 
         dashboard: {
@@ -343,6 +362,23 @@ export const translations: Record<Language, Translations> = {
             connectionLost: 'Connection lost',
             dataLoading: 'Loading your data...',
         },
+        admin: {
+            dashboard: 'Admin Dashboard',
+            analytics: 'Analytics',
+            users: 'Users',
+            content: 'Content',
+            system: 'System',
+            platformUsers: 'Platform Users',
+            searchUsers: 'Search email, name or role...',
+            totalUsers: 'Total Users',
+            totalLessons: 'Total Lessons',
+            completionRate: 'Completion Rate',
+            activeAccounts: 'Active Accounts',
+            publishedContent: 'Published content',
+            unrestrictedUsers: 'Unrestricted users',
+            averageAcrossPlatform: 'Average across platform',
+            activeUsers: 'active this month',
+        },
     },
 
     ta: {
@@ -379,6 +415,7 @@ export const translations: Record<Language, Translations> = {
             language: 'மொழி',
             addLanguage: 'மொழி சேர்க்கவும்',
             uiLanguage: 'இடைமுக மொழி',
+            upload: 'பாடம் பதிவேற்றவும்',
         },
 
         dashboard: {
@@ -506,6 +543,23 @@ export const translations: Record<Language, Translations> = {
             errorOccurred: 'பிழை ஏற்பட்டது',
             connectionLost: 'இணைப்பு துண்டிக்கப்பட்டது',
             dataLoading: 'உங்கள் தரவை ஏற்றுகிறது...',
+        },
+        admin: {
+            dashboard: 'நிர்வாக டாஷ்போர்டு',
+            analytics: 'பகுப்பாய்வு',
+            users: 'பயனர்கள்',
+            content: 'உள்ளடக்கம்',
+            system: 'அமைப்பு',
+            platformUsers: 'தள பயனர்கள்',
+            searchUsers: 'மின்னஞ்சல், பெயர் அல்லது பங்கினைத் தேடு...',
+            totalUsers: 'மொத்த பயனர்கள்',
+            totalLessons: 'மொத்த பாடங்கள்',
+            completionRate: 'முடிவு விகிதம்',
+            activeAccounts: 'செயலில் உள்ள கணக்குகள்',
+            publishedContent: 'வெளியிடப்பட்ட உள்ளடக்கம்',
+            unrestrictedUsers: 'கட்டுப்பாடற்ற பயனர்கள்',
+            averageAcrossPlatform: 'தளம் முழுவதும் சராசரி',
+            activeUsers: 'இந்த மாதம் செயலில்',
         },
     },
 };
