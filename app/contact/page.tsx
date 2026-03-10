@@ -52,7 +52,7 @@ export default function ContactPage() {
                 </div>
             </header>
 
-            <main className="flex-grow max-w-5xl mx-auto px-6 py-16 w-full">
+            <main id="main-content" className="flex-grow max-w-5xl mx-auto px-6 py-16 w-full">
                 <div className="max-w-2xl mx-auto text-center mb-12">
                     <h1 className="text-3xl font-semibold text-[#2d2d2d] mb-4">Get in Touch</h1>
                     <p className="text-[#6b6b6b] text-base leading-relaxed">

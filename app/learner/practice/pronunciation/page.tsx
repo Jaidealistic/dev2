@@ -26,7 +26,7 @@ import {
   CheckCircle,
   Star,
   AlertCircle,
-  Sparkles 
+  Sparkles
 } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
 

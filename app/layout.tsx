@@ -131,10 +131,10 @@ export default function RootLayout({
         <Providers>
           {/* Accessibility Provider - makes preferences available to all components */}
           <AccessibilityProvider>
-            {/* Main content */}
-            <main id="main-content" className="min-h-screen">
+            {/* Page content - landmarks (header, main, footer) are defined inside children */}
+            <div id="layout-wrapper">
               {children}
-            </main>
+            </div>
 
             {/* Global live region for screen reader announcements */}
             <div

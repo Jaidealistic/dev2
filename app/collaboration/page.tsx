@@ -53,7 +53,7 @@ export default function CollaborationLobby() {
       <header className="border-b border-[#e8e5e0] bg-white">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/learner/dashboard" className="text-[#6b6b6b] hover:text-[#2d2d2d]">
+            <Link href="/learner/dashboard" className="text-[#6b6b6b] hover:text-[#2d2d2d]" aria-label="Back to dashboard">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <h1 className="text-lg font-semibold text-[#2d2d2d]">Collaboration Rooms</h1>
@@ -67,7 +67,7 @@ export default function CollaborationLobby() {
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-6 py-6">
+      <main id="main-content" className="max-w-4xl mx-auto px-6 py-6">
         {/* Create room form */}
         {showCreate && (
           <div className="bg-white rounded-2xl border border-[#e8e5e0] p-6 mb-6">
@@ -138,7 +138,7 @@ export default function CollaborationLobby() {
             </button>
           ))}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,0 +1,37 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: Warm up
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 50
+      name: Ramp up load
+    - duration: 120
+      arrivalRate: 50
+      name: Sustained load
+  payload:
+    # Path is relative to the config file
+    path: "users.csv"
+    fields:
+      - "email"
+      - "password"
+
+scenarios:
+  - name: "Landing Page & Login Flow"
+    flow:
+      - get:
+          url: "/"
+      - think: 2
+      - get:
+          url: "/login"
+      - think: 1
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "{{ email }}"
+            pattern: [0, 1, 2, 3] # Using pattern for learner login as per e2e
+      - think: 5
+      - get:
+          url: "/dashboard"
