@@ -1,0 +1,21 @@
+﻿
+> lexfix@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+npm : Error: 
+At line:1 char:37
++ npm install ; npx prisma generate ; npm run 
+build 2>&1 | Out-File -Fi ...
++                                     
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Error 
+   : :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+EPERM: operation not permitted, unlink 
+'D:\sem6\software eng\dev2\node_modules\.prisma\cli
+ent\query_engine-windows.dll.node'
+
+
