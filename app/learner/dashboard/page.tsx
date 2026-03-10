@@ -33,6 +33,7 @@ import {
   X,
   Flame,
   Award,
+  Sparkles,
 } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -108,6 +109,10 @@ export default function LearnerDashboard() {
       setAddingLang(false);
     }
   }
+
+  const handleStartLesson = (lessonId: string) => {
+    router.push(`/learner/lessons/${lessonId}`);
+  };
 
   /* ─── Loading ─── */
   if (isLoading) {
@@ -260,7 +265,7 @@ export default function LearnerDashboard() {
                     : 'bg-[#f0ede8] text-[#6b6b6b] hover:bg-[#e8e5e0]'
                     }`}
                 >
-                  {lang}
+                  {lang || <Globe className="w-3.5 h-3.5" />}
                 </button>
               ))}
             </div>
@@ -335,13 +340,15 @@ export default function LearnerDashboard() {
     <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
       {/* Header */}
       <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
-        <div className="w-full pl-6 pr-10 py-4 flex justify-between items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center gap-2">
           <Link href="/" aria-label="LexFix home" className="flex-shrink-0"><Logo /></Link>
-          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-1 md:gap-2">
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-0.5 md:gap-1">
             {[
               { href: '/learner/dashboard', key: 'dashboard', active: true },
               { href: '/learner/lessons', key: 'lessons', active: false },
               { href: '/learner/practice/writing', key: 'practice', active: false },
+              { href: '/learner/practice/conversation', key: 'conversation', active: false },
+              { href: '/learner/practice/pronunciation', key: 'pronunciation', active: false },
               { href: '/learner/progress', key: 'progress', active: false },
               { href: '/learner/profile', key: 'profile', active: false },
               { href: '/learner/settings', key: 'settings', active: false },
@@ -349,7 +356,7 @@ export default function LearnerDashboard() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${item.active
+                className={`px-2.5 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${item.active
                   ? 'bg-[#f0f4f0] text-[#5d7e61]'
                   : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
                   }`}
@@ -427,7 +434,10 @@ export default function LearnerDashboard() {
                   aria-label="Add a language"
                   title="Add a language"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-1 text-[#6b6b6b]">
+                    <Globe className="w-3.5 h-3.5" />
+                    <Plus className="w-3 h-3" />
+                  </div>
                 </button>
 
                 {showAddLang && (
@@ -749,6 +759,16 @@ export default function LearnerDashboard() {
                   <div className="flex items-center gap-3">
                     <Globe className="w-4 h-4 text-[#9b8ab0]" />
                     <span className="text-sm text-[#2d2d2d]">{t('nav.settings')}</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
+                </Link>
+                <Link
+                  href="/learner/practice/conversation"
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f5f3ef] transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <Sparkles className="w-4 h-4 text-[#7a9b7e]" />
+                    <span className="text-sm text-[#2d2d2d]">AI Tutor Conversation</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-[#8a8a8a] group-hover:text-[#6b6b6b]" />
                 </Link>

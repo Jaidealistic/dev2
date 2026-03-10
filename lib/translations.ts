@@ -16,6 +16,7 @@ export interface Translations {
         profile: string;
         practice: string;
         conversation: string;
+        pronunciation: string;
         settings: string;
         signOut: string;
     };
@@ -216,8 +217,9 @@ export const translations: Record<Language, Translations> = {
             lessons: 'Lessons',
             progress: 'Progress',
             profile: 'Profile',
-            practice: 'Practice Writing',
-            conversation: 'Conversation',
+            practice: 'Writing',
+            conversation: 'AI Tutor',
+            pronunciation: 'Speaking',
             settings: 'Settings',
             signOut: 'Sign out',
         },
@@ -408,8 +410,9 @@ export const translations: Record<Language, Translations> = {
             lessons: 'பாடங்கள்',
             progress: 'முன்னேற்றம்',
             profile: 'சுயவிவரம்',
-            practice: 'எழுதுதல் பயிற்சி',
-            conversation: 'உரையாடல்',
+            practice: 'எழுத்து பயிற்சி',
+            conversation: 'AI பயிற்சியாளர்',
+            pronunciation: 'பேச்சு பயிற்சி',
             settings: 'அமைப்புகள்',
             signOut: 'வெளியேறு',
         },
