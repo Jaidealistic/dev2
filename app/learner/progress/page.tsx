@@ -32,6 +32,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
 
 interface ProgressData {
   competencies: any[];
@@ -183,13 +184,13 @@ export default function ProgressPage() {
     <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
 
       {/* ── Header ── */}
-      <header role="banner" className="bg-white border-b border-[#f0ede8] fixed top-0 left-0 w-full z-50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" aria-label="LexFix home">
+      <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
+        <div className="w-full pl-6 pr-10 py-4 flex items-center justify-between gap-4">
+          <Link href="/" aria-label="LexFix home" className="flex-shrink-0">
             <Logo />
           </Link>
 
-          <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1 flex-nowrap">
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-1 md:gap-2">
             {[
               { href: '/learner/dashboard', key: 'dashboard', active: false },
               { href: '/learner/lessons', key: 'lessons', active: false },
@@ -238,9 +239,11 @@ export default function ProgressPage() {
               </button>
             </div>
 
-            <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
-            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0">
-              Sign out
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <ThemeToggle />
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0 whitespace-nowrap">
+              {t('nav.signOut')}
             </Link>
           </nav>
         </div>

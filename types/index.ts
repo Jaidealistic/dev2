@@ -56,7 +56,7 @@ export interface LearnerProfile {
   fontSize: number;
   lineSpacing: number;
   letterSpacing: number;
-  colorScheme: 'light' | 'dark' | 'sepia';
+  colorScheme: 'light' | 'dark' | 'high-contrast' | 'sepia';
   reducedMotion: boolean;
   highlightText: boolean;
   bionicReading: boolean;
@@ -132,7 +132,7 @@ export interface AccessibilityPreferences {
   fontSize: number;
   lineSpacing: number;
   letterSpacing: number;
-  colorScheme: 'light' | 'dark';
+  colorScheme: 'light' | 'dark' | 'high-contrast' | 'sepia';
   reducedMotion: boolean;
   highlightText: boolean;
   bionicReading: boolean;

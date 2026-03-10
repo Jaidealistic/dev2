@@ -63,6 +63,11 @@ export const metadata: Metadata = {
 
   // Accessibility metadata
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  icons: {
+    icon: '/image.png',
+    shortcut: '/image.png',
+    apple: '/image.png',
+  },
   robots: {
     index: true,
     follow: true,
@@ -114,7 +119,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="bg-background text-text-primary antialiased">
+      <body className="bg-background text-text-primary antialiased" suppressHydrationWarning>
         {/* Skip to main content link for keyboard users */}
         <a
           href="#main-content"

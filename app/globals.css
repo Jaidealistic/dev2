@@ -67,6 +67,8 @@
   --font-size: 17px;
   --line-spacing: 1.75;
   --letter-spacing: 0.01em;
+  --nav-gap: 1.25rem;
+  --header-font-size: 0.875rem;
 
   /* Calm palette — warm neutrals, muted greens, soft blues */
   --bg-color: #faf9f7;
@@ -199,6 +201,54 @@ input::-webkit-credentials-auto-fill-button {
   font-family: var(--font-dyslexia);
   letter-spacing: 0.05em;
   line-height: 1.8;
+}
+
+/* OpenDyslexic specific adjustments */
+.font-opendyslexic, 
+[class*="font-opendyslexic"] {
+  letter-spacing: 0.02em !important;
+  word-spacing: 0.05em !important;
+  --header-font-size: 0.775rem; /* Slightly smaller to fit full bar */
+}
+
+/* Automatic adjustments for Tamil language (OpenProject #12615) */
+html[lang^="ta"] body {
+  --line-spacing: 1.95 !important;
+  --letter-spacing: 0.02em !important;
+  --header-font-size: 0.825rem;
+}
+
+html[lang^="ta"] .grid {
+  gap: 1.5rem !important; /* Increase grid spacing for Tamil */
+}
+
+/* Ensure header navigation handles long words/wide fonts without scrolling */
+header nav {
+  gap: var(--nav-gap) !important;
+  padding-right: 0.5rem; /* Defensive padding for last item */
+}
+
+header nav a {
+  font-size: var(--header-font-size) !important;
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 1280px) {
+  :root { --nav-gap: 0.75rem; }
+}
+
+@media (max-width: 1024px) {
+  :root { --nav-gap: 0.5rem; }
+  html[lang^="ta"] { --header-font-size: 0.75rem; }
+}
+
+/* Custom scrollbar-free scroll area for edge cases if ever needed, but user wants full bar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Bionic reading effect - highlight first 40% of words */

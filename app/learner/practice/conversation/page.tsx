@@ -12,6 +12,8 @@ import { ArrowLeft, Sparkles, AlertCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { AITutorDialogue } from '@/components/AITutorDialogue';
 import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
+import ThemeToggle from '@/components/ThemeToggle';
+import Logo from '@/components/ui/Logo';
 
 export default function ConversationPracticePage() {
   const [isSupported, setIsSupported] = useState(true);
@@ -29,20 +31,34 @@ export default function ConversationPracticePage() {
   return (
     <div className="min-h-screen bg-[#f5f1eb]">
       {/* Header */}
-      <header role="banner" className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-[#7a9b7e]" />
-              <span>LexFix</span>
-            </div>
+      <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
+        <div className="w-full pl-6 pr-10 py-4 flex justify-between items-center gap-4">
+          <Link href="/" aria-label="LexFix home" className="flex-shrink-0">
+            <Logo />
           </Link>
-          <nav role="navigation" aria-label="Main navigation" className="flex gap-6">
-            <Link href="/learner/dashboard" className="text-gray-700 hover:text-[#7a9b7e] font-medium transition-colors">Dashboard</Link>
-            <Link href="/learner/lessons" className="text-gray-700 hover:text-[#7a9b7e] font-medium transition-colors">My Lessons</Link>
-            <Link href="/learner/progress" className="text-gray-700 hover:text-[#7a9b7e] font-medium transition-colors">Progress</Link>
-            <Link href="/learner/settings" className="text-gray-700 hover:text-[#7a9b7e] font-medium transition-colors">Settings</Link>
-            <Link href="/logout" className="text-gray-700 hover:text-red-500 font-medium transition-colors">Logout</Link>
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-1 md:gap-2">
+            {[
+              { href: '/learner/dashboard', key: 'dashboard', active: false },
+              { href: '/learner/lessons', key: 'lessons', active: false },
+              { href: '/learner/practice/writing', key: 'practice', active: false },
+              { href: '/learner/progress', key: 'progress', active: false },
+              { href: '/learner/profile', key: 'profile', active: false },
+              { href: '/learner/settings', key: 'settings', active: false },
+            ].map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]"
+              >
+                 {item.key}
+              </Link>
+            ))}
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <ThemeToggle />
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0 whitespace-nowrap">
+              Sign out
+            </Link>
           </nav>
         </div>
       </header>

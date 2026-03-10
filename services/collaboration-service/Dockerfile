@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install ALL dependencies so tsc is available for building
+RUN npm ci
 
 # Copy source
 COPY . .
@@ -19,10 +19,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy built files and node_modules
+# Copy package files so we can install just production dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy built files from builder
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
 
 # Expose port
 EXPOSE 3002
