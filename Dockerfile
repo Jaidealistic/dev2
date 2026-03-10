@@ -25,7 +25,7 @@ ENV PRISMA_SKIP_POSTINSTALL_GENERATE=1
 
 # Re-install openssl and libc6-compat for prisma generation in builder
 RUN apk add --no-cache openssl libc6-compat
-RUN npx prisma generate
+RUN npx prisma@5.20.0 generate
 RUN npm run build
 
 # Stage 3: Runner
@@ -55,6 +55,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 
 # Install openssl and libc6-compat in runner for runtime prisma connection
 RUN apk add --no-cache openssl libc6-compat
+# Install prisma globally to avoid downloading it during container boot
+RUN npm install -g prisma@5.20.0
 
 USER nextjs
 
@@ -64,4 +66,4 @@ ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
 # Run migrations before starting the app
-CMD npx prisma migrate deploy && node server.js
+CMD prisma migrate deploy && node server.js
