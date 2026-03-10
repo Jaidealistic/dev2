@@ -190,11 +190,22 @@ export interface Translations {
         searchUsers: string;
         totalUsers: string;
         totalLessons: string;
+        completionRate: string;
         activeAccounts: string;
         publishedContent: string;
         unrestrictedUsers: string;
         averageAcrossPlatform: string;
         activeUsers: string;
+        systemHealth: string;
+        databaseStatus: string;
+        serverStatus: string;
+        uptime: string;
+        memoryUsage: string;
+        healthy: string;
+        degraded: string;
+        down: string;
+        refreshing: string;
+        lastUpdated: string;
     };
 }
 
@@ -378,6 +389,16 @@ export const translations: Record<Language, Translations> = {
             unrestrictedUsers: 'Unrestricted users',
             averageAcrossPlatform: 'Average across platform',
             activeUsers: 'active this month',
+            systemHealth: 'System Health Status',
+            databaseStatus: 'Databases',
+            serverStatus: 'Server Status',
+            uptime: 'Uptime',
+            memoryUsage: 'Memory Usage',
+            healthy: 'Healthy',
+            degraded: 'Degraded',
+            down: 'Offline',
+            refreshing: 'Refreshing...',
+            lastUpdated: 'Last updated',
         },
     },
 
@@ -560,6 +581,16 @@ export const translations: Record<Language, Translations> = {
             unrestrictedUsers: 'கட்டுப்பாடற்ற பயனர்கள்',
             averageAcrossPlatform: 'தளம் முழுவதும் சராசரி',
             activeUsers: 'இந்த மாதம் செயலில்',
+            systemHealth: 'அமைப்பு ஆரோக்கிய நிலை',
+            databaseStatus: 'தரவுத்தளங்கள்',
+            serverStatus: 'சர்வர் நிலை',
+            uptime: 'இயக்க நேரம்',
+            memoryUsage: 'நினைவக பயன்பாடு',
+            healthy: 'ஆரோக்கியமானது',
+            degraded: 'குறைந்த நிலை',
+            down: 'ஆஃப்லைன்',
+            refreshing: 'புதுப்பிக்கிறது...',
+            lastUpdated: 'கடைசியாக புதுப்பிக்கப்பட்டது',
         },
     },
 };
