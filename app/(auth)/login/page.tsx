@@ -14,7 +14,7 @@ export default function LoginPage() {
         </Link>
       </header>
 
-      <div className="flex-1 flex items-center justify-center px-6 py-8">
+      <main id="main-content" className="flex-1 flex items-center justify-center px-6 py-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-14 h-14 bg-[#f0f7f0] rounded-2xl mb-3" aria-hidden="true">
@@ -28,7 +28,11 @@ export default function LoginPage() {
             <LoginForm />
           </div>
         </div>
-      </div>
+      </main>
+
+      <footer className="py-6 text-center">
+        <p className="text-xs text-slate-400">&copy; 2026 LexFix. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export default function SignUpPage() {
         </Link>
       </header>
 
-      <div className="flex-1 flex items-center justify-center px-6 py-8">
+      <main id="main-content" className="flex-1 flex items-center justify-center px-6 py-8">
         <div className="w-full max-w-2xl">
           <div className="text-center mb-10">
             <h1 className="text-4xl font-bold text-slate-900 mb-2">Join Lexfix</h1>
@@ -30,7 +30,7 @@ export default function SignUpPage() {
                 <div className="w-14 h-14 bg-[#f0f7f0] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" aria-hidden="true">
                   <GraduationCap className="w-7 h-7 text-[#5a8c5c]" aria-hidden="true" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">I&apos;m a Student</h3>
+                <h2 className="text-xl font-bold text-slate-900 mb-2">I&apos;m a Student</h2>
                 <p className="text-slate-500 text-sm mb-4">
                   Start your learning journey with English & Tamil lessons. Sign in with a fun pattern instead of a password!
                 </p>
@@ -46,7 +46,7 @@ export default function SignUpPage() {
                 <div className="w-14 h-14 bg-[#f0f7f0] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" aria-hidden="true">
                   <Users className="w-7 h-7 text-[#7da47f]" aria-hidden="true" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">I&apos;m a Parent</h3>
+                <h2 className="text-xl font-bold text-slate-900 mb-2">I&apos;m a Parent</h2>
                 <p className="text-slate-500 text-sm mb-4">
                   Track your child&apos;s progress and support their learning. Link accounts using their Student ID.
                 </p>
@@ -62,7 +62,7 @@ export default function SignUpPage() {
                 <div className="w-14 h-14 bg-[#f0f7f0] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" aria-hidden="true">
                   <Briefcase className="w-7 h-7 text-[#5a8c5c]" aria-hidden="true" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">I&apos;m an Adult</h3>
+                <h2 className="text-xl font-bold text-slate-900 mb-2">I&apos;m an Adult</h2>
                 <p className="text-slate-500 text-sm mb-4">
                   An independent learning experience designed for adults. Set your own pace and goals.
                 </p>
@@ -78,7 +78,11 @@ export default function SignUpPage() {
             <Link href="/login" className="font-semibold text-[#5a8c5c] hover:text-[#4a7c4c]">Sign in</Link>
           </div>
         </div>
-      </div>
+      </main>
+
+      <footer className="py-6 text-center">
+        <p className="text-xs text-slate-400">&copy; 2026 LexFix. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
