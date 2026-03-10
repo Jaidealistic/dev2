@@ -15,7 +15,7 @@ import { Mic, MicOff, Loader2, Sparkles } from 'lucide-react';
  */
 
 export default function VoiceAssistant() {
-    const { preferences } = useAccessibility();
+    const { preferences, updatePreference } = useAccessibility();
     const router = useRouter();
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState('');
@@ -148,7 +148,7 @@ export default function VoiceAssistant() {
         }
 
         return false;
-    }, [router]);
+    }, [router, preferences, updatePreference]);
 
     const startListening = useCallback(() => {
         if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
@@ -172,12 +172,21 @@ export default function VoiceAssistant() {
         recognition.onresult = (event: any) => {
             const result = event.results[event.results.length - 1];
             const text = result[0].transcript;
+            console.log('VoiceAssistant: Recognized text:', text);
             setTranscript(text);
 
             if (result.isFinal) {
-                const handled = processCommand(text);
+                const command = text.toLowerCase().trim();
+                console.log('VoiceAssistant: Processing final command:', command);
+                const handled = processCommand(command);
                 if (handled) {
-                    setTimeout(() => setIsListening(false), 1500);
+                    // Stay open briefly to show success
+                    setTimeout(() => setIsListening(false), 2000);
+                } else {
+                    console.warn('VoiceAssistant: No match found for command:', command);
+                    setLastAction(`Unrecognized: "${command}"`);
+                    // Stay open briefly to show error/transcript
+                    setTimeout(() => setIsListening(false), 3000);
                 }
             }
         };
@@ -225,18 +234,22 @@ export default function VoiceAssistant() {
 
     return (
         <div className="fixed bottom-6 right-24 z-[100000] flex flex-col items-end gap-3">
-            {isListening && (
+            {(isListening || (lastAction && lastAction.startsWith('Unrecognized'))) && (
                 <div className="bg-white/90 backdrop-blur-md border border-[#7a9b7e]/30 p-4 rounded-2xl shadow-2xl max-w-xs animate-in fade-in slide-in-from-bottom-4 duration-300">
                     <div className="flex items-center gap-2 mb-2">
                         <Sparkles className="w-4 h-4 text-[#7a9b7e] animate-pulse" />
                         <span className="text-xs font-semibold text-[#7a9b7e] uppercase tracking-wider">Voice Assistant</span>
                     </div>
                     <p className="text-sm font-medium text-[#2d2d2d] leading-relaxed">
-                        {transcript || 'How can I help you?'}
+                        {isListening ? (transcript || 'How can I help you?') : transcript}
                     </p>
                     {lastAction && (
-                        <div className="mt-2 text-xs font-bold text-[#5a8c5c] bg-[#5a8c5c]/10 px-2 py-1 rounded-md flex items-center gap-1.5 animate-in zoom-in-95">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#5a8c5c] animate-ping" />
+                        <div className={`mt-2 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1.5 animate-in zoom-in-95 ${lastAction.startsWith('Unrecognized')
+                            ? 'text-amber-700 bg-amber-100'
+                            : 'text-[#5a8c5c] bg-[#5a8c5c]/10'
+                            }`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${lastAction.startsWith('Unrecognized') ? 'bg-amber-600' : 'bg-[#5a8c5c] animate-ping'
+                                }`} />
                             {lastAction}
                         </div>
                     )}
