@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Home, Users, FileText, MessageSquare, LogOut } from 'lucide-react';
+import { Home, Users, FileText, MessageSquare, LogOut } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -21,13 +22,10 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-8">
-            <Link href="/educator/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <BookOpen className="h-5 w-5 text-white" aria-hidden="true" />
-              </div>
-              <span className="font-bold text-lg">LexFix</span>
+            <Link href="/educator/dashboard" aria-label="LexFix home">
+              <Logo />
             </Link>
-            
+
             <div className="flex gap-1">
               {links.map((link) => {
                 const Icon = link.icon;
@@ -36,11 +34,10 @@ export default function Navigation() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      isActive
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isActive
                         ? 'bg-blue-50 text-blue-600'
                         : 'text-gray-600 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <Icon className="h-4 w-4" aria-hidden="true" />
                     <span className="text-sm font-medium">{link.label}</span>

@@ -72,7 +72,6 @@ export async function GET(req: Request) {
       // All lesson progress
       prisma.lessonProgress.findMany({
         where: { learnerId: learnerProfile.id },
-        include: { learner: false },
         orderBy: { updatedAt: 'desc' }
       }),
       // Recent progress for streak calculation
@@ -182,8 +181,14 @@ export async function GET(req: Request) {
 
   } catch (error) {
     console.error('Dashboard fetch error:', error);
+    if (error instanceof Error) {
+      console.error('Stack:', error.stack);
+    }
     return NextResponse.json(
-      { error: 'Internal server error' },
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }

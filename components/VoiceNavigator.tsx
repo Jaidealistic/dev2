@@ -35,7 +35,7 @@ const VoiceNavContext = createContext<VoiceNavContextValue>({
   isListening: false,
   isSupported: false,
   isPermissionGranted: false,
-  toggleListening: () => {},
+  toggleListening: () => { },
   lastCommand: '',
 });
 
@@ -146,9 +146,13 @@ export function VoiceNavigatorProvider({ children }: { children: React.ReactNode
     };
 
     recognition.onerror = (event: any) => {
-      if (event.error !== 'no-speech') {
-        console.error('Voice nav error:', event.error);
+      if (event.error === 'no-speech' || event.error === 'aborted') {
+        // Handle timeout or manual abort silently
+        setIsListening(false);
+        return;
       }
+      console.error('Voice nav error:', event.error);
+      setIsListening(false);
     };
 
     recognition.onend = () => {
@@ -247,11 +251,10 @@ export function VoiceNavigatorProvider({ children }: { children: React.ReactNode
           }
         }}
         aria-label={isListening ? 'Stop voice navigation' : 'Start voice navigation'}
-        className={`fixed bottom-20 right-6 z-[9998] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all ${
-          isListening
+        className={`fixed bottom-20 right-6 z-[9998] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all ${isListening
             ? 'bg-[#10b981] text-white animate-pulse shadow-[0_0_20px_rgba(16,185,129,0.5)]'
             : 'bg-white text-[#2d2d2d] border-2 border-[#e8e5e0] hover:bg-[#f5f3ef] hover:scale-105'
-        }`}
+          }`}
       >
         {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
       </button>

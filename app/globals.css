@@ -67,6 +67,8 @@
   --font-size: 17px;
   --line-spacing: 1.75;
   --letter-spacing: 0.01em;
+  --nav-gap: 1.25rem;
+  --header-font-size: 0.875rem;
 
   /* Calm palette — warm neutrals, muted greens, soft blues */
   --bg-color: #faf9f7;
@@ -174,9 +176,21 @@ a:focus-visible {
   box-shadow: none;
 }
 
-/* Remove default link underlines globally */
+/* Remove default link underlines and internal browser password toggles */
 a {
   text-decoration: none;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+}
+
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
 }
 
 /* ============================================
@@ -187,6 +201,54 @@ a {
   font-family: var(--font-dyslexia);
   letter-spacing: 0.05em;
   line-height: 1.8;
+}
+
+/* OpenDyslexic specific adjustments */
+.font-opendyslexic, 
+[class*="font-opendyslexic"] {
+  letter-spacing: 0.02em !important;
+  word-spacing: 0.05em !important;
+  --header-font-size: 0.775rem; /* Slightly smaller to fit full bar */
+}
+
+/* Automatic adjustments for Tamil language (OpenProject #12615) */
+html[lang^="ta"] body {
+  --line-spacing: 1.95 !important;
+  --letter-spacing: 0.02em !important;
+  --header-font-size: 0.825rem;
+}
+
+html[lang^="ta"] .grid {
+  gap: 1.5rem !important; /* Increase grid spacing for Tamil */
+}
+
+/* Ensure header navigation handles long words/wide fonts without scrolling */
+header nav {
+  gap: var(--nav-gap) !important;
+  padding-right: 0.5rem; /* Defensive padding for last item */
+}
+
+header nav a {
+  font-size: var(--header-font-size) !important;
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 1280px) {
+  :root { --nav-gap: 0.75rem; }
+}
+
+@media (max-width: 1024px) {
+  :root { --nav-gap: 0.5rem; }
+  html[lang^="ta"] { --header-font-size: 0.75rem; }
+}
+
+/* Custom scrollbar-free scroll area for edge cases if ever needed, but user wants full bar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Bionic reading effect - highlight first 40% of words */
@@ -214,17 +276,12 @@ a {
   background: var(--bg-color);
 }
 
-.focus-mode > * {
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* ============================================
    REDUCED MOTION SUPPORT
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -511,6 +568,7 @@ button:disabled {
    ============================================ */
 
 @media (forced-colors: active) {
+
   /* En force black text on white background */
   body {
     forced-color-adjust: none;
@@ -547,16 +605,24 @@ button:disabled {
    INTERACTIVE ELEMENTS
    ============================================ */
 
-/* Ensure minimum touch target of 44x44px (WCAG AAA) */
+/* Ensure minimum touch target of 44x44px (WCAG AAA) 
+   Excluding radios and checkboxes as they should be scaled via their parent/labels
+   to avoid default rendering distortions. */
 a,
 button,
 [role="button"],
-input[type="checkbox"],
-input[type="radio"],
 select,
 textarea {
   min-height: 44px;
   min-width: 44px;
+}
+
+/* Ensure accessible tap area for checkboxes without scaling the box itself */
+input[type="checkbox"],
+input[type="radio"] {
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  cursor: pointer;
 }
 
 /* ============================================

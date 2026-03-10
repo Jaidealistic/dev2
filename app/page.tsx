@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Mic, Gamepad2, Settings, BookOpen, Users, GraduationCap, ArrowRight, Shield, Globe } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 export default function LandingPage() {
   return (
@@ -7,8 +8,8 @@ export default function LandingPage() {
       {/* Header */}
       <header role="banner" className="border-b border-[#e8e5e0] bg-white">
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]" aria-label="LexFix home">
-            LexFix
+          <Link href="/" aria-label="LexFix home">
+            <Logo />
           </Link>
           <nav aria-label="Main navigation" className="flex items-center gap-3">
             <Link href="/login" className="px-5 py-2 rounded-lg text-sm font-medium text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d] transition-colors">

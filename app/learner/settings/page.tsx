@@ -7,6 +7,7 @@
 import React, { useState } from 'react';
 import { useAccessibility } from '@/components/providers/AccessibilityProvider';
 import { useToast } from '@/components/providers/ToastProvider';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 import {
   Eye,
   Volume2,
@@ -17,17 +18,20 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function LearnerSettingsPage() {
   const { preferences, setPreferences } = useAccessibility();
   const { success, error: toastError } = useToast();
+  const { language, setLanguage, t } = useLanguage();
 
   const [formData, setFormData] = useState({
     fontFamily: preferences.fontFamily || 'lexend',
     fontSize: preferences.fontSize || 18,
     lineSpacing: preferences.lineSpacing || 1.6,
     letterSpacing: preferences.letterSpacing || 0.05,
-    colorScheme: (preferences.colorScheme || 'light') as 'light' | 'dark',
+    colorScheme: (preferences.colorScheme || 'light') as 'light' | 'dark' | 'high-contrast' | 'sepia',
     reducedMotion: preferences.reducedMotion || false,
     captionsEnabled: preferences.speechShowSubtitles ?? true,
     audioDescriptions: false,
@@ -49,6 +53,31 @@ export default function LearnerSettingsPage() {
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Instantly apply visual accessibility settings upon toggle
+  const handleToggle = (key: keyof typeof formData, value: any) => {
+    setFormData(prev => ({ ...prev, [key]: value }));
+
+    const prefMappings: Record<string, string> = {
+      fontFamily: 'fontFamily',
+      fontSize: 'fontSize',
+      lineSpacing: 'lineSpacing',
+      letterSpacing: 'letterSpacing',
+      colorScheme: 'colorScheme',
+      reducedMotion: 'reducedMotion',
+      // Map UI names to internal AccessibilityContext names
+      captionsEnabled: 'speechShowSubtitles',
+      speechRecognition: 'enableSpeechRec',
+      adhdMode: 'adhdMode',
+      dyslexiaMode: 'dyslexiaMode',
+      autismMode: 'autismMode',
+      apdMode: 'apdMode',
+    };
+
+    if (prefMappings[key]) {
+      setPreferences({ [prefMappings[key]]: value });
+    }
+  };
 
   async function handleSave() {
     setIsSaving(true);
@@ -98,41 +127,100 @@ export default function LearnerSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#faf9f7]">
-      {/* Compact header */}
-      <header className="border-b border-[#f0ede8] bg-white/80 backdrop-blur-sm sticky top-0 z-30">
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/learner/dashboard" className="flex items-center gap-2 text-[#6b6b6b] hover:text-[#2d2d2d] transition-colors">
-            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-            <span className="text-sm font-medium">Back</span>
+    <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
+      <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
+        <div className="w-full pl-6 pr-10 py-4 flex items-center justify-between gap-4">
+          <Link href="/" aria-label="LexFix home" className="flex-shrink-0">
+            <Logo />
           </Link>
-          <h1 className="text-base font-semibold text-[#2d2d2d]">Settings</h1>
-          <button
-            onClick={handleSave}
-            disabled={isSaving}
-            className="flex items-center gap-1.5 px-4 py-1.5 bg-[#7a9b7e] hover:bg-[#6b8c6f] text-white text-sm font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {isSaving ? (
-              <>
-                <div className="animate-spin rounded-full h-3.5 w-3.5 border-2 border-white border-t-transparent" aria-hidden="true" />
-                <span>Saving</span>
-              </>
-            ) : saveSuccess ? (
-              <>
-                <Check className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Saved</span>
-              </>
-            ) : (
-              <>
-                <Save className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Save</span>
-              </>
-            )}
-          </button>
+
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-1 md:gap-2">
+            {[
+              { href: '/learner/dashboard', key: 'dashboard', active: false },
+              { href: '/learner/lessons', key: 'lessons', active: false },
+              { href: '/learner/practice/writing', key: 'practice', active: false },
+              { href: '/learner/progress', key: 'progress', active: false },
+              { href: '/learner/profile', key: 'profile', active: false },
+              { href: '/learner/settings', key: 'settings', active: true },
+            ].map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${item.active
+                  ? 'bg-[#f0f4f0] text-[#5d7e61]'
+                  : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
+                  }`}
+                {...(item.active ? { 'aria-current': 'page' as const } : {})}
+              >
+                {t(`nav.${item.key}`)}
+              </Link>
+            ))}
+
+            <div className="w-px h-5 bg-[#e8e5e0] hidden md:block" />
+
+            {/* UI Language Selector */}
+            <div
+              className="flex items-center rounded-lg border border-[#e8e5e0] overflow-hidden flex-shrink-0"
+              role="group"
+              aria-label="UI language"
+            >
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${language === 'en' ? 'bg-[#7a9b7e] text-white' : 'text-[#8a8a8a] hover:bg-[#f0ede8] bg-white'}`}
+                aria-pressed={language === 'en'}
+                title="Switch to English"
+              >
+                EN
+              </button>
+              <div className="w-px h-4 bg-[#e8e5e0]" />
+              <button
+                onClick={() => setLanguage('ta')}
+                className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${language === 'ta' ? 'bg-[#7a9b7e] text-white' : 'text-[#8a8a8a] hover:bg-[#f0ede8] bg-white'}`}
+                aria-pressed={language === 'ta'}
+                title="தமிழுக்கு மாறவும்"
+              >
+                த
+              </button>
+            </div>
+
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+
+            <div className="flex items-center gap-2 md:gap-3">
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="flex items-center gap-1.5 px-3 md:px-4 py-1.5 bg-[#7a9b7e] hover:bg-[#6b8c6f] text-white text-sm font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isSaving ? (
+                  <>
+                    <div className="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent" aria-hidden="true" />
+                    <span className="hidden sm:inline">{t('common.saving') || 'Saving'}</span>
+                  </>
+                ) : saveSuccess ? (
+                  <>
+                    <Check className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span className="hidden sm:inline">{t('common.saved') || 'Saved'}</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span className="hidden sm:inline">{t('common.save') || 'Save'}</span>
+                  </>
+                )}
+              </button>
+
+              <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+              <ThemeToggle />
+              <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+              <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0 transition-colors whitespace-nowrap">
+                {t('nav.signOut')}
+              </Link>
+            </div>
+          </nav>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-5">
+      <main className="max-w-5xl mx-auto px-6 py-8 space-y-5">
         {/* Page intro */}
         <p className="text-sm text-[#8a8a8a]">Customise your learning experience and privacy preferences.</p>
 
@@ -146,25 +234,25 @@ export default function LearnerSettingsPage() {
               label="ADHD Focus Mode"
               description="Simplifies interface, breaks lessons into single sentences, and enables focus timers."
               checked={formData.adhdMode}
-              onChange={(c) => setFormData({ ...formData, adhdMode: c })}
+              onChange={(c) => handleToggle('adhdMode', c)}
             />
             <ToggleOption
               label="Dyslexia Support"
               description="Uses OpenDyslexic font, increases letter spacing, and enables text-to-speech helpers."
               checked={formData.dyslexiaMode}
-              onChange={(c) => setFormData({ ...formData, dyslexiaMode: c })}
+              onChange={(c) => handleToggle('dyslexiaMode', c)}
             />
             <ToggleOption
               label="Autism Structure"
               description="Enables predictable layouts, clear instructions, and removes ambiguous metaphors."
               checked={formData.autismMode}
-              onChange={(c) => setFormData({ ...formData, autismMode: c })}
+              onChange={(c) => handleToggle('autismMode', c)}
             />
             <ToggleOption
               label="Auditory Processing (APD)"
               description="Emphasizes visual cues, subtitles, and reduces background noise."
               checked={formData.apdMode}
-              onChange={(c) => setFormData({ ...formData, apdMode: c })}
+              onChange={(c) => handleToggle('apdMode', c)}
             />
           </div>
         </Section>
@@ -234,6 +322,8 @@ export default function LearnerSettingsPage() {
             {[
               { value: 'light', label: 'Light', swatch: 'bg-white border-[#e8e5e0]' },
               { value: 'dark', label: 'Dark', swatch: 'bg-[#1e1e1e] border-[#333]' },
+              { value: 'sepia', label: 'Sepia', swatch: 'bg-[#f4ecd8] border-[#d3c1a5]' },
+              { value: 'high-contrast', label: 'High Contrast', swatch: 'bg-black border-yellow-400' },
             ].map((scheme) => (
               <button
                 key={scheme.value}
@@ -252,22 +342,22 @@ export default function LearnerSettingsPage() {
           {/* Toggles */}
           <div className="space-y-2">
             <ToggleOption
-              label="Reduced motion"
-              description="Minimise animations and transitions"
+              label="Reduced Motion"
+              description="Minimize animations and transitions"
               checked={formData.reducedMotion}
-              onChange={(v) => setFormData({ ...formData, reducedMotion: v })}
+              onChange={(c) => handleToggle('reducedMotion', c)}
             />
             <ToggleOption
-              label="Captions"
-              description="Show text captions for audio and video"
-              checked={formData.captionsEnabled}
-              onChange={(v) => setFormData({ ...formData, captionsEnabled: v })}
-            />
-            <ToggleOption
-              label="Speech recognition"
-              description="Enable voice input for pronunciation practice"
+              label="Voice Assistant"
+              description="Enable 'Hey LexFix' to control navigation"
               checked={formData.speechRecognition}
-              onChange={(v) => setFormData({ ...formData, speechRecognition: v })}
+              onChange={(c) => handleToggle('speechRecognition', c)}
+            />
+            <ToggleOption
+              label="Captions & Subtitles"
+              description="Always show text for spoken content"
+              checked={formData.captionsEnabled}
+              onChange={(c) => handleToggle('captionsEnabled', c)}
             />
           </div>
         </Section>
@@ -288,10 +378,10 @@ export default function LearnerSettingsPage() {
               onChange={(v) => setFormData({ ...formData, backgroundMusic: v })}
             />
             <ToggleOption
-              label="Audio descriptions"
-              description="Provide audio descriptions for visual content"
-              checked={formData.audioDescriptions}
-              onChange={(v) => setFormData({ ...formData, audioDescriptions: v })}
+              label="High Contrast Mode"
+              description="Use dark background with light text for better visibility"
+              checked={formData.colorScheme === 'dark'}
+              onChange={(c) => handleToggle('colorScheme', c ? 'dark' : 'light')}
             />
           </div>
         </Section>

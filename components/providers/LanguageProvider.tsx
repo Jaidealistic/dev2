@@ -37,7 +37,19 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     const setLanguage = (lang: Language) => {
         setLanguageState(lang);
         localStorage.setItem('lexfix-ui-language', lang);
+
+        // Sync document lang for TTS and accessibility
+        if (typeof document !== 'undefined') {
+            document.documentElement.lang = lang === 'ta' ? 'ta-IN' : 'en-US';
+        }
     };
+
+    // Keep document lang in sync on mount
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            document.documentElement.lang = language === 'ta' ? 'ta-IN' : 'en-US';
+        }
+    }, [language]);
 
     // Translation function with nested key support (e.g., 'nav.dashboard')
     const t = (key: string): string => {

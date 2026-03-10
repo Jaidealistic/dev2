@@ -1,10 +1,5 @@
-/**
- * LESSONS LIST PAGE — Calm, Therapeutic Design
- *
- * - Low-stimulus, distraction-free layout
- * - Full EN ↔ Tamil language switching
- * - WCAG AAA, dyslexia-friendly, ADHD-safe
- */
+import { Suspense } from 'react';
+import LessonsClient from './LessonsClient';
 
 'use client';
 
@@ -12,15 +7,17 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import { 
+import {
   BookOpen,
   Search,
   Clock,
   CheckCircle,
   ArrowRight,
   Globe,
-  ChevronDown,
-  Sparkles } from 'lucide-react';
+  ChevronDown
+} from 'lucide-react';
+import Logo from '@/components/ui/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
 
 interface Lesson {
   id: string;
@@ -51,105 +48,16 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 export default function LessonsListPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { language, setLanguage, t } = useLanguage();
-
-  const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [languageFilter, setLanguageFilter] = useState<string>(searchParams.get('lang') || 'all');
-  const [learningLanguages, setLearningLanguages] = useState<string[]>([]);
-
-  // Status labels — derived from translations
-  const statusLabels = (): Record<string, string> => ({
-    NOT_STARTED: t('lessons.notStarted'),
-    IN_PROGRESS: t('lessons.inProgress'),
-    COMPLETED: t('lessons.completed'),
-    MASTERED: t('lessons.mastered'),
-  });
-
-  // Refetch whenever the UI language changes so lesson titles update
-  useEffect(() => {
-    fetchLessons();
-  }, [language]);
-
-  async function fetchLessons() {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) { router.push('/login'); return; }
-
-      const [lessonsRes, meRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api'}/learner/lessons?lang=${language}`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api'}/auth/me`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }),
-      ]);
-
-      if (!lessonsRes.ok) throw new Error('Failed to fetch lessons');
-      const data = await lessonsRes.json();
-      setLessons(data.lessons || []);
-
-      if (meRes.ok) {
-        const meData = await meRes.json();
-        setLearningLanguages(meData.user?.learningLanguages || []);
-      }
-    } catch (err) {
-      console.error('Error fetching lessons:', err);
-      setError(t('common.error'));
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  const filteredLessons = lessons.filter(lesson => {
-    const matchesSearch = !searchQuery ||
-      lesson.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lesson.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || lesson.progress.status === statusFilter;
-    const matchesLanguage = languageFilter === 'all' ||
-      lesson.language.toLowerCase() === languageFilter.toLowerCase();
-    return matchesSearch && matchesStatus && matchesLanguage;
-  });
-
-  const languages = [...new Set(lessons.map(l => l.language))];
-  const completedCount = lessons.filter(l =>
-    l.progress.status === 'COMPLETED' || l.progress.status === 'MASTERED'
-  ).length;
-
-  /* ─── Loading ─── */
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-[#faf9f7]">
-        <div className="text-center space-y-4">
-          <div className="w-10 h-10 border-[3px] border-[#d4dcd5] border-t-[#7a9b7e] rounded-full animate-spin mx-auto" aria-hidden="true" />
-          <p className="text-[#6b6b6b] text-base" style={{ lineHeight: '1.8' }}>
-            {t('status.dataLoading')}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-[#faf9f7]">
+    <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
       {/* ── Header ── */}
-      <header role="banner" className="bg-white border-b border-[#e8e5e0] sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-3.5 flex justify-between items-center">
-          <Link href="/" className="text-lg font-semibold text-[#2d2d2d]">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>LexFix</span>
-            </div>
+      <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
+        <div className="w-full pl-6 pr-10 py-4 flex justify-between items-center gap-4">
+          <Link href="/" aria-label="LexFix home" className="flex-shrink-0">
+            <Logo />
           </Link>
 
-          <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-1">
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-1 md:gap-2">
             {[
               { href: '/learner/dashboard', key: 'dashboard', active: false },
               { href: '/learner/lessons', key: 'lessons', active: true },
@@ -161,7 +69,7 @@ export default function LessonsListPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${item.active
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${item.active
                   ? 'bg-[#f0f4f0] text-[#5d7e61]'
                   : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
                   }`}
@@ -205,8 +113,10 @@ export default function LessonsListPage() {
               </button>
             </div>
 
-            <div className="w-px h-5 bg-[#e8e5e0]" />
-            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50">
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <ThemeToggle />
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0 whitespace-nowrap">
               {t('nav.signOut')}
             </Link>
           </nav>

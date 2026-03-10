@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import {  GraduationCap, Users, ArrowRight , Sparkles, Briefcase } from 'lucide-react';
+import { GraduationCap, Users, ArrowRight, Briefcase } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 export const metadata = {
   title: 'Sign Up - Lexfix',
@@ -10,12 +11,9 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f6f2] via-[#f0ede6] to-[#e8e4db] flex flex-col">
       <header role="banner" className="container mx-auto px-6 py-6">
-        <Link href="/" className="text-2xl font-bold text-[#5a8c5c]" aria-label="Lexfix home">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>LexFix</span>
-            </div>
-          </Link>
+        <Link href="/" aria-label="LexFix home">
+          <Logo />
+        </Link>
       </header>
 
       <div className="flex-1 flex items-center justify-center px-6 py-8">

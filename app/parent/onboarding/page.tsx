@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { linkChild, completeParentOnboarding } from '@/lib/api';
-import {  Users, UserPlus, CheckCircle2, ArrowRight, X, BookOpen, AlertCircle , Sparkles } from 'lucide-react';
+import { Users, UserPlus, CheckCircle2, ArrowRight, X, BookOpen, AlertCircle } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 interface LinkedChild {
   studentId: string;
@@ -101,15 +102,9 @@ export default function ParentOnboardingPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#f8f6f2] via-[#f0ede6] to-[#e8e4db] flex flex-col">
       {/* Header */}
       <header className="container mx-auto px-6 py-6 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7da47f] to-[#5a8c5c] flex items-center justify-center">
-          <BookOpen className="w-5 h-5 text-white" aria-hidden="true" />
-        </div>
-        <Link href="/" className="text-2xl font-bold text-[#5a8c5c]">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>LexFix</span>
-            </div>
-          </Link>
+        <Link href="/" aria-label="LexFix home">
+          <Logo />
+        </Link>
       </header>
 
       <div className="flex-1 flex items-center justify-center px-6 py-8">
@@ -118,10 +113,9 @@ export default function ParentOnboardingPage() {
           <div className="flex items-center justify-center gap-3 mb-8">
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                  step === s ? 'bg-[#7da47f] text-white shadow-lg shadow-[#9db4a0]/30' :
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${step === s ? 'bg-[#7da47f] text-white shadow-lg shadow-[#9db4a0]/30' :
                   step > s ? 'bg-green-500 text-white' : 'bg-slate-200 text-slate-400'
-                }`}>
+                  }`}>
                   {step > s ? <CheckCircle2 className="w-5 h-5" aria-hidden="true" /> : s}
                 </div>
                 {s < 3 && <div className={`w-12 h-0.5 ${step > s ? 'bg-green-400' : 'bg-slate-200'}`} />}

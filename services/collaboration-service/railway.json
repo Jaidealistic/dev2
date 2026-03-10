@@ -4,10 +4,5 @@
         "builder": "DOCKER",
         "dockerfilePath": "Dockerfile",
         "context": "."
-    },
-    "deploy": {
-        "startCommand": "node server.js",
-        "restartPolicyType": "ON_FAILURE",
-        "restartPolicyMaxRetries": 10
     }
 }

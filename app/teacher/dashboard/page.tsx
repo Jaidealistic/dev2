@@ -7,16 +7,17 @@
 'use client';
 
 import Link from 'next/link';
-import {  
-  Users, 
-  BookOpen, 
-  TrendingUp, 
-  Calendar, 
+import {
+  Users,
+  BookOpen,
+  TrendingUp,
+  Calendar,
   MessageSquare,
   Award,
   Clock,
   CheckCircle
-, Sparkles } from 'lucide-react';
+} from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 export default function TeacherDashboard() {
   const teacherName = 'Ms. Johnson';
@@ -41,11 +42,8 @@ export default function TeacherDashboard() {
     <div className="min-h-screen bg-[#f5f1eb]">
       <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>LexFix</span>
-            </div>
+          <Link href="/" aria-label="LexFix home">
+            <Logo />
           </Link>
           <nav className="flex gap-6">
             <Link href="/teacher/dashboard" className="text-[#9db4a0] hover:text-[#8ca394] font-medium">
@@ -118,7 +116,7 @@ export default function TeacherDashboard() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">My Classes</h2>
               <div className="space-y-4">
                 {recentClasses.map((classItem) => (
-                  <div 
+                  <div
                     key={classItem.id}
                     className="p-4 border border-gray-200 rounded-2xl hover:border-[#9db4a0] transition-colors"
                   >
@@ -162,7 +160,7 @@ export default function TeacherDashboard() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Activity</h2>
               <div className="space-y-3">
                 {recentActivity.map((activity) => (
-                  <div 
+                  <div
                     key={activity.id}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
                   >

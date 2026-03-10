@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { useToast } from '@/components/providers/ToastProvider';
-import { 
+import {
   TrendingUp,
   Clock,
   Target,
@@ -29,7 +29,10 @@ import {
   Calendar,
   Flame,
   ChevronRight,
-, Sparkles } from 'lucide-react';
+  Sparkles,
+} from 'lucide-react';
+import Logo from '@/components/ui/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
 
 interface ProgressData {
   competencies: any[];
@@ -178,69 +181,71 @@ export default function ProgressPage() {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-[#faf9f7]">
+    <div className="min-h-screen bg-[#faf9f7] pt-[76px]">
 
       {/* ── Header ── */}
-      <header className="border-b border-[#f0ede8] bg-white/80 backdrop-blur-sm sticky top-0 z-30">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          {/* Logo + back */}
-          <div className="flex items-center gap-4">
-            <Link href="/learner/dashboard" className="flex items-center gap-1.5 text-[#6b6b6b] hover:text-[#2d2d2d] transition-colors">
-              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-              <span className="text-sm font-medium hidden sm:inline">{t('common.back')}</span>
-            </Link>
-            <span className="text-base font-semibold text-[#2d2d2d]">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>LexFix</span>
-            </div>
-          </span>
-          </div>
+      <header role="banner" className="bg-white border-b border-[#e8e5e0] fixed top-0 left-0 w-full z-50">
+        <div className="w-full pl-6 pr-10 py-4 flex items-center justify-between gap-4">
+          <Link href="/" aria-label="LexFix home" className="flex-shrink-0">
+            <Logo />
+          </Link>
 
-          {/* Nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav role="navigation" aria-label="Main navigation" className="flex items-center flex-1 justify-center gap-1 md:gap-2">
             {[
-              { href: '/learner/dashboard', key: 'dashboard' },
-              { href: '/learner/lessons', key: 'lessons' },
+              { href: '/learner/dashboard', key: 'dashboard', active: false },
+              { href: '/learner/lessons', key: 'lessons', active: false },
+              { href: '/learner/practice/writing', key: 'practice', active: false },
               { href: '/learner/progress', key: 'progress', active: true },
-              { href: '/learner/profile', key: 'profile' },
-              { href: '/learner/settings', key: 'settings' },
+              { href: '/learner/profile', key: 'profile', active: false },
+              { href: '/learner/settings', key: 'settings', active: false },
             ].map(item => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${item.active ? 'bg-[#f0f4f0] text-[#5d7e61]' : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${item.active
+                  ? 'bg-[#f0f4f0] text-[#5d7e61]'
+                  : 'text-[#6b6b6b] hover:bg-[#f5f3ef] hover:text-[#2d2d2d]'
                   }`}
                 {...(item.active ? { 'aria-current': 'page' as const } : {})}
               >
                 {t(`nav.${item.key}`)}
               </Link>
             ))}
-          </nav>
 
-          {/* Language pill + sign out */}
-          <div className="flex items-center gap-3">
+            <div className="w-px h-5 bg-[#e8e5e0] mx-2" />
+
+            {/* UI Language Selector */}
             <div
-              className="flex items-center rounded-lg border border-[#e8e5e0] overflow-hidden"
+              className="flex items-center rounded-lg border border-[#e8e5e0] overflow-hidden flex-shrink-0"
               role="group"
-              aria-label={t('common.uiLanguage')}
+              aria-label="UI language"
             >
-              {(['en', 'ta'] as const).map((lang, i) => (
-                <button
-                  key={lang}
-                  onClick={() => setLanguage(lang)}
-                  className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${language === lang ? 'bg-[#7a9b7e] text-white' : 'text-[#8a8a8a] hover:bg-[#f0ede8] bg-white'
-                    }${i === 0 ? '' : ' border-l border-[#e8e5e0]'}`}
-                  aria-pressed={language === lang}
-                >
-                  {lang === 'en' ? 'EN' : 'த'}
-                </button>
-              ))}
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${language === 'en' ? 'bg-[#7a9b7e] text-white' : 'text-[#8a8a8a] hover:bg-[#f0ede8] bg-white'}`}
+                aria-pressed={language === 'en'}
+                title="Switch to English"
+              >
+                EN
+              </button>
+              <div className="w-px h-4 bg-[#e8e5e0]" />
+              <button
+                onClick={() => setLanguage('ta')}
+                className={`px-2.5 py-1.5 text-xs font-medium transition-colors ${language === 'ta' ? 'bg-[#7a9b7e] text-white' : 'text-[#8a8a8a] hover:bg-[#f0ede8] bg-white'}`}
+                aria-pressed={language === 'ta'}
+                title="தமிழுக்கு மாறவும்"
+              >
+                த
+              </button>
             </div>
-            <Link href="/logout" className="text-sm text-[#8a8a8a] hover:text-[#c27171] transition-colors">
+
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <ThemeToggle />
+            <div className="w-px h-5 bg-[#e8e5e0] hidden sm:block" />
+            <Link href="/logout" className="px-3 py-2 rounded-lg text-sm text-[#8a8a8a] hover:text-[#c27171] hover:bg-red-50/50 flex-shrink-0 whitespace-nowrap">
               {t('nav.signOut')}
             </Link>
-          </div>
+          </nav>
         </div>
       </header>
 
@@ -298,8 +303,8 @@ export default function ProgressPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id
-                  ? 'bg-white text-[#2d2d2d] shadow-sm'
-                  : 'text-[#8a8a8a] hover:text-[#2d2d2d]'
+                ? 'bg-white text-[#2d2d2d] shadow-sm'
+                : 'text-[#8a8a8a] hover:text-[#2d2d2d]'
                 }`}
               role="tab"
               aria-selected={activeTab === tab.id}
@@ -319,7 +324,7 @@ export default function ProgressPage() {
               lessonProgress.slice(0, 10).map((p: any, i: number) => (
                 <div key={p.id || i} className="bg-white rounded-xl border border-[#f0ede8] p-4 flex items-center gap-4" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                   <div className={`p-2.5 rounded-lg flex-shrink-0 ${p.status === 'MASTERED' ? 'bg-[#fef9e7]' :
-                      p.status === 'COMPLETED' ? 'bg-[#f0f4f0]' : 'bg-[#f0f4f8]'
+                    p.status === 'COMPLETED' ? 'bg-[#f0f4f0]' : 'bg-[#f0f4f8]'
                     }`}>
                     {p.status === 'MASTERED' ? <Star className="w-4 h-4 text-[#c4a44a]" aria-hidden="true" /> :
                       p.status === 'COMPLETED' ? <CheckCircle className="w-4 h-4 text-[#5d7e61]" aria-hidden="true" /> :
@@ -414,7 +419,7 @@ export default function ProgressPage() {
           </div>
         )}
       </main>
-    </div>
+    </div >
   );
 }
 

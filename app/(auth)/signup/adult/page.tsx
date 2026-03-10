@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { SignUpForm } from '@/components/forms/SignUpForm';
-import { Briefcase, ArrowLeft, Sparkles } from 'lucide-react';
+import { Briefcase, ArrowLeft } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
 
 export default function AdultSignUpPage() {
   return (
@@ -11,11 +12,8 @@ export default function AdultSignUpPage() {
         <Link href="/signup" className="text-slate-400 hover:text-slate-600 transition-colors" aria-label="Back to signup options">
           <ArrowLeft className="w-5 h-5" aria-hidden="true" />
         </Link>
-        <Link href="/" className="text-2xl font-bold text-[#5a8c5c]" aria-label="Lexfix home">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5" />
-            <span>LexFix</span>
-          </div>
+        <Link href="/" aria-label="LexFix home">
+          <Logo />
         </Link>
       </header>
 
