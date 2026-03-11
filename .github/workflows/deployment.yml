@@ -15,25 +15,27 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      # Deploy frontend
+      # Deploy frontend (Next.js app → "dev2" service in Railway)
       - name: Deploy Frontend
-        run: railway up --detach
+        run: railway up --detach --service dev2
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
-      # Deploy ML service
+      # Deploy ML service (create this service in Railway first)
       - name: Deploy ML Service
+        continue-on-error: true
         working-directory: services/ml-service
-        run: railway up --detach
+        run: railway up --detach --service ml-service
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
-      # Deploy collaboration service
+      # Deploy collaboration service (create this service in Railway first)
       - name: Deploy Collaboration Service
+        continue-on-error: true
         working-directory: services/collaboration-service
-        run: railway up --detach
+        run: railway up --detach --service collaboration-service
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
